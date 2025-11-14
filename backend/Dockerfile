@@ -1,11 +1,14 @@
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+# BACKEND - DEV ONLY
+FROM eclipse-temurin:21-jdk AS dev
 
-FROM eclipse-temurin:21-jdk-alpine
+# Installer Maven
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+
+# Copier pom.xml pour installer les deps
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Les sources seront montées par volumes, on ne les copie pas
+CMD ["mvn", "spring-boot:run"]
