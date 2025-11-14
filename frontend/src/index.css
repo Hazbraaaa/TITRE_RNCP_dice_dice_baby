@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* Import Font Family */
+@font-face {
+    font-family: "EB Garamond Regular";
+    src: url(./assets/fonts/EBGaramond-Regular.ttf);
+}
+
+/* Design Tokens */
+@theme {
+    /* Colors */
+    --color-dark-aubergine-800: #512421;
+
+    /* Font Families */
+    --font-heading: "EB Garamond Regular", serif;
+    --font-body: "Helvetica", sans-serif;
+}
