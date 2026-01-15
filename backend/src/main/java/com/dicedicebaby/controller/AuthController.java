@@ -1,10 +1,11 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.dto.LoginRequestDTO;
 import com.dicedicebaby.dto.PlayerResponseDTO;
 import com.dicedicebaby.dto.RegistrationRequestDTO;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
-import com.dicedicebaby.service.AccountService;
+import com.dicedicebaby.service.AuthService;
 import com.dicedicebaby.service.PlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     //region Attributes
-    private final AccountService accountService;
-    private final PlayerService playerService;
+    private final AuthService authService;
     //endregion
 
     //region Constructor
-    public AuthController(AccountService accountService, PlayerService playerService) {
-        this.accountService = accountService;
-        this.playerService = playerService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
     //endregion
 
@@ -30,23 +29,28 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerResponseDTO register(@RequestBody RegistrationRequestDTO request) {
+        return authService.register(request);
+    }
 
-        //Create a new account in the database
-        AccountEntity savedAccount = accountService.registerNewAccount(
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public PlayerResponseDTO login(@RequestBody LoginRequestDTO request) {
+
+        // Log account from the database
+        AccountEntity loggedAccount = accountService.loginAccount(
                 request.username(),
-                request.email(),
                 request.password()
         );
 
-        //Create a new player in the database
-        PlayerEntity playerEntity = playerService.createPlayerForAccount(savedAccount);
+        // Create a new player in the database
+        PlayerEntity playerEntity = playerService.createPlayerForAccount(loggedAccount);
 
-        //Return the player info with his account ID
+        // Return the player info with his account ID
         return new PlayerResponseDTO(
                 playerEntity.getId(),
                 playerEntity.getPlayerUsername(),
                 playerEntity.getIsGuest(),
-                savedAccount.getId()
+                loggedAccount.getId()
         );
     }
     //endregion
