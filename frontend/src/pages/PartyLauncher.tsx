@@ -1,4 +1,3 @@
-// PartyLauncher.tsx
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import PlayerLogin from "../components/PlayerLogin";
@@ -6,6 +5,7 @@ import ConnexionModal from "../components/ConnexionModal";
 import RegisterModal from "../components/RegisterModal";
 import GuestModal from "../components/GuestModal";
 import { ButtonLink } from "../components/ButtonLink";
+import { registerUser } from "../services/authService";
 
 type ModalType = "connexion" | "register" | "guest";
 
@@ -20,10 +20,46 @@ export default function PartyLauncher() {
   const isValidPlayersCount = playersCount >= 2 && playersCount <= 4;
 
   const [openModal, setOpenModal] = useState<OpenModalState | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  // Handle user registration
+  const handleRegister = async (username: string, email: string, password: string) => {
+      try {
+        // Reinitialize error state
+        setError(null);
+        
+        const userData = { username, email, password };
+        const response = await registerUser(userData);
+
+        // Log response, then close the modal upon successful registration
+        console.log(`Joueur ${openModal?.playerNumber} inscrit :`, response);
+        setOpenModal(null);
+
+        // Show success message
+        setSuccessMessage(`Joueur ${username} enregistré avec succès !`);
+        setTimeout(() => setSuccessMessage(null), 3000);
+      
+      } 
+      catch (err: any) {
+        // Handle registration error, keep the modal open to let user correct inputs
+        setError(err.message);
+      }
+    };
+
+
+  // Render
   return (
     <main className="p-4">
       <h2 className="text-xl font-bold text-center mb-4">Identification des joueurs</h2>
+
+      {/* Display success message */}
+      {successMessage && (
+        <div className="max-w-xs mx-auto mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm flex items-center shadow-sm">
+          <span className="mr-2">✅</span>
+          {successMessage}
+        </div>
+      )}
 
       {isValidPlayersCount ? (
         <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
@@ -53,11 +89,15 @@ export default function PartyLauncher() {
         <ConnexionModal
           playerNumber={openModal.playerNumber}
           isOpen
-          onClose={() => setOpenModal(null)}
+          onClose={() => {
+            setOpenModal(null);
+            setError(null);
+          }}
           onSubmit={(data) => {
             console.log(`Joueur ${openModal.playerNumber} connecté :`, data);
             setOpenModal(null);
           }}
+          errorMessage={error}
         />
       )}
 
@@ -65,11 +105,14 @@ export default function PartyLauncher() {
         <RegisterModal
           playerNumber={openModal.playerNumber}
           isOpen
-          onClose={() => setOpenModal(null)}
-          onSubmit={(data) => {
-            console.log(`Joueur ${openModal.playerNumber} inscrit :`, data);
+          onClose={() => {
             setOpenModal(null);
+            setError(null);
           }}
+          onSubmit={(username, email, password) => { 
+            handleRegister(username, email, password);
+          }}
+          errorMessage={error}
         />
       )}
 
@@ -77,7 +120,10 @@ export default function PartyLauncher() {
         <GuestModal
           playerNumber={openModal.playerNumber}
           isOpen
-          onClose={() => setOpenModal(null)}
+          onClose={() => {
+            setOpenModal(null);
+            setError(null);
+          }}
           onSubmit={(pseudo) => {
             console.log(`Joueur ${openModal.playerNumber} invité :`, pseudo);
             setOpenModal(null);

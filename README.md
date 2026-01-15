@@ -27,14 +27,14 @@ Cette section détaille les étapes pour lancer l'application complète (Backend
 2.  **Configuration des variables d'environnement :**
     Créez le fichier de configuration de l'environnement de développement à partir du modèle :
     ```bash
-    cp .env.dev.example .env.dev
+    cp .env.example .env
     ```
-    *(Veuillez vérifier et ajuster les valeurs nécessaires dans le nouveau fichier `.env.dev`)*
+    *(Veuillez vérifier et ajuster les valeurs nécessaires dans le nouveau fichier `.env`)*
 
 3.  **Lancement des services :**
     L'option `--build` permet de reconstruire les images si nécessaire.
     ```bash
-    docker compose -f docker-compose.dev.yml up --build
+    docker compose up --build
     ```
 
 ### Accès
@@ -74,28 +74,11 @@ Voici un aperçu des fonctionnalités clés de l'application :
 
 * `/backend` : Contient le code source de l'application Spring Boot.
 * `/frontend` : Contient le code source de l'interface utilisateur React.
-* `.env.*.example` : Fichiers modèles pour la configuration des variables d'environnement.
-* `docker-compose.*.yml` : Fichiers d'orchestration Docker spécifiques à chaque environnement.
+* `.env.example` : Fichier modèle pour la configuration des variables d'environnement.
+* `docker-compose.yml` : Fichier d'orchestration Docker.
 
 ---
-## 5. Environnements de Travail
-
-### Environnement de Test
-
-1.  Copiez le fichier d'environnement : `cp .env.test.example .env.test`
-2.  Lancez l'environnement de test : `docker compose -f docker-compose.test.yml up --build`
-
->Utilise une base de données dédiée pour l'exécution des tests.
-
-### Environnement de Production (Déploiement)
-
-1.  Copiez le fichier d'environnement : `cp .env.prod.example .env.prod`
-2.  Lancez l'environnement de production : `docker compose -f docker-compose.prod.yml up --build`
-
-> **⚠️ IMPORTANT :** L'environnement de production utilise des configurations (base de données, serveurs) destinées à un déploiement réel. La base de données n'est pas lancée localement et doit être configurée sur un serveur distant. **Ce déploiement est INACTIF pour le moment et sert de modèle.**
-
----
-## 6. Licence et Auteurs
+## 5. Licence et Auteur
 
 * **Auteur :** Clément HAZERA
 * **Licence :** [MIT License](https://opensource.org/licenses/MIT)

@@ -12,7 +12,7 @@ public class PlayerEntity extends AuditableEntity {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String playerUsername;
 
     @Column
     private Boolean isGuest = false;
@@ -42,12 +42,10 @@ public class PlayerEntity extends AuditableEntity {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getPlayerUsername() { return playerUsername; }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPlayerUsername(String playerUsername) {
+        this.playerUsername = playerUsername;
     }
 
     public Boolean getIsGuest() {

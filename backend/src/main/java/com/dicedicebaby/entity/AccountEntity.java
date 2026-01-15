@@ -14,7 +14,7 @@ public class AccountEntity extends AuditableEntity {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
