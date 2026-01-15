@@ -2,9 +2,9 @@ package com.dicedicebaby.service;
 
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.repository.AccountRepository;
-import com.dicedicebaby.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class AccountService {
@@ -12,12 +12,14 @@ public class AccountService {
     //region Attributes
     private final AccountRepository accountRepository;
     private final PlayerService playerService;
+    private final PasswordEncoder passwordEncoder;
     //endregion
 
     //region Constructor
-    public AccountService(AccountRepository accountRepository, PlayerService playerService) {
+    public AccountService(AccountRepository accountRepository, PlayerService playerService, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.playerService = playerService;
+        this.passwordEncoder = passwordEncoder;
     }
     //endregion
 
@@ -35,13 +37,10 @@ public class AccountService {
         AccountEntity newAccount = new AccountEntity();
         newAccount.setUsername(username);
         newAccount.setEmail(email);
-        newAccount.setPasswordHash(password);
+        newAccount.setPasswordHash(passwordEncoder.encode(password));
 
         // Save new AccountEntity
         AccountEntity savedAccount = accountRepository.save(newAccount);
-
-        // Create associated PlayerEntity
-        playerService.createPlayerForAccount(savedAccount);
 
         return savedAccount;
     }

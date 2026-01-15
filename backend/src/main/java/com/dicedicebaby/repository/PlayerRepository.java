@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
 
-    PlayerEntity findByUsername(String username);
+    PlayerEntity findByPlayerUsername(String playerUsername);
 
     List<PlayerEntity> findByIsGuestTrue();
+
+    boolean existsByPlayerUsername(String playerUsername);
 }

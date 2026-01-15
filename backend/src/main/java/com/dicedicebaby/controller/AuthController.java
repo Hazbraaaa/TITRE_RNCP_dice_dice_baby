@@ -9,6 +9,7 @@ import com.dicedicebaby.service.PlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -25,23 +26,28 @@ public class AuthController {
     }
     //endregion
 
+    //region Routes
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerResponseDTO register(@RequestBody RegistrationRequestDTO request) {
 
+        //Create a new account in the database
         AccountEntity savedAccount = accountService.registerNewAccount(
                 request.username(),
                 request.email(),
                 request.password()
         );
 
+        //Create a new player in the database
         PlayerEntity playerEntity = playerService.createPlayerForAccount(savedAccount);
 
+        //Return the player info with his account ID
         return new PlayerResponseDTO(
                 playerEntity.getId(),
-                playerEntity.getUsername(),
+                playerEntity.getPlayerUsername(),
                 playerEntity.getIsGuest(),
                 savedAccount.getId()
         );
     }
+    //endregion
 }
