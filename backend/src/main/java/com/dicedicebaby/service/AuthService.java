@@ -36,7 +36,7 @@ public class AuthService {
         );
 
         // Create player from account
-        PlayerEntity player = playerService.createPlayerForAccount(account);
+        PlayerEntity player = playerService.createPlayerForAccount(account, request.playerNumber());
 
         // Generate and set current token to player
         String token = jwtUtils.generateToken(account.getUsername());
@@ -48,6 +48,7 @@ public class AuthService {
                 player.getPlayerUsername(),
                 player.getIsGuest(),
                 account.getId(),
+                player.getPlayerNumber(),
                 token
         );
     }
@@ -61,7 +62,7 @@ public class AuthService {
         );
 
         // Get player from account
-        PlayerEntity player = playerService.getPlayerByAccount(account);
+        PlayerEntity player = playerService.getPlayerByAccount(account,request.playerNumber());
 
         // Generate and set current token to player
         String token = jwtUtils.generateToken(account.getUsername());
@@ -73,6 +74,7 @@ public class AuthService {
                 player.getPlayerUsername(),
                 player.getIsGuest(),
                 account.getId(),
+                player.getPlayerNumber(),
                 token
         );
     }

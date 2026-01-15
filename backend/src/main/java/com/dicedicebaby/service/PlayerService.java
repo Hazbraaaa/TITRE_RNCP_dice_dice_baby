@@ -21,7 +21,7 @@ public class PlayerService {
 
     //region Methods
     @Transactional
-    public PlayerEntity createPlayerForAccount(AccountEntity account) {
+    public PlayerEntity createPlayerForAccount(AccountEntity account, int playerNumber) {
         // Create a player from an account
         PlayerEntity player = new PlayerEntity();
 
@@ -29,12 +29,13 @@ public class PlayerService {
         player.setIsGuest(false);
         player.setAccount(account);
         player.setScore(0);
+        player.setPlayerNumber(playerNumber);
 
         // Return saved player in database
         return playerRepository.save(player);
     }
 
-    public PlayerEntity getPlayerByAccount(AccountEntity account) {
+    public PlayerEntity getPlayerByAccount(AccountEntity account,  int playerNumber) {
         // Get player from an account
         PlayerEntity player = playerRepository.findByAccountId(account.getId());
 
@@ -42,6 +43,9 @@ public class PlayerService {
         if (player == null) {
             throw new RuntimeException("Profil joueur introuvable");
         }
+
+        // Set player number
+        player.setPlayerNumber(playerNumber);
 
         // Return player from database
         return player;

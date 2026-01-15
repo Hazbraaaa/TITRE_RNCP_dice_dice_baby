@@ -3,5 +3,6 @@ package com.dicedicebaby.dto;
 public record RegistrationRequestDTO(
         String username,
         String email,
-        String password
+        String password,
+        int playerNumber
 ) {}

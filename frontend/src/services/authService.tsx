@@ -3,7 +3,8 @@ const API_URL = "http://localhost:8080/api";
 export async function registerUser(userData: { 
     username: string; 
     email: string; 
-    password: string 
+    password: string;
+    playerNumber: number | undefined;
 }) {
     try {
         // Send request with body to API to register a new user
@@ -35,7 +36,8 @@ export async function registerUser(userData: {
 
 export async function loginUser(userData: { 
     email: string; 
-    password: string 
+    password: string;
+    playerNumber: number | undefined;
 }) {
     try {
         // Send request with body to API to login user

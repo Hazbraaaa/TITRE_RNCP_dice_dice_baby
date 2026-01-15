@@ -29,11 +29,14 @@ export default function PartyLauncher() {
       // Reinitialize error state
       setError(null);
 
-      const userData = { username, email, password };
+      // Get player number for logging
+      const playerNumber = openModal?.playerNumber;
+
+      const userData = { username, email, password, playerNumber };
       const response = await registerUser(userData);
 
       // Log response, then close the modal upon successful registration
-      console.log(`Joueur ${openModal?.playerNumber} inscrit :`, response);
+      console.log(`Joueur ${playerNumber} inscrit :`, response);
       setOpenModal(null);
 
       // Show success message
@@ -53,17 +56,20 @@ export default function PartyLauncher() {
       // Reinitialize error state
       setError(null);
 
-      const userData = { email, password };
+      // Get player number for logging
+      const playerNumber = openModal?.playerNumber;
+
+      const userData = { email, password, playerNumber };
       const response = await loginUser(userData);
 
       // Log response, then close the modal upon successful registration
-      console.log(`Joueur ${openModal?.playerNumber} connecté :`, response);
+      console.log(`Joueur ${playerNumber} connecté :`, response);
       setOpenModal(null);
 
       // Show success message
       setSuccessMessage(`Joueur ${response.username} connecté avec succès !`);
       setTimeout(() => setSuccessMessage(null), 3000);
-    } 
+    }
     catch (err: any) {
       // Handle login error, keep the modal open to let user correct inputs
       setError(err.message);
