@@ -1,25 +1,27 @@
 package com.dicedicebaby.service;
 
+import com.dicedicebaby.dto.LoginRequestDTO;
 import com.dicedicebaby.dto.PlayerResponseDTO;
 import com.dicedicebaby.dto.RegistrationRequestDTO;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
+import com.dicedicebaby.security.JwtUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.dicedicebaby.service.AccountService;
-import com.dicedicebaby.service.PlayerService;
 
 @Service
 public class AuthService {
     //region Attributes
     private final AccountService accountService;
     private final PlayerService playerService;
+    private final JwtUtils jwtUtils;
     //endregion
 
     //region Constructor
-    public AuthService(AccountService accountService, PlayerService playerService) {
+    public AuthService(AccountService accountService, PlayerService playerService, JwtUtils jwtUtils) {
         this.accountService = accountService;
         this.playerService = playerService;
+        this.jwtUtils = jwtUtils;
     }
     //endregion
 
@@ -36,12 +38,42 @@ public class AuthService {
         // Create player from account
         PlayerEntity player = playerService.createPlayerForAccount(account);
 
+        // Generate and set current token to player
+        String token = jwtUtils.generateToken(account.getUsername());
+        player.setCurrentToken(token);
+
         // Return PlayerDTO
         return new PlayerResponseDTO(
                 player.getId(),
                 player.getPlayerUsername(),
                 player.getIsGuest(),
-                account.getId()
+                account.getId(),
+                token
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public PlayerResponseDTO login(LoginRequestDTO request) {
+        // Check authentication
+        AccountEntity account = accountService.loginAccount(
+                request.email(),
+                request.password()
+        );
+
+        // Get player from account
+        PlayerEntity player = playerService.getPlayerByAccount(account);
+
+        // Generate and set current token to player
+        String token = jwtUtils.generateToken(account.getUsername());
+        player.setCurrentToken(token);
+
+        // Return PlayerDTO
+        return new PlayerResponseDTO(
+                player.getId(),
+                player.getPlayerUsername(),
+                player.getIsGuest(),
+                account.getId(),
+                token
         );
     }
     //endregion

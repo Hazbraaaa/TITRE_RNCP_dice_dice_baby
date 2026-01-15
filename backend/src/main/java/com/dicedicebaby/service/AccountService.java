@@ -25,7 +25,7 @@ public class AccountService {
     @Transactional
     public AccountEntity registerNewAccount(String username, String email, String password) {
         // Check unique account
-        if (accountRepository.existsByEmail(email)) {
+        if (accountRepository.findByEmail(email) != null) {
             throw new IllegalStateException("L'Email est déjà utilisé.");
         }
         if (accountRepository.findByUsername(username) != null) {
@@ -40,6 +40,19 @@ public class AccountService {
 
         // Return saved account in database
         return accountRepository.save(newAccount);
+    }
+
+    public AccountEntity loginAccount(String email, String password) {
+        // Search for account by email
+        AccountEntity account = accountRepository.findByEmail(email);
+
+        // Check if not found or authentication error
+        if (account == null || !passwordEncoder.matches(password, account.getPasswordHash())) {
+            throw new RuntimeException("Identifiants invalides");
+        }
+
+        // Return account from database
+        return account;
     }
     //endregion
 }

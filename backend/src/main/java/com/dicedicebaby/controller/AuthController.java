@@ -35,23 +35,7 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public PlayerResponseDTO login(@RequestBody LoginRequestDTO request) {
-
-        // Log account from the database
-        AccountEntity loggedAccount = accountService.loginAccount(
-                request.username(),
-                request.password()
-        );
-
-        // Create a new player in the database
-        PlayerEntity playerEntity = playerService.createPlayerForAccount(loggedAccount);
-
-        // Return the player info with his account ID
-        return new PlayerResponseDTO(
-                playerEntity.getId(),
-                playerEntity.getPlayerUsername(),
-                playerEntity.getIsGuest(),
-                loggedAccount.getId()
-        );
+        return authService.login(request);
     }
     //endregion
 }

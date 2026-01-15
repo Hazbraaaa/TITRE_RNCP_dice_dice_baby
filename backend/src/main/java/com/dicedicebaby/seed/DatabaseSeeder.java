@@ -1,7 +1,9 @@
 package com.dicedicebaby.seed;
 
 import com.dicedicebaby.entity.AccountEntity;
+import com.dicedicebaby.entity.PlayerEntity;
 import com.dicedicebaby.repository.AccountRepository;
+import com.dicedicebaby.repository.PlayerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -9,14 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
+    //region Attributes
     private final AccountRepository accountRepository;
+    private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
+    //endregion
 
-    public DatabaseSeeder(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+    //region Constructor
+    public DatabaseSeeder(AccountRepository accountRepository, PlayerRepository playerRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.playerRepository = playerRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    //endregion
 
+    //region Methods
     @Override
     public void run(String... args) throws Exception {
         seedAccounts();
@@ -25,26 +34,28 @@ public class DatabaseSeeder implements CommandLineRunner {
     private void seedAccounts() {
         // Check if there is data in Database
         if (accountRepository.count() == 0) {
-            // Create userOne
-            AccountEntity userOne = new AccountEntity();
-            userOne.setUsername("userOne");
-            userOne.setEmail("userOne@dicedicebaby.com");
-            userOne.setPasswordHash(passwordEncoder.encode("userOne123"));
+            // Create test account
+            AccountEntity testAccount = new AccountEntity();
+            testAccount.setUsername("test");
+            testAccount.setEmail("test@test.fr");
+            testAccount.setPasswordHash(passwordEncoder.encode("test123"));
 
-            accountRepository.save(userOne);
+            accountRepository.save(testAccount);
 
-            // Create userTwo
-            AccountEntity userTwo = new AccountEntity();
-            userTwo.setUsername("userTwo");
-            userTwo.setEmail("userTwo@example.com");
-            userTwo.setPasswordHash(passwordEncoder.encode("userTwo123"));
+            // Create test player
+            PlayerEntity testPlayer = new PlayerEntity();
+            testPlayer.setPlayerUsername(testAccount.getUsername());
+            testPlayer.setIsGuest(false);
+            testPlayer.setAccount(testAccount);
+            testPlayer.setScore(0);
 
-            accountRepository.save(userTwo);
+            playerRepository.save(testPlayer);
 
-            System.out.println("Seeding terminé: Comptes 'userOne' et 'userTwo' créés.");
+            System.out.println("Seeding terminé: Compte et Joueur 'test' créés.");
         }
         else {
             System.out.println("Seeding ignoré: Des comptes existent déjà en base.");
         }
     }
+    //endregion
 }

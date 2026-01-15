@@ -1,23 +1,33 @@
 import Modal from "./Modal";
 import { useState } from "react";
 
-type ConnexionModalProps = {
+type LoginModalProps = {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (email: string, password: string) => void;
+    errorMessage?: string | null;
 };
 
-export default function ConnexionModal({
+export default function LoginModal({
     isOpen,
     onClose,
     onSubmit,
-}: ConnexionModalProps) {
+    errorMessage,
+}: LoginModalProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <h2 className="text-xl font-bold mb-4">Connexion</h2>
+            
+            {/* Display error message */}
+            {errorMessage && (
+                <div className="mx-auto mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+                {errorMessage}
+                </div>
+            )}
+
             <form
                 onSubmit={(e) => {
                     e.preventDefault();

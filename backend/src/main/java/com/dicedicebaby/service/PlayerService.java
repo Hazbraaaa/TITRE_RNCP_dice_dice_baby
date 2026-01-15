@@ -22,7 +22,7 @@ public class PlayerService {
     //region Methods
     @Transactional
     public PlayerEntity createPlayerForAccount(AccountEntity account) {
-        //Create a player from an account
+        // Create a player from an account
         PlayerEntity player = new PlayerEntity();
 
         player.setPlayerUsername(account.getUsername());
@@ -30,7 +30,31 @@ public class PlayerService {
         player.setAccount(account);
         player.setScore(0);
 
+        // Return saved player in database
         return playerRepository.save(player);
+    }
+
+    public PlayerEntity getPlayerByAccount(AccountEntity account) {
+        // Get player from an account
+        PlayerEntity player = playerRepository.findByAccountId(account.getId());
+
+        // Check if player found
+        if (player == null) {
+            throw new RuntimeException("Profil joueur introuvable");
+        }
+
+        // Return player from database
+        return player;
+    }
+
+    @Transactional
+    public void updatePlayerToken(Long id, String token) {
+        // Find player by ID
+        PlayerEntity player = playerRepository.findById(id).get();
+
+        // Change current token
+        player.setCurrentToken(token);
+        playerRepository.save(player);
     }
     //endregion
 }

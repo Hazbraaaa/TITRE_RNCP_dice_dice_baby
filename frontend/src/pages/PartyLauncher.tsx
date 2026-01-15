@@ -1,13 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import PlayerLogin from "../components/PlayerLogin";
-import ConnexionModal from "../components/ConnexionModal";
+import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
 import GuestModal from "../components/GuestModal";
 import { ButtonLink } from "../components/ButtonLink";
-import { registerUser } from "../services/authService";
+import { registerUser, loginUser } from "../services/authService";
 
-type ModalType = "connexion" | "register" | "guest";
+type ModalType = "login" | "register" | "guest";
 
 interface OpenModalState {
   playerNumber: number;
@@ -25,28 +25,50 @@ export default function PartyLauncher() {
 
   // Handle user registration
   const handleRegister = async (username: string, email: string, password: string) => {
-      try {
-        // Reinitialize error state
-        setError(null);
-        
-        const userData = { username, email, password };
-        const response = await registerUser(userData);
+    try {
+      // Reinitialize error state
+      setError(null);
 
-        // Log response, then close the modal upon successful registration
-        console.log(`Joueur ${openModal?.playerNumber} inscrit :`, response);
-        setOpenModal(null);
+      const userData = { username, email, password };
+      const response = await registerUser(userData);
 
-        // Show success message
-        setSuccessMessage(`Joueur ${username} enregistré avec succès !`);
-        setTimeout(() => setSuccessMessage(null), 3000);
-      
-      } 
-      catch (err: any) {
-        // Handle registration error, keep the modal open to let user correct inputs
-        setError(err.message);
-      }
-    };
+      // Log response, then close the modal upon successful registration
+      console.log(`Joueur ${openModal?.playerNumber} inscrit :`, response);
+      setOpenModal(null);
 
+      // Show success message
+      setSuccessMessage(`Joueur ${username} enregistré avec succès !`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+
+    }
+    catch (err: any) {
+      // Handle registration error, keep the modal open to let user correct inputs
+      setError(err.message);
+    }
+  };
+
+  // Handle user login
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      // Reinitialize error state
+      setError(null);
+
+      const userData = { email, password };
+      const response = await loginUser(userData);
+
+      // Log response, then close the modal upon successful registration
+      console.log(`Joueur ${openModal?.playerNumber} connecté :`, response);
+      setOpenModal(null);
+
+      // Show success message
+      setSuccessMessage(`Joueur ${response.username} connecté avec succès !`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } 
+    catch (err: any) {
+      // Handle login error, keep the modal open to let user correct inputs
+      setError(err.message);
+    }
+  }
 
   // Render
   return (
@@ -61,13 +83,14 @@ export default function PartyLauncher() {
         </div>
       )}
 
+      {/* Check number of players */}
       {isValidPlayersCount ? (
         <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
           {Array.from({ length: playersCount }).map((_, index) => (
             <PlayerLogin
               key={index}
               playerNumber={index + 1}
-              onLogin={() => setOpenModal({ playerNumber: index + 1, type: "connexion" })}
+              onLogin={() => setOpenModal({ playerNumber: index + 1, type: "login" })}
               onRegister={() => setOpenModal({ playerNumber: index + 1, type: "register" })}
               onGuest={() => setOpenModal({ playerNumber: index + 1, type: "guest" })}
             />
@@ -85,22 +108,23 @@ export default function PartyLauncher() {
         </p>
       )}
 
-      {openModal?.type === "connexion" && (
-        <ConnexionModal
+      {/* Set Login modal */}
+      {openModal?.type === "login" && (
+        <LoginModal
           playerNumber={openModal.playerNumber}
           isOpen
           onClose={() => {
             setOpenModal(null);
             setError(null);
           }}
-          onSubmit={(data) => {
-            console.log(`Joueur ${openModal.playerNumber} connecté :`, data);
-            setOpenModal(null);
+          onSubmit={(email, password) => {
+            handleLogin(email, password);
           }}
           errorMessage={error}
         />
       )}
 
+      {/* Set Register modal */}
       {openModal?.type === "register" && (
         <RegisterModal
           playerNumber={openModal.playerNumber}
@@ -109,13 +133,14 @@ export default function PartyLauncher() {
             setOpenModal(null);
             setError(null);
           }}
-          onSubmit={(username, email, password) => { 
+          onSubmit={(username, email, password) => {
             handleRegister(username, email, password);
           }}
           errorMessage={error}
         />
       )}
 
+      {/* Set Guest modal */}
       {openModal?.type === "guest" && (
         <GuestModal
           playerNumber={openModal.playerNumber}

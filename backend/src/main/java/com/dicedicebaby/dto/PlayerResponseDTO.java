@@ -4,5 +4,6 @@ public record PlayerResponseDTO(
         Long playerId,
         String username,
         Boolean isGuest,
-        Long accountId
+        Long accountId,
+        String token
 ) {}
