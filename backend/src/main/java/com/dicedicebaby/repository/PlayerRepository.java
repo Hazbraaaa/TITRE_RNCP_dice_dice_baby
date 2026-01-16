@@ -11,4 +11,6 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     List<PlayerEntity> findByIsGuestTrue();
 
     boolean existsByPlayerUsername(String playerUsername);
+
+    PlayerEntity findByAccountId(Long accountId);
 }

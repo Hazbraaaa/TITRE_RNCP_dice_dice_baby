@@ -26,6 +26,9 @@ public class PlayerEntity extends AuditableEntity {
 
     @Column
     private int score;
+
+    @Column
+    private String currentToken;
     //endregion
 
     //region Constructor
@@ -78,6 +81,14 @@ public class PlayerEntity extends AuditableEntity {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getCurrentToken() {
+        return currentToken;
+    }
+
+    public void setCurrentToken(String currentToken) {
+        this.currentToken = currentToken;
     }
     //endregion
 }
