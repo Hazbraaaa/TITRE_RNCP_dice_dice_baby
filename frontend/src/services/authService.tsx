@@ -82,8 +82,13 @@ export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
     // Get existing players from local storage
     const existingPlayers = getPlayersFromLocalStorage();
     
-    // Update or add the player
-    const updatedPlayers = existingPlayers.filter(p => p.playerNumber !== player.playerNumber);
+    // Remove player if already exists (by username)
+    const filteredPlayers = existingPlayers.filter(p => p.username !== player.username)
+
+    // Update the players
+    const updatedPlayers = filteredPlayers.filter(p => p.playerNumber !== player.playerNumber);
+    
+    // Add player
     updatedPlayers.push(player);
     
     // Save in local storage

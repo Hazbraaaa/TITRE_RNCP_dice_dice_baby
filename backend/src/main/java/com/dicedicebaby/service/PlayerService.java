@@ -35,7 +35,8 @@ public class PlayerService {
         return playerRepository.save(player);
     }
 
-    public PlayerEntity getPlayerByAccount(AccountEntity account,  int playerNumber) {
+    @Transactional
+    public PlayerEntity getPlayerByAccount(AccountEntity account) {
         // Get player from an account
         PlayerEntity player = playerRepository.findByAccountId(account.getId());
 
@@ -44,21 +45,8 @@ public class PlayerService {
             throw new RuntimeException("Profil joueur introuvable");
         }
 
-        // Set player number
-        player.setPlayerNumber(playerNumber);
-
         // Return player from database
-        return player;
-    }
-
-    @Transactional
-    public void updatePlayerToken(Long id, String token) {
-        // Find player by ID
-        PlayerEntity player = playerRepository.findById(id).get();
-
-        // Change current token
-        player.setCurrentToken(token);
-        playerRepository.save(player);
+        return playerRepository.save(player);
     }
     //endregion
 }

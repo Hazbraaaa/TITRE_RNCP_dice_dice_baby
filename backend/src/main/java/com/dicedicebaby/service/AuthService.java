@@ -54,7 +54,7 @@ public class AuthService {
         );
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PlayerResponseDTO login(LoginRequestDTO request) {
         // Check authentication
         AccountEntity account = accountService.loginAccount(
@@ -63,9 +63,12 @@ public class AuthService {
         );
 
         // Get player from account
-        PlayerEntity player = playerService.getPlayerByAccount(account,request.playerNumber());
+        PlayerEntity player = playerService.getPlayerByAccount(account);
 
-        // Generate and set current token to player
+        // Update player number
+        player.setPlayerNumber(request.playerNumber());
+
+        // Generate and update token to player
         String token = jwtUtils.generateToken(account.getUsername());
         player.setCurrentToken(token);
 
