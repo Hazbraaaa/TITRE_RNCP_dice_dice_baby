@@ -49,6 +49,7 @@ public class AuthService {
                 player.getIsGuest(),
                 account.getId(),
                 player.getPlayerNumber(),
+                player.getScore(),
                 token
         );
     }
@@ -75,6 +76,7 @@ public class AuthService {
                 player.getIsGuest(),
                 account.getId(),
                 player.getPlayerNumber(),
+                player.getScore(),
                 token
         );
     }

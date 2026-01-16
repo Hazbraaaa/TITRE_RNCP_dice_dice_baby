@@ -1,3 +1,4 @@
+// ---------- REQUESTS TO BACKEND API ----------
 const API_URL = "http://localhost:8080/api";
 
 export async function registerUser(userData: { 
@@ -66,3 +67,49 @@ export async function loginUser(userData: {
         throw error;
     }
 }
+
+// ---------- LOCAL STORAGE ----------
+export interface AuthenticatedPlayer {
+    playerNumber: number;
+    username: string;
+    score: number;
+    token: string;
+}
+
+const STORAGE_KEY = "game_players";
+
+export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
+    // Get existing players from local storage
+    const existingPlayers = getPlayersFromLocalStorage();
+    
+    // Update or add the player
+    const updatedPlayers = existingPlayers.filter(p => p.playerNumber !== player.playerNumber);
+    updatedPlayers.push(player);
+    
+    // Save in local storage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPlayers));
+};
+
+export const getPlayersFromLocalStorage = (): AuthenticatedPlayer[] => {
+    const data = localStorage.getItem(STORAGE_KEY);
+
+    // Return players or empty array if none
+    return data ? JSON.parse(data) : [];
+};
+
+export const clearPlayers = () => {
+    // Remove all players from local storage
+    localStorage.removeItem(STORAGE_KEY);
+};
+
+export const deletePlayerFromLocalStorage = (playerNumber: number) => {
+    const players = getPlayersFromLocalStorage();
+    // Keep only players without the specified player
+    const updatedPlayers = players.filter(p => p.playerNumber !== playerNumber);
+    
+    if (updatedPlayers.length === 0) {
+        localStorage.removeItem("game_players");
+    } else {
+        localStorage.setItem("game_players", JSON.stringify(updatedPlayers));
+    }
+};

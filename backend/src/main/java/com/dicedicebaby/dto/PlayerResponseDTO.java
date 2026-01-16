@@ -6,5 +6,6 @@ public record PlayerResponseDTO(
         Boolean isGuest,
         Long accountId,
         int playerNumber,
+        int score,
         String token
 ) {}

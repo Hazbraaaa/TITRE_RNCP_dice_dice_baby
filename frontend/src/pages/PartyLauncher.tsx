@@ -5,7 +5,7 @@ import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
 import GuestModal from "../components/GuestModal";
 import { ButtonLink } from "../components/ButtonLink";
-import { registerUser, loginUser } from "../services/authService";
+import { registerUser, loginUser, savePlayerToLocalStorage, getPlayersFromLocalStorage, deletePlayerFromLocalStorage } from "../services/authService";
 
 type ModalType = "login" | "register" | "guest";
 
@@ -19,9 +19,52 @@ export default function PartyLauncher() {
   const playersCount = Number(searchParams.get("players"));
   const isValidPlayersCount = playersCount >= 2 && playersCount <= 4;
 
+  const [connectedPlayers, setConnectedPlayers] = useState(getPlayersFromLocalStorage());
   const [openModal, setOpenModal] = useState<OpenModalState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Handle authentication success update
+  const handleAuthSuccess = (playerData: any) => {
+    savePlayerToLocalStorage(playerData);
+    setConnectedPlayers(getPlayersFromLocalStorage());
+    setOpenModal(null);
+  };
+
+  // Handle user login
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      // Reinitialize error state
+      setError(null);
+
+      // Get player number from modal
+      const playerNumber = openModal?.playerNumber;
+
+      // Send login request
+      const userData = { email, password, playerNumber };
+      const response = await loginUser(userData);
+
+      // Save player in local strorage and update state
+      handleAuthSuccess({
+        playerNumber: response.playerNumber,
+        username: response.username,
+        score: response.score,
+        token: response.token
+      });
+
+      // Log response, then close the modal upon successful registration
+      console.log(`Joueur ${response.playerNumber} connecté :`, response);
+      setOpenModal(null);
+
+      // Show success message
+      setSuccessMessage(`Joueur ${response.username} connecté avec succès !`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    }
+    catch (err: any) {
+      // Handle login error, keep the modal open to let user correct inputs
+      setError(err.message);
+    }
+  };
 
   // Handle user registration
   const handleRegister = async (username: string, email: string, password: string) => {
@@ -29,14 +72,23 @@ export default function PartyLauncher() {
       // Reinitialize error state
       setError(null);
 
-      // Get player number for logging
+      // Get player number from modal
       const playerNumber = openModal?.playerNumber;
 
+      // Send register request
       const userData = { username, email, password, playerNumber };
       const response = await registerUser(userData);
 
+      // Save player in local strorage and update state
+      handleAuthSuccess({
+        playerNumber: response.playerNumber,
+        username: response.username,
+        score: response.score,
+        token: response.token
+      });
+
       // Log response, then close the modal upon successful registration
-      console.log(`Joueur ${playerNumber} inscrit :`, response);
+      console.log(`Joueur ${response.playerNumber} inscrit :`, response);
       setOpenModal(null);
 
       // Show success message
@@ -50,33 +102,17 @@ export default function PartyLauncher() {
     }
   };
 
-  // Handle user login
-  const handleLogin = async (email: string, password: string) => {
-    try {
-      // Reinitialize error state
-      setError(null);
+  // Handle user logout
+  const handleLogout = (pNumber: number) => {
+    deletePlayerFromLocalStorage(pNumber);
+    setConnectedPlayers(getPlayersFromLocalStorage());
 
-      // Get player number for logging
-      const playerNumber = openModal?.playerNumber;
+    // Show success message
+    setSuccessMessage(`Joueur ${pNumber} déconnecté.`);
+    setTimeout(() => setSuccessMessage(null), 3000);
+  };
 
-      const userData = { email, password, playerNumber };
-      const response = await loginUser(userData);
-
-      // Log response, then close the modal upon successful registration
-      console.log(`Joueur ${playerNumber} connecté :`, response);
-      setOpenModal(null);
-
-      // Show success message
-      setSuccessMessage(`Joueur ${response.username} connecté avec succès !`);
-      setTimeout(() => setSuccessMessage(null), 3000);
-    }
-    catch (err: any) {
-      // Handle login error, keep the modal open to let user correct inputs
-      setError(err.message);
-    }
-  }
-
-  // Render
+  // ---------- Render ----------
   return (
     <main className="p-4">
       <h2 className="text-xl font-bold text-center mb-4">Identification des joueurs</h2>
@@ -92,18 +128,41 @@ export default function PartyLauncher() {
       {/* Check number of players */}
       {isValidPlayersCount ? (
         <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
-          {Array.from({ length: playersCount }).map((_, index) => (
-            <PlayerLogin
-              key={index}
-              playerNumber={index + 1}
-              onLogin={() => setOpenModal({ playerNumber: index + 1, type: "login" })}
-              onRegister={() => setOpenModal({ playerNumber: index + 1, type: "register" })}
-              onGuest={() => setOpenModal({ playerNumber: index + 1, type: "guest" })}
-            />
-          ))}
+          {Array.from({ length: playersCount }).map((_, index) => {
+            const playerNumber = index + 1;
+            //Search for connected player in state
+            const currentPlayer = connectedPlayers.find(p => p.playerNumber === playerNumber);
+
+            return currentPlayer ? (
+              // BLOC IF CONNECTED PLAYER
+              <div key={index} className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center shadow-sm">
+                <div>
+                  <p className="text-xs text-blue-500 font-semibold uppercase">Joueur {currentPlayer.playerNumber}</p>
+                  <p className="text-lg font-bold">{currentPlayer.username}</p>
+                  <p className="text-xs text-gray-500">Score: {currentPlayer.score}</p>
+                </div>
+                <button
+                  onClick={() => handleLogout(playerNumber)}
+                  className="text-xs text-gray-400 hover:text-red-500"
+                >
+                  Changer
+                </button>
+              </div>
+            ) : (
+              // BLOCk IF NO CONNECTED PLAYER
+              <PlayerLogin
+                key={index}
+                playerNumber={playerNumber}
+                onLogin={() => setOpenModal({ playerNumber: playerNumber, type: "login" })}
+                onRegister={() => setOpenModal({ playerNumber: playerNumber, type: "register" })}
+                onGuest={() => setOpenModal({ playerNumber: playerNumber, type: "guest" })}
+              />
+            );
+          })}
+
           <ButtonLink
             to={`/game`}
-            className="text-center"
+            className={`text-center ${connectedPlayers.length < playersCount ? "opacity-50 pointer-events-none" : ""}`}
           >
             Lancer partie
           </ButtonLink>
