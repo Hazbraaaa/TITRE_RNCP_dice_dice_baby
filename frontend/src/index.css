@@ -2,16 +2,37 @@
 
 /* Import Font Family */
 @font-face {
-    font-family: "EB Garamond Regular";
-    src: url(./assets/fonts/EBGaramond-Regular.ttf);
+  font-family: "EB Garamond Regular";
+  src: url("./assets/fonts/EBGaramond-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Design Tokens */
 @theme {
-    /* Colors */
-    --color-dark-aubergine-800: #512421;
+  /* Colors */
+  --color-glacier-aqua: #80F3FD;
+  --color-polar-blue: #005891;
+  --color-midnight-ice: #013659;
+  --color-frost-white: #F6FFFD;
+  --color-snow-ashes: #4D7A9D;
+  --color-red-alert: #C74A1E;
 
-    /* Font Families */
-    --font-heading: "EB Garamond Regular", serif;
-    --font-body: "Helvetica", sans-serif;
+  /* Font Families */
+  --font-heading: "Luckiest Guy", "Arial Black", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Default global styles */
+@layer base {
+  body {
+    @apply bg-glacier-aqua text-midnight-ice font-body uppercase;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-heading;
+  }
 }

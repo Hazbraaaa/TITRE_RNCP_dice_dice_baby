@@ -150,66 +150,100 @@ export default function PartyLauncher() {
 
   // ---------- Render ----------
   return (
-    <main className="p-4">
-      <h2 className="text-xl font-bold text-center mb-4">Identification des joueurs</h2>
+    <main className="flex flex-col items-center justify-between min-h-[92vh] py-6 px-4 max-w-5xl mx-auto">
+      
+      <header className="w-full text-center mb-6">
+        <h2 className="text-3xl md:text-5xl font-heading text-polar-blue uppercase drop-shadow-sm">
+          Identification
+        </h2>
+        <div className="h-1 w-20 bg-red-alert mx-auto mt-2 rounded-full" />
+      </header>
 
-      {/* Display success message */}
+      {/* Message de succès flottant */}
       {successMessage && (
-        <div className="max-w-xs mx-auto mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm flex items-center shadow-sm">
-          <span className="mr-2">✅</span>
-          {successMessage}
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-full max-w-xs animate-bounce">
+          <div className="bg-frost-white border-2 border-polar-blue p-3 text-midnight-ice font-heading text-center rounded-lg shadow-xl">
+             ✅ {successMessage}
+          </div>
         </div>
       )}
 
-      {/* Check number of players */}
       {isValidPlayersCount ? (
-        <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
-          {Array.from({ length: playersCount }).map((_, index) => {
-            const playerNumber = index + 1;
-            //Search for connected player in state
-            const currentPlayer = connectedPlayers.find(p => p.playerNumber === playerNumber);
+        <div className="w-full flex flex-col flex-grow justify-center gap-8">
+          
+          {/* Grille des joueurs : 1 col sur mobile, 2 sur tablette/desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-4xl mx-auto">
+            {Array.from({ length: playersCount }).map((_, index) => {
+              const playerNumber = index + 1;
+              const currentPlayer = connectedPlayers.find(p => p.playerNumber === playerNumber);
 
-            return currentPlayer ? (
-              // BLOC IF CONNECTED PLAYER
-              <div key={index} className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center shadow-sm">
-                <div>
-                  <p className="text-xs text-blue-500 font-semibold uppercase">Joueur {currentPlayer.playerNumber}</p>
-                  <p className="text-lg font-bold">{currentPlayer.username}</p>
-                  <p className="text-xs text-gray-500">Score: {currentPlayer.score}</p>
+              return (
+                <div key={index} className="flex flex-col gap-2">
+                  <span className="font-heading text-polar-blue text-sm md:text-lg ml-1">
+                    JOUEUR {playerNumber}
+                  </span>
+                  
+                  {currentPlayer ? (
+                    /* CONNECTED PLAYER CARD */
+                    <div className="p-4 bg-polar-blue text-frost-white rounded-sm border-2 border-midnight-ice shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] flex justify-between items-center animate-in fade-in zoom-in duration-300">
+                      <div>
+                        <p className="text-xl md:text-2xl font-heading truncate max-w-[150px]">
+                          {currentPlayer.username}
+                        </p>
+                        <p className="text-[10px] md:text-xs opacity-80 font-bold uppercase tracking-widest">
+                          Score: {currentPlayer.score}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleLogout(playerNumber)}
+                        className="bg-red-alert hover:bg-midnight-ice text-white p-2 rounded-md transition-colors"
+                        title="Déconnecter"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    /* NOT CONNECTED PLAYER CARD */
+                    <PlayerLogin
+                      playerNumber={playerNumber}
+                      onLogin={() => setOpenModal({ playerNumber, type: "login" })}
+                      onRegister={() => setOpenModal({ playerNumber, type: "register" })}
+                      onGuest={() => setOpenModal({ playerNumber, type: "guest" })}
+                    />
+                  )}
                 </div>
-                <button
-                  onClick={() => handleLogout(playerNumber)}
-                  className="text-xs text-gray-400 hover:text-red-500"
-                >
-                  Déconnecter
-                </button>
-              </div>
-            ) : (
-              // BLOCk IF NO CONNECTED PLAYER
-              <PlayerLogin
-                key={index}
-                playerNumber={playerNumber}
-                onLogin={() => setOpenModal({ playerNumber: playerNumber, type: "login" })}
-                onRegister={() => setOpenModal({ playerNumber: playerNumber, type: "register" })}
-                onGuest={() => setOpenModal({ playerNumber: playerNumber, type: "guest" })}
-              />
-            );
-          })}
+              );
+            })}
+          </div>
 
-          <ButtonLink
-            to={`/game`}
-            className={`text-center ${connectedPlayers.length < playersCount ? "opacity-50 pointer-events-none" : ""}`}
-          >
-            Lancer partie
-          </ButtonLink>
+          {/* Launch party button */}
+          <div className="flex flex-col items-center gap-4 mt-auto">
+            <ButtonLink
+              to={`/game`}
+              disabled={connectedPlayers.length < playersCount}
+              className="w-full max-w-sm py-5 text-2xl md:text-4xl"
+            >
+              LANCER PARTIE
+            </ButtonLink>
+            
+            <ButtonLink 
+              to="/" 
+              className="bg-transparent border-2 border-polar-blue !text-polar-blue !shadow-none py-2 px-8 text-sm md:text-base hover:bg-polar-blue hover:!text-frost-white"
+            >
+              RETOUR ACCUEIL
+            </ButtonLink>
+          </div>
         </div>
       ) : (
-        <p className="text-red-600 text-center">
-          Nombre de joueurs invalide. Veuillez revenir à l'accueil.
-        </p>
+        <div className="text-center p-10 bg-red-100 rounded-xl border-2 border-red-alert">
+          <p className="text-red-alert font-heading text-xl">Nombre de joueurs invalide.</p>
+          <ButtonLink to="/" className="mt-4">RETOUR</ButtonLink>
+        </div>
       )}
 
-      {/* Set Login modal */}
+      {/* Set login modal */}
       {openModal?.type === "login" && (
         <LoginModal
           playerNumber={openModal.playerNumber}

@@ -18,14 +18,18 @@ export default function RegisterModal({
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const inputStyle = "bg-white border-2 border-polar-blue/30 p-3 rounded-md focus:border-polar-blue focus:outline-none font-bold text-midnight-ice placeholder:text-snow-ashes/50 transition-colors";
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-xl font-bold mb-4">Inscription</h2>
+            <h2 className="text-3xl font-heading text-polar-blue mb-6 text-center uppercase tracking-tight">
+                Inscription
+            </h2>
 
             {/* Display error message */}
             {errorMessage && (
-                <div className="mx-auto mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
-                {errorMessage}
+                <div className="mb-4 p-3 bg-red-alert/10 border-2 border-red-alert text-red-alert rounded-md text-xs font-bold uppercase text-center animate-shake">
+                    ⚠️ {errorMessage}
                 </div>
             )}
 
@@ -36,29 +40,51 @@ export default function RegisterModal({
                 }}
                 className="flex flex-col gap-4"
             >
-                <input
-                    type="text"
-                    placeholder="Nom"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="border px-3 py-2 rounded"
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="border px-3 py-2 rounded"
-                />
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border px-3 py-2 rounded"
-                />
-                <button type="submit" className="bg-blue-500 text-white rounded py-2">
-                    Créer un compte
+                {/* Username input */}
+                <div className="flex flex-col gap-1">
+                    <label className="font-heading text-xs text-midnight-ice/70 ml-1">PSEUDO</label>
+                    <input
+                        type="text"
+                        placeholder="Ton nom de joueur"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className={inputStyle}
+                        required
+                    />
+                </div>
+
+                {/* Email input */}
+                <div className="flex flex-col gap-1">
+                    <label className="font-heading text-xs text-midnight-ice/70 ml-1">EMAIL</label>
+                    <input
+                        type="email"
+                        placeholder="joueur@exemple.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={inputStyle}
+                        required
+                    />
+                </div>
+
+                {/* Password input */}
+                <div className="flex flex-col gap-1">
+                    <label className="font-heading text-xs text-midnight-ice/70 ml-1">MOT DE PASSE</label>
+                    <input
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={inputStyle}
+                        required
+                    />
+                </div>
+
+                {/* Validation button */}
+                <button 
+                    type="submit" 
+                    className="mt-4 bg-polar-blue text-frost-white font-heading py-4 rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] hover:bg-midnight-ice active:translate-y-1 active:shadow-none transition-all uppercase text-xl"
+                >
+                    CRÉER MON COMPTE
                 </button>
             </form>
         </Modal>
