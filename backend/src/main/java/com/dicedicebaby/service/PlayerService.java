@@ -48,5 +48,20 @@ public class PlayerService {
         // Return player from database
         return player;
     }
+
+    @Transactional
+    public PlayerEntity createPlayerForGuest(String username, int playerNumber) {
+        // Create a player for a guest
+        PlayerEntity player = new PlayerEntity();
+
+        player.setPlayerUsername(username);
+        player.setIsGuest(true);
+        player.setAccount(null);
+        player.setScore(0);
+        player.setPlayerNumber(playerNumber);
+
+        // Return saved player in database
+        return playerRepository.save(player);
+    }
     //endregion
 }

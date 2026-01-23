@@ -1,5 +1,6 @@
 package com.dicedicebaby.service;
 
+import com.dicedicebaby.dto.GuestRequestDTO;
 import com.dicedicebaby.dto.LoginRequestDTO;
 import com.dicedicebaby.dto.PlayerResponseDTO;
 import com.dicedicebaby.dto.RegistrationRequestDTO;
@@ -81,6 +82,22 @@ public class AuthService {
                 player.getPlayerNumber(),
                 player.getScore(),
                 token
+        );
+    }
+
+    @Transactional
+    public PlayerResponseDTO guest(GuestRequestDTO request) {
+        // Create player for a guest
+        PlayerEntity player = playerService.createPlayerForGuest(request.username(), request.playerNumber());
+
+        return new PlayerResponseDTO(
+                player.getId(),
+                player.getPlayerUsername(),
+                player.getIsGuest(),
+                player.getId(),
+                player.getPlayerNumber(),
+                player.getScore(),
+                null
         );
     }
     //endregion

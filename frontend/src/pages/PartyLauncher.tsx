@@ -5,7 +5,7 @@ import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
 import GuestModal from "../components/GuestModal";
 import { ButtonLink } from "../components/ButtonLink";
-import { registerUser, loginUser, savePlayerToLocalStorage, getPlayersFromLocalStorage, deletePlayerFromLocalStorage } from "../services/authService";
+import { registerUser, loginUser, guestUser, savePlayerToLocalStorage, getPlayersFromLocalStorage, deletePlayerFromLocalStorage } from "../services/authService";
 
 type ModalType = "login" | "register" | "guest";
 
@@ -102,6 +102,42 @@ export default function PartyLauncher() {
     }
   };
 
+  // Handle user guest addition
+  const handleGuest = async (username: string) => {
+    try {
+      // Reinitialize error state
+      setError(null);
+
+      // Get player number from modal
+      const playerNumber = openModal?.playerNumber;
+
+      // Send guest request
+      const userData = { username, playerNumber };
+      const response = await guestUser(userData);
+
+      // Save player in local strorage and update state
+      handleAuthSuccess({
+        playerNumber: response.playerNumber,
+        username: response.username,
+        score: response.score,
+        token: response.token
+      });
+
+      // Log response, then close the modal upon successful guest addition
+      console.log(`Joueur ${response.playerNumber} invité :`, response);
+      setOpenModal(null);
+
+      // Show success message
+      setSuccessMessage(`Joueur ${username} ajouté en tant qu'invité avec succès !`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+
+    }
+    catch (err: any) {
+      // Handle guest error, keep the modal open to let user correct inputs
+      setError(err.message);
+    }
+  };
+
   // Handle user logout
   const handleLogout = (pNumber: number) => {
     deletePlayerFromLocalStorage(pNumber);
@@ -145,7 +181,7 @@ export default function PartyLauncher() {
                   onClick={() => handleLogout(playerNumber)}
                   className="text-xs text-gray-400 hover:text-red-500"
                 >
-                  Changer
+                  Déconnecter
                 </button>
               </div>
             ) : (
@@ -214,10 +250,10 @@ export default function PartyLauncher() {
             setOpenModal(null);
             setError(null);
           }}
-          onSubmit={(pseudo) => {
-            console.log(`Joueur ${openModal.playerNumber} invité :`, pseudo);
-            setOpenModal(null);
+          onSubmit={(username) => {
+            handleGuest(username);
           }}
+          errorMessage={error}
         />
       )}
     </main>
