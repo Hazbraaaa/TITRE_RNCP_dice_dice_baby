@@ -1,68 +1,96 @@
 import { useState } from "react";
 import { ButtonLink } from "../components/ButtonLink";
 import { usePwaInstall } from "../components/usePwaInstall";
+import gameLogo from "../assets/logo.png";
 
 export default function Home() {
-  const [playersCount, setPlayersCount] = useState<string>("");
+  const [playersCount, setPlayersCount] = useState<number>(2);
   const { isInstallable, install } = usePwaInstall();
 
+  const handleIncrement = () => setPlayersCount(prev => Math.min(4, prev + 1));
+  const handleDecrement = () => setPlayersCount(prev => Math.max(2, prev - 1));
+
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen gap-10 p-4 bg-white">
-      <h1 className="text-3xl font-bold text-center">Dice Dice Baby</h1>
+    <main className="flex flex-col items-center justify-between min-h-screen py-4 px-4 max-w-2xl mx-auto overflow-y-auto">
+      
+      {/* Header */}
+      <header className="mt-2 mb-4 md:mb-8 flex-shrink-0 landscape:mt-1">
+        <div className="max-w-[280px] sm:max-w-[400px] md:max-w-[500px]">
+          <img 
+            src={gameLogo} 
+            alt="Dice Dice Baby Logo" 
+            className="w-full h-auto drop-shadow-md rounded-lg"
+          />
+          {/* On garde un h1 caché pour le SEO (optionnel mais recommandé) */}
+          <h1 className="sr-only">Dice Dice Baby</h1>
+        </div>
+      </header>
 
-      <section className="max-w-md text-center">
-        <p className="text-gray-700 leading-relaxed">
-          Bienvenue sur <strong>Dice Dice Baby</strong>, un jeu qui mélange le
-          <em> Yam's </em> et le <em> Morpion</em>.
-        </p>
-        <p className="mt-2">
-          Choisissez le nombre de joueurs (entre 2 et 4) pour commencer une partie :
-        </p>
-      </section>
+      {/* Section */}
+      <section className="flex flex-col items-center justify-center gap-6 w-full flex-grow">
+        
+        {/* Intro text */}
+        <div className="bg-frost-white/50 border-2 border-polar-blue/30 p-3 md:p-4 rounded-xl text-center shadow-inner w-full">
+          <p className="text-midnight-ice text-sm md:text-lg leading-tight font-medium">
+            Bienvenue sur <span className="font-heading text-polar-blue">Dice Dice Baby</span>, <br />
+            un jeu mélangeant <span className="text-red-alert font-bold">Yam's</span> et <span className="text-red-alert font-bold">Morpion</span>.
+          </p>
+        </div>
 
-      <div className="flex flex-col gap-4 w-full max-w-xs">
-        <label htmlFor="players" className="text-sm font-medium text-gray-600">
-          Nombre de joueurs
-        </label>
-        <select
-          id="players"
-          className="border border-gray-300 rounded px-3 py-2"
-          value={playersCount}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setPlayersCount(e.target.value)
-          }
-        >
-          <option value="">-- Choisir nombre de joueurs --</option>
-          <option value="2">2 joueurs</option>
-          <option value="3">3 joueurs</option>
-          <option value="4">4 joueurs</option>
-        </select>
+        {/* Player number text */}
+        <div className="text-center space-y-1">
+          <p className="font-heading text-base md:text-xl text-midnight-ice uppercase tracking-tight">
+            Nombre de joueurs
+          </p>
+          <p className="font-heading text-[10px] md:text-xs text-midnight-ice/60 italic uppercase">
+            ( 2 à 4 joueurs )
+          </p>
+        </div>
+
+        {/* Counter */}
+        <div className="flex items-center bg-frost-white border-[3px] border-polar-blue rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)]">
+          <button 
+            onClick={handleDecrement}
+            className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-polar-blue text-frost-white text-3xl font-bold hover:bg-midnight-ice active:scale-95 transition-all"
+          >
+            -
+          </button>
+          <div className="w-20 md:w-28 text-center text-3xl md:text-5xl font-heading text-midnight-ice">
+            {playersCount}
+          </div>
+          <button 
+            onClick={handleIncrement}
+            className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-polar-blue text-frost-white text-3xl font-bold hover:bg-midnight-ice active:scale-95 transition-all"
+          >
+            +
+          </button>
+        </div>
 
         <ButtonLink
           to={`/party-launcher?players=${playersCount}`}
-          disabled={!playersCount}
-          className="mt-2"
+          className="w-full py-4 text-lg md:text-2xl shadow-[4px_4px_0px_0px_rgba(1,54,89,1)]"
         >
-          Valider
+          VALIDER
         </ButtonLink>
+      </section>
 
-        {isInstallable && (
-          <button
-            onClick={install}
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              borderRadius: "10px",
-              backgroundColor: "#ff0000",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            📲 Installer le jeu
-          </button>
-        )}
-      </div>
+      {/* Footer */}
+      <footer className="w-full flex flex-row items-center justify-between gap-4 mt-auto pb-4 pt-4 border-t border-polar-blue/10">
+        <div className="flex-1">
+          {isInstallable && (
+            <button
+              onClick={install}
+              className="w-full sm:w-auto bg-red-alert text-frost-white font-heading px-4 py-2 rounded-lg shadow-md text-[10px] md:text-xs uppercase tracking-tighter"
+            >
+              📲 Installer
+            </button>
+          )}
+        </div>
+        
+        <button className="font-heading border-2 border-polar-blue px-6 py-1.5 text-polar-blue rounded-md hover:bg-polar-blue hover:text-frost-white transition-all text-xs uppercase">
+          RETOUR
+        </button>
+      </footer>
     </main>
   );
 }
