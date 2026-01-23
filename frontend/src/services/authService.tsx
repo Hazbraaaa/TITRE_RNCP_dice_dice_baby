@@ -1,5 +1,5 @@
 // ---------- REQUESTS TO BACKEND API ----------
-const API_URL = "http://localhost:8080/api";
+const apiUrl = import.meta.env.API_URL;
 
 export async function registerUser(userData: { 
     username: string; 
@@ -9,7 +9,7 @@ export async function registerUser(userData: {
 }) {
     try {
         // Send request with body to API to register a new user
-        const response = await fetch(`${API_URL}/auth/register`, {
+        const response = await fetch(`${apiUrl}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json",},
             body: JSON.stringify(userData),
