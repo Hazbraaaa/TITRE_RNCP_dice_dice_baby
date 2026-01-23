@@ -46,7 +46,7 @@ public class PlayerService {
         }
 
         // Return player from database
-        return playerRepository.save(player);
+        return player;
     }
     //endregion
 }
