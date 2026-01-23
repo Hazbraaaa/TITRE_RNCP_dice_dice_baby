@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.dto.GuestRequestDTO;
 import com.dicedicebaby.dto.LoginRequestDTO;
 import com.dicedicebaby.dto.PlayerResponseDTO;
 import com.dicedicebaby.dto.RegistrationRequestDTO;
@@ -36,6 +37,12 @@ public class AuthController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public PlayerResponseDTO login(@RequestBody LoginRequestDTO request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/guest")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PlayerResponseDTO guest(@RequestBody GuestRequestDTO request) {
+        return authService.guest(request);
     }
     //endregion
 }
