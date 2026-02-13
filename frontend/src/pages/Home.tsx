@@ -21,8 +21,6 @@ export default function Home() {
             alt="Dice Dice Baby Logo" 
             className="w-full h-auto drop-shadow-md rounded-lg"
           />
-          {/* On garde un h1 caché pour le SEO (optionnel mais recommandé) */}
-          <h1 className="sr-only">Dice Dice Baby</h1>
         </div>
       </header>
 

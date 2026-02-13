@@ -53,7 +53,7 @@ export default function LoginModal({
                     />
                 </div>
 
-{/* Password input */}
+                {/* Password input */}
                 <div className="flex flex-col gap-1">
                     <label className="font-heading text-xs text-midnight-ice/70 ml-1">MOT DE PASSE</label>
                     <div className="relative flex items-center">
