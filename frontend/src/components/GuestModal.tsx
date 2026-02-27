@@ -1,5 +1,6 @@
 import Modal from "./Modal";
 import { useState } from "react";
+import { Button } from "./Button";
 
 type GuestModalProps = {
     isOpen: boolean;
@@ -52,12 +53,13 @@ export default function GuestModal({
                 </div>
 
                 {/* Validation button */}
-                <button 
-                    type="submit" 
-                    className="mt-4 bg-polar-blue text-frost-white font-heading py-4 rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] hover:bg-midnight-ice active:translate-y-1 active:shadow-none transition-all uppercase text-xl"
+                <Button
+                    type="submit"
+                    fullWidth
+                    className="mt-4 py-3 text-sm"
                 >
                     S'INVITER
-                </button>
+                </Button>
             </form>
         </Modal>
     );

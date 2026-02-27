@@ -5,6 +5,7 @@ import RegisterModal from "../components/RegisterModal";
 import GuestModal from "../components/GuestModal";
 import { ButtonLink } from "../components/ButtonLink";
 import { usePartyAuth } from "../hooks/usePartyAuth";
+import { Button } from "../components/Button";
 
 export default function PartyLauncher() {
   const [searchParams] = useSearchParams();
@@ -60,15 +61,15 @@ export default function PartyLauncher() {
                           Score: {currentPlayer.score}
                         </p>
                       </div>
-                      <button
+                      <Button
                         onClick={() => logout(currentPlayer.username, currentPlayer.playerNumber)}
-                        className="bg-red-alert hover:bg-midnight-ice text-white p-2 rounded-md transition-colors"
-                        title="Déconnecter"
+                        variant="warning"
+                        className="p-2 shadow-none"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
                         </svg>
-                      </button>
+                      </Button>
                     </div>
                   ) : (
                     /* NOT CONNECTED PLAYER CARD */
@@ -89,23 +90,31 @@ export default function PartyLauncher() {
             <ButtonLink
               to={`/game`}
               disabled={connectedPlayers.length < playersCount}
-              className="w-full max-w-sm py-5 text-2xl md:text-4xl"
+              fullWidth
+              className="max-w-md py-5 text-2xl md:text-4xl"
             >
               LANCER PARTIE
             </ButtonLink>
 
             <ButtonLink
               to="/"
-              className="bg-transparent border-2 border-polar-blue !text-polar-blue !shadow-none py-2 px-8 text-sm md:text-base hover:bg-polar-blue hover:!text-frost-white"
+              variant="outlined"
+              className="px-6 py-2 text-[10px] md:text-sm"
             >
               RETOUR ACCUEIL
             </ButtonLink>
           </div>
         </div>
       ) : (
-        <div className="text-center p-10 bg-red-100 rounded-xl border-2 border-red-alert">
+        <div className="text-center p-10 bg-red-100 rounded-xl border-2 border-red-alert flex flex-col gap-6">
           <p className="text-red-alert font-heading text-xl">Nombre de joueurs invalide.</p>
-          <ButtonLink to="/" className="mt-4">RETOUR</ButtonLink>
+          <ButtonLink
+            variant="outlined"
+            to="/"
+            className="px-4"
+          >
+            RETOUR
+          </ButtonLink>
         </div>
       )}
 
