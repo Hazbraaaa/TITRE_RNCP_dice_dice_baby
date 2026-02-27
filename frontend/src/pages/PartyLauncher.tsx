@@ -61,7 +61,7 @@ export default function PartyLauncher() {
                         </p>
                       </div>
                       <button
-                        onClick={() => logout(playerNumber)}
+                        onClick={() => logout(currentPlayer.username, currentPlayer.playerNumber)}
                         className="bg-red-alert hover:bg-midnight-ice text-white p-2 rounded-md transition-colors"
                         title="Déconnecter"
                       >
