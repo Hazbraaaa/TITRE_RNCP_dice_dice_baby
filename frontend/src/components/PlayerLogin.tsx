@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 type PlayerLoginProps = {
   playerNumber: number;
   onLogin: () => void;
@@ -11,7 +13,6 @@ export default function PlayerLogin({
   onRegister,
   onGuest,
 }: PlayerLoginProps) {
-  const btnStyle = "flex items-center justify-center gap-2 w-full py-2 px-4 font-heading text-sm md:text-base uppercase transition-all duration-200 rounded-sm border-2 border-midnight-ice shadow-[3px_3px_0px_0px_rgba(1,54,89,1)] active:translate-y-[2px] active:shadow-none";
 
   return (
     <div className="bg-frost-white/80 border-2 border-dashed border-polar-blue p-4 rounded-sm flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -26,29 +27,34 @@ export default function PlayerLogin({
 
       <div className="grid grid-cols-1 gap-3">
         {/* Login button */}
-        <button
+        <Button
+          fullWidth
+          className="py-3 text-sm shadow-none"
           onClick={onLogin}
-          className={`${btnStyle} bg-polar-blue text-frost-white hover:bg-midnight-ice`}
         >
           Se connecter
-        </button>
+        </Button>
 
         <div className="grid grid-cols-2 gap-2">
           {/* Register button */}
-          <button
+          <Button
+            variant="outlined"
+            fullWidth
+            className="py-3 text-sm"
             onClick={onRegister}
-            className={`${btnStyle} bg-white text-polar-blue border-polar-blue hover:bg-polar-blue/10`}
           >
             S'inscrire
-          </button>
+          </Button>
 
           {/* Guest button */}
-          <button
+          <Button
+            variant="disabled"
+            fullWidth
+            className="py-3 text-sm !cursor-pointer !opacity-100 hover:bg-midnight-ice"
             onClick={onGuest}
-            className={`${btnStyle} bg-snow-ashes text-frost-white border-midnight-ice hover:bg-midnight-ice`}
           >
             Invité
-          </button>
+          </Button>
         </div>
       </div>
     </div>

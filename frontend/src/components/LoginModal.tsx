@@ -1,5 +1,6 @@
 import Modal from "./Modal";
 import { useState } from "react";
+import { Button } from "./Button";
 
 type LoginModalProps = {
     isOpen: boolean;
@@ -25,7 +26,7 @@ export default function LoginModal({
             <h2 className="text-3xl font-heading text-polar-blue mb-6 text-center uppercase tracking-tight">
                 Connexion
             </h2>
-            
+
             {/* Display error message */}
             {errorMessage && (
                 <div className="mb-4 p-3 bg-red-alert/10 border-2 border-red-alert text-red-alert rounded-md text-xs font-bold uppercase text-center animate-shake">
@@ -87,12 +88,13 @@ export default function LoginModal({
                 </div>
 
                 {/* Validation button */}
-                <button 
-                    type="submit" 
-                    className="mt-4 bg-polar-blue text-frost-white font-heading py-4 rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] hover:bg-midnight-ice active:translate-y-1 active:shadow-none transition-all uppercase text-xl"
+                <Button
+                    type="submit"
+                    fullWidth
+                    className="mt-4 py-3 text-sm"
                 >
                     SE CONNECTER
-                </button>
+                </Button>
             </form>
         </Modal>
     );
