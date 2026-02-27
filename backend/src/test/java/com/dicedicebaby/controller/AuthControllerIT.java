@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.GuestRequestDTO;
 import com.dicedicebaby.dto.LoginRequestDTO;
 import com.dicedicebaby.dto.RegistrationRequestDTO;
@@ -12,9 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -29,6 +30,17 @@ public class AuthControllerIT {
     // Used to serialize Java objects into JSON strings
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Test
+    void getCurrentSession_WithoutCookie_ShouldReturnOk() throws Exception {
+        // No GIVEN
+        //region WHEN
+        mockMvc.perform(get("/api/auth/session"))
+                //endregion
+                //region Then
+                .andExpect(status().isOk());
+                //endregion
+    }
 
     @Test
     void register_ShouldCreateAccountAndPlayerInDatabase() throws Exception {
@@ -51,8 +63,8 @@ public class AuthControllerIT {
                 .andExpect(status().isCreated())
                 // Validate specific fields in the JSON response
                 .andExpect(jsonPath("$.username").value("Pingu"))
-                .andExpect(jsonPath("$.token").exists())
-                .andExpect(jsonPath("$.token").isNotEmpty());
+                // Validate cookie
+                .andExpect(cookie().exists(Constant.COOKIE_NAME));
                 //endregion
 
     }
@@ -85,8 +97,8 @@ public class AuthControllerIT {
                 .andExpect(status().isAccepted())
                 // Validate specific fields in the JSON response
                 .andExpect(jsonPath("$.username").value("Pingu"))
-                .andExpect(jsonPath("$.token").exists())
-                .andExpect(jsonPath("$.token").isNotEmpty());
+                // Validate cookie
+                .andExpect(cookie().exists(Constant.COOKIE_NAME));
                 //endregion
     }
 
@@ -110,8 +122,7 @@ public class AuthControllerIT {
                 // Validate HTTP status 201 Created
                 .andExpect(status().isCreated())
                 // Validate specific fields in the JSON response
-                .andExpect(jsonPath("$.username").value("Pingu"))
-                .andExpect(jsonPath("$.token").value(nullValue()));
+                .andExpect(jsonPath("$.username").value("Pingu"));
                 //endregion
     }
 }
