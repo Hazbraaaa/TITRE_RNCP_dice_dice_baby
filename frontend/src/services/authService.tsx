@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // ---------- REQUESTS TO BACKEND API ----------
 const apiUrl = import.meta.env.VITE_API_URL;
 
