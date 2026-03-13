@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Import Font Family */
 @font-face {
-  font-family: "EB Garamond Regular";
-  src: url("./assets/fonts/EBGaramond-Regular.ttf") format("truetype");
+  font-family: 'EB Garamond Regular';
+  src: url('./assets/fonts/EBGaramond-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -12,16 +12,16 @@
 /* Design Tokens */
 @theme {
   /* Colors */
-  --color-glacier-aqua: #80F3FD;
+  --color-glacier-aqua: #80f3fd;
   --color-polar-blue: #005891;
   --color-midnight-ice: #013659;
-  --color-frost-white: #F6FFFD;
-  --color-snow-ashes: #4D7A9D;
-  --color-red-alert: #C74A1E;
+  --color-frost-white: #f6fffd;
+  --color-snow-ashes: #4d7a9d;
+  --color-red-alert: #c74a1e;
 
   /* Font Families */
-  --font-heading: "Luckiest Guy", "Arial Black", serif;
-  --font-body: "Inter", sans-serif;
+  --font-heading: 'Luckiest Guy', 'Arial Black', serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 /* Default global styles */
@@ -32,7 +32,10 @@
     min-height: 100vh;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-heading;
   }
 }
