@@ -9,73 +9,75 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerService {
 
-    //region Attributes
-    private final PlayerRepository playerRepository;
-    //endregion
+  // region Attributes
+  private final PlayerRepository playerRepository;
 
-    //region Constructor
-    public PlayerService(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
-    }
-    //endregion
+  // endregion
 
-    //region Methods
-    @Transactional
-    public PlayerEntity createPlayerForAccount(AccountEntity account, int playerNumber) {
-        // Create a player from an account
-        PlayerEntity player = new PlayerEntity();
+  // region Constructor
+  public PlayerService(PlayerRepository playerRepository) {
+    this.playerRepository = playerRepository;
+  }
 
-        player.setPlayerUsername(account.getUsername());
-        player.setIsGuest(false);
-        player.setAccount(account);
-        player.setScore(0);
-        player.setPlayerNumber(playerNumber);
+  // endregion
 
-        // Return saved player in database
-        return playerRepository.save(player);
-    }
+  // region Methods
+  @Transactional
+  public PlayerEntity createPlayerForAccount(AccountEntity account, int playerNumber) {
+    // Create a player from an account
+    PlayerEntity player = new PlayerEntity();
 
-    @Transactional
-    public PlayerEntity getPlayerByAccount(AccountEntity account) {
-        // Get player from an account
-        PlayerEntity player = playerRepository.findByAccountId(account.getId());
+    player.setPlayerUsername(account.getUsername());
+    player.setIsGuest(false);
+    player.setAccount(account);
+    player.setScore(0);
+    player.setPlayerNumber(playerNumber);
 
-        // Check if player found
-        if (player == null) {
-            throw new RuntimeException("Profil joueur introuvable");
-        }
+    // Return saved player in database
+    return playerRepository.save(player);
+  }
 
-        // Return player from database
-        return player;
+  @Transactional
+  public PlayerEntity getPlayerByAccount(AccountEntity account) {
+    // Get player from an account
+    PlayerEntity player = playerRepository.findByAccountId(account.getId());
+
+    // Check if player found
+    if (player == null) {
+      throw new RuntimeException("Profil joueur introuvable");
     }
 
-    @Transactional
-    public PlayerEntity getPlayerByPlayerUsername(String playerUsername) {
-        // Get player from a username
-        PlayerEntity player = playerRepository.findByPlayerUsername(playerUsername);
+    // Return player from database
+    return player;
+  }
 
-        // Check if player found
-        if (player == null) {
-            throw new RuntimeException("Profil joueur introuvable");
-        }
+  @Transactional
+  public PlayerEntity getPlayerByPlayerUsername(String playerUsername) {
+    // Get player from a username
+    PlayerEntity player = playerRepository.findByPlayerUsername(playerUsername);
 
-        // Return player from database
-        return player;
+    // Check if player found
+    if (player == null) {
+      throw new RuntimeException("Profil joueur introuvable");
     }
 
-    @Transactional
-    public PlayerEntity createPlayerForGuest(String username, int playerNumber) {
-        // Create a player for a guest
-        PlayerEntity player = new PlayerEntity();
+    // Return player from database
+    return player;
+  }
 
-        player.setPlayerUsername(username);
-        player.setIsGuest(true);
-        player.setAccount(null);
-        player.setScore(0);
-        player.setPlayerNumber(playerNumber);
+  @Transactional
+  public PlayerEntity createPlayerForGuest(String username, int playerNumber) {
+    // Create a player for a guest
+    PlayerEntity player = new PlayerEntity();
 
-        // Return saved player in database
-        return playerRepository.save(player);
-    }
-    //endregion
+    player.setPlayerUsername(username);
+    player.setIsGuest(true);
+    player.setAccount(null);
+    player.setScore(0);
+    player.setPlayerNumber(playerNumber);
+
+    // Return saved player in database
+    return playerRepository.save(player);
+  }
+  // endregion
 }

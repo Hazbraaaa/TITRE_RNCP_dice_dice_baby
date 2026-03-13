@@ -6,89 +6,88 @@ import jakarta.persistence.*;
 @Table(name = "players")
 public class PlayerEntity extends AuditableEntity {
 
-    //region Attributes
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  // region Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String playerUsername;
+  @Column(unique = true, nullable = false)
+  private String playerUsername;
 
-    @Column
-    private Boolean isGuest = false;
+  @Column private Boolean isGuest = false;
 
-    @OneToOne
-    @JoinColumn(name = "account_id")
-    private AccountEntity account;
+  @OneToOne
+  @JoinColumn(name = "account_id")
+  private AccountEntity account;
 
-    @Column
-    private int playerNumber;
+  @Column private int playerNumber;
 
-    @Column
-    private int score;
+  @Column private int score;
 
-    @Column
-    private String currentToken;
-    //endregion
+  @Column private String currentToken;
 
-    //region Constructor
-    public PlayerEntity() {
-    }
-    //endregion
+  // endregion
 
-    //region Getters & Setters
-    public Long getId() {
-        return id;
-    }
+  // region Constructor
+  public PlayerEntity() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  // endregion
 
-    public String getPlayerUsername() { return playerUsername; }
+  // region Getters & Setters
+  public Long getId() {
+    return id;
+  }
 
-    public void setPlayerUsername(String playerUsername) {
-        this.playerUsername = playerUsername;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Boolean getIsGuest() {
-        return isGuest;
-    }
+  public String getPlayerUsername() {
+    return playerUsername;
+  }
 
-    public void setIsGuest(Boolean isGuest) {
-        this.isGuest = isGuest;
-    }
+  public void setPlayerUsername(String playerUsername) {
+    this.playerUsername = playerUsername;
+  }
 
-    public AccountEntity getAccount() {
-        return account;
-    }
+  public Boolean getIsGuest() {
+    return isGuest;
+  }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }
+  public void setIsGuest(Boolean isGuest) {
+    this.isGuest = isGuest;
+  }
 
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
+  public AccountEntity getAccount() {
+    return account;
+  }
 
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
-    }
+  public void setAccount(AccountEntity account) {
+    this.account = account;
+  }
 
-    public int getScore() {
-        return score;
-    }
+  public int getPlayerNumber() {
+    return playerNumber;
+  }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
+  public void setPlayerNumber(int playerNumber) {
+    this.playerNumber = playerNumber;
+  }
 
-    public String getCurrentToken() {
-        return currentToken;
-    }
+  public int getScore() {
+    return score;
+  }
 
-    public void setCurrentToken(String currentToken) {
-        this.currentToken = currentToken;
-    }
-    //endregion
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public String getCurrentToken() {
+    return currentToken;
+  }
+
+  public void setCurrentToken(String currentToken) {
+    this.currentToken = currentToken;
+  }
+  // endregion
 }

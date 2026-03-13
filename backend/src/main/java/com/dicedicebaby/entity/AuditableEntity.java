@@ -4,40 +4,40 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class AuditableEntity {
 
-    //region Attributes
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+  // region Attributes
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
-    @Column
-    private LocalDateTime updatedAt;
-    //endregion
+  @Column private LocalDateTime updatedAt;
 
-    //region Methods
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
+  // endregion
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-    //endregion
+  // region Methods
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = LocalDateTime.now();
+  }
 
-    //region Getters
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = LocalDateTime.now();
+  }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-    //endregion
+  // endregion
+
+  // region Getters
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+  // endregion
 }
