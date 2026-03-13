@@ -1,25 +1,24 @@
-import React from "react";
-import { buttonVariants } from "../styles/buttonStyles";
+import React from 'react';
+import { buttonVariants } from '../styles/buttonStyles';
 
 type ButtonProps = {
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   variant?: keyof typeof buttonVariants.colors;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   fullWidth?: boolean;
 };
 
 export const Button = ({
   onClick,
   children,
-  className = "",
-  variant = "primary",
-  type = "button",
+  className = '',
+  variant = 'primary',
+  type = 'button',
   fullWidth = false,
 }: ButtonProps) => {
-
-  const widthStyle = fullWidth ? "w-full" : "";
+  const widthStyle = fullWidth ? 'w-full' : '';
 
   return (
     <button

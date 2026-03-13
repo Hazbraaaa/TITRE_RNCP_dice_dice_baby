@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function usePwaInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -11,8 +11,8 @@ export function usePwaInstall() {
       setIsInstallable(true);
     };
 
-    window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const install = () => {

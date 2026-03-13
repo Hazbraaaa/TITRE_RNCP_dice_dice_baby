@@ -1,20 +1,21 @@
-import { useState } from "react";
-import { ButtonLink } from "../components/ButtonLink";
-import { Button } from "../components/Button";
-import { usePwaInstall } from "../components/usePwaInstall";
-import gameLogo from "../assets/logo.png";
+import { useState } from 'react';
+import { ButtonLink } from '../components/ButtonLink';
+import { Button } from '../components/Button';
+import { usePwaInstall } from '../components/usePwaInstall';
+import gameLogo from '../assets/logo.png';
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
   const [playersCount, setPlayersCount] = useState<number>(2);
   const { isInstallable, install } = usePwaInstall();
 
-  const handleIncrement = () => setPlayersCount(prev => Math.min(4, prev + 1));
-  const handleDecrement = () => setPlayersCount(prev => Math.max(2, prev - 1));
+  const handleIncrement = () =>
+    setPlayersCount((prev) => Math.min(4, prev + 1));
+  const handleDecrement = () =>
+    setPlayersCount((prev) => Math.max(2, prev - 1));
 
   return (
     <main className="flex flex-col items-center justify-between min-h-screen py-4 px-4 max-w-2xl mx-auto overflow-y-auto">
-
       {/* Header */}
       <header className="mt-2 mb-4 md:mb-8 flex-shrink-0 landscape:mt-1">
         <div className="max-w-[280px] sm:max-w-[400px] md:max-w-[500px]">
@@ -28,12 +29,15 @@ export default function Home() {
 
       {/* Main Section */}
       <section className="flex flex-col items-center justify-center gap-6 w-full flex-grow">
-
         {/* Intro text */}
         <div className="bg-frost-white/50 border-2 border-polar-blue/30 p-3 md:p-4 rounded-xl text-center shadow-inner w-full">
           <p className="text-midnight-ice text-sm md:text-lg leading-tight font-medium">
-            Bienvenue sur <span className="font-heading text-polar-blue">Dice Dice Baby</span>, <br />
-            un jeu mélangeant <span className="text-red-alert font-bold">Yam's</span> et <span className="text-red-alert font-bold">Morpion</span>.
+            Bienvenue sur{' '}
+            <span className="font-heading text-polar-blue">Dice Dice Baby</span>
+            , <br />
+            un jeu mélangeant{' '}
+            <span className="text-red-alert font-bold">Yam's</span> et{' '}
+            <span className="text-red-alert font-bold">Morpion</span>.
           </p>
         </div>
 
@@ -48,11 +52,7 @@ export default function Home() {
             >
               Jouer sur un ecran partagé
             </Button>
-            <Button
-              variant="disabled"
-              fullWidth
-              className="py-6"
-            >
+            <Button variant="disabled" fullWidth className="py-6">
               Jouer sur plusieurs écrans (inactif)
             </Button>
           </div>

@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { Button } from './Button';
 
 type PlayerLoginProps = {
   playerNumber: number;
@@ -13,10 +13,8 @@ export default function PlayerLogin({
   onRegister,
   onGuest,
 }: PlayerLoginProps) {
-
   return (
     <div className="bg-frost-white/80 border-2 border-dashed border-polar-blue p-4 rounded-sm flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      
       {/* Waiting for player */}
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 rounded-full bg-snow-ashes animate-pulse" />

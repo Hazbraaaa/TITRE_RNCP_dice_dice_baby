@@ -1,7 +1,7 @@
-import ScoreBoard from "../components/ScoreBoard";
-import Hand from "../components/Hand";
-import GameBoard from "../components/GameBoard";
-import { Button } from "../components/Button";
+import ScoreBoard from '../components/ScoreBoard';
+import Hand from '../components/Hand';
+import GameBoard from '../components/GameBoard';
+import { Button } from '../components/Button';
 
 export default function Game() {
   return (
@@ -20,7 +20,6 @@ export default function Game() {
       <div className="flex justify-center">
         <GameBoard />
       </div>
-
     </div>
   );
 }
