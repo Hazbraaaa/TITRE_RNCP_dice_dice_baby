@@ -1,7 +1,3 @@
 package com.dicedicebaby.dto;
 
-public record LoginRequestDTO(
-        String email,
-        String password,
-        int playerNumber
-) {}
+public record LoginRequestDTO(String email, String password, int playerNumber) {}

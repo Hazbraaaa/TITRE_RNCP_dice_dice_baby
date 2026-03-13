@@ -6,57 +6,58 @@ import jakarta.persistence.*;
 @Table(name = "accounts")
 public class AccountEntity extends AuditableEntity {
 
-    //region Attributes
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  // region Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
+  @Column(unique = true, nullable = false)
+  private String username;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+  @Column(unique = true, nullable = false)
+  private String email;
 
-    @Column(nullable = false)
-    private String passwordHash;
-    //endregion
+  @Column(nullable = false)
+  private String passwordHash;
 
-    //region Constructor
-    public AccountEntity() {
-    }
-    //endregion
+  // endregion
 
-    //region Getters & Setters
-    public Long getId() {
-        return id;
-    }
+  // region Constructor
+  public AccountEntity() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  // endregion
 
-    public String getUsername() {
-        return username;
-    }
+  // region Getters & Setters
+  public Long getId() {
+    return id;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-    //endregion
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPasswordHash() {
+    return passwordHash;
+  }
+
+  public void setPasswordHash(String passwordHash) {
+    this.passwordHash = passwordHash;
+  }
+  // endregion
 }
