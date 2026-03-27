@@ -1,0 +1,22 @@
+{
+    "name": "Dice Dice Baby",
+    "short_name": "D.D.B",
+    "description": "Un jeu de dés fun en PWA 🎲",
+    "theme_color": "#005891",
+    "background_color": "#80F3FD",
+    "display": "standalone",
+    "orientation": "landscape",
+    "start_url": "/",
+    "icons": [
+        { 
+            "src": "/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        { 
+            "src": "/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
