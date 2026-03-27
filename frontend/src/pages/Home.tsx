@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ButtonLink } from '../components/ButtonLink';
 import { Button } from '../components/Button';
 import { usePwaInstall } from '../components/usePwaInstall';
-import gameLogo from '../assets/logo.png';
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
@@ -20,7 +19,7 @@ export default function Home() {
       <header className="mt-2 mb-4 md:mb-8 flex-shrink-0 landscape:mt-1">
         <div className="max-w-[280px] sm:max-w-[400px] md:max-w-[500px]">
           <img
-            src={gameLogo}
+            src="/icons/logo.png"
             alt="Dice Dice Baby Logo"
             className="w-full h-auto drop-shadow-md rounded-lg"
           />
@@ -110,7 +109,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="w-full flex flex-row items-center justify-between gap-4 mt-auto pb-4 pt-4 border-t border-polar-blue/10">
-        <div className="flex-1">
+        <div className="flex-1 flex justify-center">
           {isInstallable && (
             <Button
               variant="warning"
