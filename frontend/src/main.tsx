@@ -7,9 +7,10 @@ import './index.css';
 // Check for service worker support and register it
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('SW Dice Dice Baby prêt !', reg.scope))
-      .catch(err => console.error('Erreur SW:', err));
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => console.log('SW Dice Dice Baby prêt !', reg.scope))
+      .catch((err) => console.error('Erreur SW:', err));
   });
 }
 
