@@ -58,6 +58,15 @@ public class AuthController {
     authService.logout(request, response, existingCookie);
   }
 
+  @PostMapping("/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public void delete(
+      @RequestBody DeleteRequestDTO request,
+      HttpServletResponse response,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    authService.delete(request, response, existingCookie);
+  }
+
   @PostMapping("/guest")
   @ResponseStatus(HttpStatus.CREATED)
   public PlayerResponseDTO guest(@RequestBody GuestRequestDTO request) {

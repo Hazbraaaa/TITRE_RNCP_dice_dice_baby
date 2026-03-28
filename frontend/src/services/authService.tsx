@@ -159,6 +159,35 @@ export async function logoutUser(userData: {
   }
 }
 
+export async function deleteUser(userData: {
+  username: string;
+  password: string;
+  playerNumber: number | undefined;
+}) {
+  try {
+    const response = await fetch(`${apiUrl}/auth/delete`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(errorBody.message || `Erreur delete: ${response.status}`);
+    }
+
+    if (response.status === 200) {
+      return null;
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    console.error('Erreur dans deleteUser:', error.message);
+    throw error;
+  }
+}
+
 // ---------- LOCAL STORAGE ----------
 export interface AuthenticatedPlayer {
   playerId: number;
@@ -168,7 +197,7 @@ export interface AuthenticatedPlayer {
   isGuest: boolean;
 }
 
-export const STORAGE_KEY = 'game_players';
+export const STORAGE_KEY = 'DDB_game_players';
 
 export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
   // Get existing players from local storage
@@ -209,8 +238,8 @@ export const deletePlayerFromLocalStorage = (playerNumber: number) => {
   const updatedPlayers = players.filter((p) => p.playerNumber !== playerNumber);
 
   if (updatedPlayers.length === 0) {
-    localStorage.removeItem('game_players');
+    localStorage.removeItem(STORAGE_KEY);
   } else {
-    localStorage.setItem('game_players', JSON.stringify(updatedPlayers));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPlayers));
   }
 };

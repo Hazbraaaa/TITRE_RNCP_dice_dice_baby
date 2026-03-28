@@ -3,9 +3,10 @@ import PlayerLogin from '../components/PlayerLogin';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
 import GuestModal from '../components/GuestModal';
+import AccountModal from '../components/AccountModal';
 import { ButtonLink } from '../components/ButtonLink';
 import { usePartyAuth } from '../hooks/usePartyAuth';
-import { Button } from '../components/Button';
+import PlayerAccountCard from '../components/PlayerAccountCard';
 
 export default function PartyLauncher() {
   const [searchParams] = useSearchParams();
@@ -23,6 +24,8 @@ export default function PartyLauncher() {
     login,
     register,
     guest,
+    // Renamed delete to avoid confusion with the reserved keyword
+    delete: deleteAccount,
   } = usePartyAuth();
 
   // ---------- Render ----------
@@ -61,40 +64,17 @@ export default function PartyLauncher() {
                   </span>
 
                   {currentPlayer ? (
-                    /* CONNECTED PLAYER CARD */
-                    <div className="p-4 bg-polar-blue text-frost-white rounded-sm border-2 border-midnight-ice shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] flex justify-between items-center animate-in fade-in zoom-in duration-300">
-                      <div>
-                        <p className="text-xl md:text-2xl font-heading truncate max-w-[150px]">
-                          {currentPlayer.username}
-                        </p>
-                        <p className="text-[10px] md:text-xs opacity-80 font-bold uppercase tracking-widest">
-                          Score: {currentPlayer.score}
-                        </p>
-                      </div>
-                      <Button
-                        onClick={() =>
-                          logout(
-                            currentPlayer.username,
-                            currentPlayer.playerNumber
-                          )
-                        }
-                        variant="warning"
-                        className="p-2 shadow-none"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </Button>
-                    </div>
+                    /* CONNECTED PLAYER ACCOUNT CARD */
+                    <PlayerAccountCard
+                      playerNumber={playerNumber}
+                      currentPlayer={currentPlayer}
+                      onLogout={() =>
+                        logout(currentPlayer.username, playerNumber)
+                      }
+                      onManageAccount={() =>
+                        setOpenModal({ playerNumber, type: 'account' })
+                      }
+                    />
                   ) : (
                     /* NOT CONNECTED PLAYER CARD */
                     <PlayerLogin
@@ -175,6 +155,25 @@ export default function PartyLauncher() {
           isOpen
           onClose={closeModal}
           onSubmit={guest}
+          errorMessage={error}
+        />
+      )}
+
+      {/* Set Account modal */}
+      {openModal?.type === 'account' && (
+        <AccountModal
+          currentPlayer={
+            connectedPlayers.find(
+              (p) => p.playerNumber === openModal.playerNumber
+            )!
+          }
+          isOpen
+          onClose={closeModal}
+          onUpdate={closeModal}
+          onDelete={(username, password) => {
+            deleteAccount(username, password);
+            closeModal();
+          }}
           errorMessage={error}
         />
       )}

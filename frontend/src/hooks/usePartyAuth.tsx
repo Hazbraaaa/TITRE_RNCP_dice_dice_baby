@@ -5,12 +5,13 @@ import {
   guestUser,
   getPlayersFromLocalStorage,
   fetchSession,
-  STORAGE_KEY,
   logoutUser,
+  deleteUser,
+  STORAGE_KEY,
   type AuthenticatedPlayer,
 } from '../services/authService';
 
-type ModalType = 'login' | 'register' | 'guest';
+type ModalType = 'login' | 'register' | 'guest' | 'account';
 interface OpenModalState {
   playerNumber: number;
   type: ModalType;
@@ -57,7 +58,8 @@ export const usePartyAuth = () => {
   // Handle authentication actions (login, register, guest) with common logic
   const handleAuthAction = async (
     action: () => Promise<any>,
-    successText: string
+    successText: string,
+    playerNumber?: number
   ) => {
     try {
       setError(null);
@@ -67,16 +69,25 @@ export const usePartyAuth = () => {
       const currentLocal = getPlayersFromLocalStorage();
       let finalPlayers: AuthenticatedPlayer[] = [];
 
-      // For logout, we need to remove the player from local storage and then fetch the updated session data from server to ensure sync
-      if (successText.includes('déconnecté')) {
+      // For logout/delete, if success text indicates disconnection or deletion, remove player from local storage and sync with server
+      if (
+        successText.includes('déconnecté') ||
+        successText.includes('supprimé')
+      ) {
+        // Get players from server to ensure we have the most up-to-date list after removal
         const serverPlayers = await fetchSession();
-        const localGuests = currentLocal.filter((p) => p.isGuest);
+        // Find guest players in local storage that are not the one being removed
+        const localGuests = currentLocal.filter(
+          (p) => p.isGuest && p.playerNumber !== playerNumber
+        );
+        // Combine server players with remaining local guests (if any)
         finalPlayers = serverPlayers.concat(localGuests);
       }
+
       // For login/register/guest, add new player if not already in local storage
       else if (result) {
         const isAlreadyThere = currentLocal.some(
-          (p) => p.username === result.username
+          (p) => p.playerId === result.playerId
         );
         finalPlayers = isAlreadyThere
           ? currentLocal
@@ -131,7 +142,18 @@ export const usePartyAuth = () => {
     logout: (u: string, n: number) =>
       handleAuthAction(
         () => logoutUser({ username: u, playerNumber: n }),
-        `Joueur déconnecté !`
+        `Joueur déconnecté !`,
+        n
+      ),
+    delete: (u: string, p: string) =>
+      handleAuthAction(
+        () =>
+          deleteUser({
+            username: u,
+            password: p,
+            playerNumber: openModal?.playerNumber,
+          }),
+        `Compte supprimé !`
       ),
   };
 };
