@@ -172,7 +172,6 @@ export default function PartyLauncher() {
           onUpdate={closeModal}
           onDelete={(username, password) => {
             deleteAccount(username, password);
-            closeModal();
           }}
           errorMessage={error}
         />

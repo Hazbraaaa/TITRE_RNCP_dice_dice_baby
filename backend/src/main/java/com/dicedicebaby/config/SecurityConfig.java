@@ -22,7 +22,8 @@ public class SecurityConfig {
   // Need to be modified after development (disable and permitAll !)
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
+    http.cors(withDefaults())
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
         .httpBasic(withDefaults());
 

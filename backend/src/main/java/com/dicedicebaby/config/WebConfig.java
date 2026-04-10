@@ -13,6 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         // CORS blocked on this url
         .allowedOrigins("http://localhost:5173")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        .allowedHeaders("*")
         // To allow Cookie HttpOnly
         .allowCredentials(true);
   }

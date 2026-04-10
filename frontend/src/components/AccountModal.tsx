@@ -45,7 +45,7 @@ export default function AccountModal({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onUpdate(username, email, password);
+          onUpdate(username, email, currentPassword);
         }}
         className="flex flex-col gap-4"
       >
@@ -60,7 +60,6 @@ export default function AccountModal({
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className={inputStyle}
-            required
           />
         </div>
 
@@ -75,7 +74,6 @@ export default function AccountModal({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={inputStyle}
-            required
           />
         </div>
 
@@ -208,7 +206,18 @@ export default function AccountModal({
         {/* Delete button */}
         <Button
           type="button"
-          onClick={() => onDelete(currentPlayer.username, currentPassword)}
+          onClick={(e) => {
+            e.stopPropagation();
+            const form = e.currentTarget.form;
+            if (form && !form.checkValidity()) {
+              form.reportValidity();
+              return;
+            }
+
+            if (window.confirm("Es-tu sûr de vouloir supprimer ton compte ?")) {
+              onDelete(currentPlayer.username, currentPassword);
+            }
+          }}
           fullWidth
           variant="warning"
           className="mt-4 py-3 text-sm"

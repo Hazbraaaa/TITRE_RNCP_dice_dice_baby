@@ -2,7 +2,7 @@ import React from 'react';
 import { buttonVariants } from '../styles/buttonStyles';
 
 type ButtonProps = {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactNode;
   className?: string;
   variant?: keyof typeof buttonVariants.colors;

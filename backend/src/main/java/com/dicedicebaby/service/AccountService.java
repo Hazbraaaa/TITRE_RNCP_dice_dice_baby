@@ -30,7 +30,7 @@ public class AccountService {
     if (accountRepository.findByEmail(email) != null) {
       throw new IllegalStateException("L'Email est déjà utilisé.");
     }
-    if (accountRepository.findByUsername(username) != null) {
+    if (accountRepository.findByUsernameIgnoreCase(username) != null) {
       throw new IllegalStateException("Le nom est déjà utilisé.");
     }
 
