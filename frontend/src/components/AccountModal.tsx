@@ -214,7 +214,7 @@ export default function AccountModal({
               return;
             }
 
-            if (window.confirm("Es-tu sûr de vouloir supprimer ton compte ?")) {
+            if (window.confirm('Es-tu sûr de vouloir supprimer ton compte ?')) {
               onDelete(currentPlayer.username, currentPassword);
             }
           }}
