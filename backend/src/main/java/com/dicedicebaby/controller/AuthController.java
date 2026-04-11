@@ -3,6 +3,7 @@ package com.dicedicebaby.controller;
 import com.dicedicebaby.dto.*;
 import com.dicedicebaby.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class AuthController {
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
   public PlayerResponseDTO register(
-      @RequestBody RegistrationRequestDTO request,
+      @Valid @RequestBody RegistrationRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     return authService.register(request, response, existingCookie);
@@ -43,7 +44,7 @@ public class AuthController {
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public PlayerResponseDTO login(
-      @RequestBody LoginRequestDTO request,
+      @Valid @RequestBody LoginRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     return authService.login(request, response, existingCookie);
@@ -52,16 +53,34 @@ public class AuthController {
   @PostMapping("/logout")
   @ResponseStatus(HttpStatus.OK)
   public void logout(
-      @RequestBody LogoutRequestDTO request,
+      @Valid @RequestBody LogoutRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     authService.logout(request, response, existingCookie);
   }
 
+  @PostMapping("/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public void delete(
+      @Valid @RequestBody DeleteRequestDTO request,
+      HttpServletResponse response,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    authService.delete(request, response, existingCookie);
+  }
+
   @PostMapping("/guest")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO guest(@RequestBody GuestRequestDTO request) {
+  public PlayerResponseDTO guest(@Valid @RequestBody GuestRequestDTO request) {
     return authService.guest(request);
+  }
+
+  @PostMapping("/update")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public PlayerResponseDTO update(
+      @Valid @RequestBody UpdateRequestDTO request,
+      HttpServletResponse response,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    return authService.update(request, response, existingCookie);
   }
   // endregion
 }

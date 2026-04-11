@@ -30,7 +30,7 @@ public class AccountService {
     if (accountRepository.findByEmail(email) != null) {
       throw new IllegalStateException("L'Email est déjà utilisé.");
     }
-    if (accountRepository.findByUsername(username) != null) {
+    if (accountRepository.findByUsernameIgnoreCase(username) != null) {
       throw new IllegalStateException("Le nom est déjà utilisé.");
     }
 
@@ -44,7 +44,7 @@ public class AccountService {
     return accountRepository.save(newAccount);
   }
 
-  public AccountEntity loginAccount(String email, String password) {
+  public AccountEntity getAccount(String email, String password) {
     // Search for account by email
     AccountEntity account = accountRepository.findByEmail(email);
 

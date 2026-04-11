@@ -115,7 +115,7 @@ export async function fetchSession() {
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
       throw new Error(
-        errorBody.message || `Erreur session: ${response.status}`
+        errorBody.message || `Erreur serveur: ${response.status}`
       );
     }
 
@@ -145,7 +145,9 @@ export async function logoutUser(userData: {
 
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
-      throw new Error(errorBody.message || `Erreur logout: ${response.status}`);
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
     }
 
     if (response.status === 200) {
@@ -159,6 +161,75 @@ export async function logoutUser(userData: {
   }
 }
 
+export async function updateUser(userData: {
+  username: string;
+  email: string;
+  newPassword: string;
+  currentPassword: string;
+  playerNumber: number | undefined;
+}) {
+  try {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(userData).map(([key, value]) => [
+        key,
+        value === '' ? null : value,
+      ])
+    );
+
+    const response = await fetch(`${apiUrl}/auth/update`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sanitizedData),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
+    }
+
+    // Parse and return response data
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error('Erreur dans updateUser:', error.message);
+    throw error;
+  }
+}
+
+export async function deleteUser(userData: {
+  username: string;
+  password: string;
+  playerNumber: number | undefined;
+}) {
+  try {
+    const response = await fetch(`${apiUrl}/auth/delete`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
+    }
+
+    if (response.status === 200) {
+      return null;
+    }
+
+    return await response.json();
+  } catch (error: any) {
+    console.error('Erreur dans deleteUser:', error.message);
+    throw error;
+  }
+}
+
 // ---------- LOCAL STORAGE ----------
 export interface AuthenticatedPlayer {
   playerId: number;
@@ -168,7 +239,7 @@ export interface AuthenticatedPlayer {
   isGuest: boolean;
 }
 
-export const STORAGE_KEY = 'game_players';
+export const STORAGE_KEY = 'DDB_game_players';
 
 export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
   // Get existing players from local storage
@@ -209,8 +280,8 @@ export const deletePlayerFromLocalStorage = (playerNumber: number) => {
   const updatedPlayers = players.filter((p) => p.playerNumber !== playerNumber);
 
   if (updatedPlayers.length === 0) {
-    localStorage.removeItem('game_players');
+    localStorage.removeItem(STORAGE_KEY);
   } else {
-    localStorage.setItem('game_players', JSON.stringify(updatedPlayers));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPlayers));
   }
 };
