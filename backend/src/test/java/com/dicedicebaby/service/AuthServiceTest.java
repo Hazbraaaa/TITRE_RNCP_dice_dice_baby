@@ -97,7 +97,7 @@ public class AuthServiceTest {
     when(player.getPlayerUsername()).thenReturn("Pingu");
 
     // Define mock behavior for dependencies
-    when(accountService.loginAccount(anyString(), anyString())).thenReturn(account);
+    when(accountService.getAccount(anyString(), anyString())).thenReturn(account);
     when(playerService.getPlayerByAccount(account)).thenReturn(player);
     when(jwtUtils.generateToken("Pingu")).thenReturn("new-token");
     // endregion

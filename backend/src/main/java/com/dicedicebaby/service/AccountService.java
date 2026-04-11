@@ -44,7 +44,7 @@ public class AccountService {
     return accountRepository.save(newAccount);
   }
 
-  public AccountEntity loginAccount(String email, String password) {
+  public AccountEntity getAccount(String email, String password) {
     // Search for account by email
     AccountEntity account = accountRepository.findByEmail(email);
 

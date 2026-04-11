@@ -24,6 +24,7 @@ export default function PartyLauncher() {
     login,
     register,
     guest,
+    update,
     // Renamed delete to avoid confusion with the reserved keyword
     delete: deleteAccount,
   } = usePartyAuth();
@@ -169,7 +170,7 @@ export default function PartyLauncher() {
           }
           isOpen
           onClose={closeModal}
-          onUpdate={closeModal}
+          onUpdate={update}
           onDelete={(username, password) => {
             deleteAccount(username, password);
           }}

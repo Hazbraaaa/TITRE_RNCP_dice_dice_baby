@@ -9,6 +9,7 @@ import {
   deleteUser,
   STORAGE_KEY,
   type AuthenticatedPlayer,
+  updateUser,
 } from '../services/authService';
 
 type ModalType = 'login' | 'register' | 'guest' | 'account';
@@ -84,14 +85,21 @@ export const usePartyAuth = () => {
         finalPlayers = serverPlayers.concat(localGuests);
       }
 
-      // For login/register/guest, add new player if not already in local storage
+      // For login/register/guest/update, add/update new player if not already in local storage
       else if (result) {
-        const isAlreadyThere = currentLocal.some(
+        // Find if player already exists in local storage by id
+        const index = currentLocal.findIndex(
           (p) => p.playerId === result.playerId
         );
-        finalPlayers = isAlreadyThere
-          ? currentLocal
-          : currentLocal.concat(result);
+
+        if (index !== -1) {
+          // Case Update: update existing player data in local storage
+          finalPlayers = [...currentLocal];
+          finalPlayers[index] = result;
+        } else {
+          // Case Login/Register/Guest: add new player to local storage
+          finalPlayers = currentLocal.concat(result);
+        }
       }
 
       // Update local storage and state
@@ -136,14 +144,34 @@ export const usePartyAuth = () => {
       ),
     guest: (u: string) =>
       handleAuthAction(
-        () => guestUser({ username: u, playerNumber: openModal?.playerNumber }),
+        () =>
+          guestUser({
+            username: u,
+            playerNumber: openModal?.playerNumber,
+          }),
         `Invité ajouté !`
       ),
     logout: (u: string, n: number) =>
       handleAuthAction(
-        () => logoutUser({ username: u, playerNumber: n }),
+        () =>
+          logoutUser({
+            username: u,
+            playerNumber: n,
+          }),
         `Joueur déconnecté !`,
         n
+      ),
+    update: (u: string, e: string, np: string, cp: string) =>
+      handleAuthAction(
+        () =>
+          updateUser({
+            username: u,
+            email: e,
+            newPassword: np,
+            currentPassword: cp,
+            playerNumber: openModal?.playerNumber,
+          }),
+        `Compte mis à jour !`
       ),
     delete: (u: string, p: string) =>
       handleAuthAction(

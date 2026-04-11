@@ -7,7 +7,12 @@ type AccountModalProps = {
   currentPlayer: AuthenticatedPlayer;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (username: string, email: string, password: string) => void;
+  onUpdate: (
+    username: string,
+    email: string,
+    newPassword: string,
+    currentPassword: string
+  ) => void;
   onDelete: (username: string, password: string) => void;
   errorMessage?: string | null;
 };
@@ -45,7 +50,7 @@ export default function AccountModal({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onUpdate(username, email, currentPassword);
+          onUpdate(username, email, newPassword, currentPassword);
         }}
         className="flex flex-col gap-4"
       >

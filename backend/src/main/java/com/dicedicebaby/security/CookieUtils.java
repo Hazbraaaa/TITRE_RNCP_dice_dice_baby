@@ -37,9 +37,10 @@ public class CookieUtils {
 
     String updatedValue = String.join(Constant.SEPARATOR, tokens);
 
+    // Create final cookie
     Cookie cookie = new Cookie(Constant.COOKIE_NAME, updatedValue);
     cookie.setHttpOnly(true);
-    // Change setSecure to true when in PROD
+    // ------ Change setSecure to true when in PROD ------
     cookie.setSecure(false);
     cookie.setPath("/");
 
@@ -49,6 +50,40 @@ public class CookieUtils {
     } else {
       cookie.setMaxAge(7 * 24 * 60 * 60);
     }
+
+    // Add cookie to response Http
+    response.addCookie(cookie);
+  }
+
+  public void updateTokenToCookie(
+      String oldToken, String newToken, String existingCookie, HttpServletResponse response) {
+    // If no cookie, add token to new cookie
+    if (existingCookie == null || existingCookie.isEmpty()) {
+      addTokenToCookie(newToken, null, response);
+      return;
+    }
+
+    List<String> tokens = new ArrayList<>(Arrays.asList(existingCookie.split(Constant.SEPARATOR)));
+
+    // Search for old token index in list
+    int index = tokens.indexOf(oldToken);
+    // If old token found replace with the new, otherwise add new token (expiration or bad
+    // manipulation)
+    if (index != -1) {
+      tokens.set(index, newToken);
+    } else {
+      tokens.add(newToken);
+    }
+
+    String updatedValue = String.join(Constant.SEPARATOR, tokens);
+
+    // Create final cookie
+    Cookie cookie = new Cookie(Constant.COOKIE_NAME, updatedValue);
+    cookie.setHttpOnly(true);
+    // ------ Change setSecure to true when in PROD ------
+    cookie.setSecure(false);
+    cookie.setPath("/");
+    cookie.setMaxAge(7 * 24 * 60 * 60);
 
     // Add cookie to response Http
     response.addCookie(cookie);

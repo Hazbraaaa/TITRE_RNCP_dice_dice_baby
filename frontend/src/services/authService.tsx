@@ -115,7 +115,7 @@ export async function fetchSession() {
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
       throw new Error(
-        errorBody.message || `Erreur session: ${response.status}`
+        errorBody.message || `Erreur serveur: ${response.status}`
       );
     }
 
@@ -145,7 +145,9 @@ export async function logoutUser(userData: {
 
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
-      throw new Error(errorBody.message || `Erreur logout: ${response.status}`);
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
     }
 
     if (response.status === 200) {
@@ -155,6 +157,44 @@ export async function logoutUser(userData: {
     return await response.json();
   } catch (error: any) {
     console.error('Erreur dans logoutUser:', error.message);
+    throw error;
+  }
+}
+
+export async function updateUser(userData: {
+  username: string;
+  email: string;
+  newPassword: string;
+  currentPassword: string;
+  playerNumber: number | undefined;
+}) {
+  try {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(userData).map(([key, value]) => [
+        key,
+        value === '' ? null : value,
+      ])
+    );
+
+    const response = await fetch(`${apiUrl}/auth/update`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sanitizedData),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
+    }
+
+    // Parse and return response data
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error('Erreur dans updateUser:', error.message);
     throw error;
   }
 }
@@ -174,7 +214,9 @@ export async function deleteUser(userData: {
 
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
-      throw new Error(errorBody.message || `Erreur delete: ${response.status}`);
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
     }
 
     if (response.status === 200) {

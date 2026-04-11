@@ -120,7 +120,7 @@ public class AuthService {
   public PlayerResponseDTO login(
       LoginRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Check authentication
-    AccountEntity account = accountService.loginAccount(request.email(), request.password());
+    AccountEntity account = accountService.getAccount(request.email(), request.password());
 
     // Get player from account
     PlayerEntity player = playerService.getPlayerByAccount(account);
@@ -201,6 +201,70 @@ public class AuthService {
     PlayerEntity player =
         playerService.createPlayerForGuest(request.username(), request.playerNumber());
 
+    return new PlayerResponseDTO(
+        player.getId(),
+        player.getPlayerUsername(),
+        player.getIsGuest(),
+        player.getPlayerNumber(),
+        player.getScore());
+  }
+
+  @Transactional
+  public PlayerResponseDTO update(
+      UpdateRequestDTO request, HttpServletResponse response, String existingCookie) {
+    // Check authentication
+    AccountEntity account =
+        jwtUtils.getAccountFromCookies(request.currentPassword(), existingCookie);
+
+    // Get player from account
+    PlayerEntity player = playerService.getPlayerByAccount(account);
+
+    // Validate that old token is found in cookie
+    String oldToken = jwtUtils.validateAndGetToken(account.getUsername(), existingCookie);
+
+    boolean usernameChanged = false;
+
+    // Update Username & PlayerUsername
+    if (request.username() != null
+        && !request.username().isBlank()
+        && !request.username().equals(account.getUsername())) {
+      // Check if username is unique
+      if (accountRepository.findByUsernameIgnoreCase(request.username()) != null) {
+        throw new IllegalStateException("Ce pseudo est déjà pris.");
+      }
+      account.setUsername(request.username());
+      player.setPlayerUsername(request.username());
+      usernameChanged = true;
+    }
+
+    // Update Email
+    if (request.email() != null
+        && !request.email().isBlank()
+        && !request.email().equals(account.getEmail())) {
+      // Check if email is unique
+      if (accountRepository.findByEmail(request.email()) != null) {
+        throw new IllegalStateException("Cet email est déjà utilisé.");
+      }
+      account.setEmail(request.email());
+    }
+
+    // Update Password
+    if (request.newPassword() != null && !request.newPassword().isBlank()) {
+      account.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+    }
+
+    accountRepository.save(account);
+
+    // If username change, so change token from cookie
+    if (usernameChanged) {
+      String newToken = jwtUtils.generateToken(account.getUsername());
+      player.setCurrentToken(newToken);
+      cookieUtils.updateTokenToCookie(oldToken, newToken, existingCookie, response);
+    }
+
+    playerRepository.save(player);
+
+    // Return player
     return new PlayerResponseDTO(
         player.getId(),
         player.getPlayerUsername(),

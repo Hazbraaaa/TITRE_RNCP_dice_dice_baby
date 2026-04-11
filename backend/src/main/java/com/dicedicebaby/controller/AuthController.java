@@ -73,5 +73,14 @@ public class AuthController {
   public PlayerResponseDTO guest(@Valid @RequestBody GuestRequestDTO request) {
     return authService.guest(request);
   }
+
+  @PostMapping("/update")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public PlayerResponseDTO update(
+      @Valid @RequestBody UpdateRequestDTO request,
+      HttpServletResponse response,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    return authService.update(request, response, existingCookie);
+  }
   // endregion
 }
