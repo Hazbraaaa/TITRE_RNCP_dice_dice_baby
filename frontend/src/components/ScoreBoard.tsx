@@ -1,32 +1,31 @@
 import { Player } from './Player';
 
-export default function ScoreBoard() {
-  const players = [
-    { id: 1, name: 'J1', score: 1, nb_of_pieces: 6 },
-    { id: 2, name: 'J2', score: 2, nb_of_pieces: 6 },
-    { id: 3, name: 'J3', score: 3, nb_of_pieces: 6 },
-    // { id: 4, name: "J4", score: 4, nb_of_pieces: 6 },
-  ];
+type ScoreBoardProps = {
+  players: {
+    id: number;
+    number: number;
+    name: string;
+    score: number;
+    nb_of_pieces: number;
+  }[];
+};
 
+export default function ScoreBoard({ 
+  players = [] 
+}: ScoreBoardProps) {
   return (
-    <div className="flex flex-col gap-3 bg-white">
-      <div className="flex justify-between">
-        <div className="w-40">
-          {players[0] && <Player {...players[0]} align="left" />}
+    <div className="grid grid-cols-2 gap-4 bg-transparent">
+      {players.map((player, index) => (
+        <div 
+          key={player.id || index} 
+          className={`w-full ${index % 2 === 1 ? 'flex justify-end' : 'flex justify-start'}`}
+        >
+          <Player 
+            {...player} 
+            align={index % 2 === 1 ? "right" : "left"} 
+          />
         </div>
-        <div className="w-40">
-          {players[1] && <Player {...players[1]} align="right" />}
-        </div>
-      </div>
-
-      <div className="flex justify-between">
-        <div className="w-40">
-          {players[2] && <Player {...players[2]} align="left" />}
-        </div>
-        <div className="w-40">
-          {players[3] && <Player {...players[3]} align="right" />}
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
