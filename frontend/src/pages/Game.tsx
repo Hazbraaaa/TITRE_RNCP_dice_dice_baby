@@ -3,10 +3,12 @@ import Hand from '../components/Hand';
 import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
 import { usePartyAuth } from '../hooks/usePartyAuth';
+import { useGameSetup } from '../hooks/useGameSetup';
 
 export default function Game() {
 
   const { connectedPlayers } = usePartyAuth();
+  const { cards } = useGameSetup();
 
   const playersForBoard = connectedPlayers.map(p => ({
     id: p.playerId,
@@ -44,7 +46,7 @@ export default function Game() {
             <Button 
               variant="primary" 
               fullWidth 
-              className="py-6 text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:scale-[1.02] active:scale-[0.98]"
+              className="py-6 text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
             >
               LANCER !
             </Button>
@@ -55,7 +57,7 @@ export default function Game() {
         {/* Game Board */}
         <div className="lg:col-span-8 order-2">
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm p-2 md:p-6 shadow-inner">
-            <GameBoard />
+            <GameBoard cards={cards} />
           </section>
         </div>
 

@@ -230,6 +230,7 @@ export async function deleteUser(userData: {
   }
 }
 
+
 // ---------- LOCAL STORAGE ----------
 export interface AuthenticatedPlayer {
   playerId: number;

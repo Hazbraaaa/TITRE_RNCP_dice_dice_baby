@@ -24,7 +24,7 @@ export const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${buttonVariants.base} ${buttonVariants.colors[variant]} ${widthStyle} px-6 py-4 text-lg md:text-xl rounded ${className}`}
+      className={`${buttonVariants.base} ${buttonVariants.colors[variant]} ${widthStyle} px-6 py-4 text-lg hover:scale-[1.02] active:scale-[0.98] md:text-xl rounded ${className}`}
     >
       {children}
     </button>
