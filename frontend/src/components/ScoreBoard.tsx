@@ -10,20 +10,15 @@ type ScoreBoardProps = {
   }[];
 };
 
-export default function ScoreBoard({ 
-  players = [] 
-}: ScoreBoardProps) {
+export default function ScoreBoard({ players = [] }: ScoreBoardProps) {
   return (
     <div className="grid grid-cols-2 gap-4 bg-transparent">
       {players.map((player, index) => (
-        <div 
-          key={player.id || index} 
+        <div
+          key={player.id || index}
           className={`w-full ${index % 2 === 1 ? 'flex justify-end' : 'flex justify-start'}`}
         >
-          <Player 
-            {...player} 
-            align={index % 2 === 1 ? "right" : "left"} 
-          />
+          <Player {...player} align={index % 2 === 1 ? 'right' : 'left'} />
         </div>
       ))}
     </div>

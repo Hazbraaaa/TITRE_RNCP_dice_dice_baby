@@ -6,16 +6,15 @@ import { usePartyAuth } from '../hooks/usePartyAuth';
 import { useGameSetup } from '../hooks/useGameSetup';
 
 export default function Game() {
-
   const { connectedPlayers } = usePartyAuth();
   const { cards } = useGameSetup();
 
-  const playersForBoard = connectedPlayers.map(p => ({
+  const playersForBoard = connectedPlayers.map((p) => ({
     id: p.playerId,
     number: p.playerNumber,
     name: p.username || `Joueur ${p.playerNumber}`,
     score: 0,
-    nb_of_pieces: 6
+    nb_of_pieces: 6,
   }));
 
   return (
@@ -28,30 +27,27 @@ export default function Game() {
       </header>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
         {/* Scoreboard and Throwing Zone */}
         <div className="lg:col-span-4 flex flex-col gap-6 order-1">
-          
           {/* Scoreboard */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-4">
             <h2 className="font-heading text-midnight-ice/60 text-xs uppercase mb-3 ml-1">
               Tableau des scores
             </h2>
-            <ScoreBoard players={playersForBoard}/>
+            <ScoreBoard players={playersForBoard} />
           </section>
 
           {/* Hand */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[6px_6px_0px_0px_rgba(1,54,89,1)] p-6 flex flex-col gap-4">
             <Hand />
-            <Button 
-              variant="primary" 
-              fullWidth 
+            <Button
+              variant="primary"
+              fullWidth
               className="py-6 text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
             >
               LANCER !
             </Button>
           </section>
-
         </div>
 
         {/* Game Board */}
@@ -60,7 +56,6 @@ export default function Game() {
             <GameBoard cards={cards} />
           </section>
         </div>
-
       </div>
     </main>
   );

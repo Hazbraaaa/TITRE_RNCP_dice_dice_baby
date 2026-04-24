@@ -19,7 +19,9 @@ interface OpenModalState {
 }
 
 export const usePartyAuth = () => {
-  const [connectedPlayers, setConnectedPlayers] = useState(getPlayersFromLocalStorage());
+  const [connectedPlayers, setConnectedPlayers] = useState(
+    getPlayersFromLocalStorage()
+  );
   const [openModal, setOpenModal] = useState<OpenModalState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);

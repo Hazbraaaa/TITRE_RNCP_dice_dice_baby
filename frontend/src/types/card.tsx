@@ -1,9 +1,9 @@
-export type CardColor = 'green' | 'blue' | 'red'
+export type CardColor = 'green' | 'blue' | 'red';
 
 export interface Card {
-    id: number;
-    combination: string;
-    color: CardColor;
-    pointLvl1: number;
-    pointLvl2: number;
+  id: number;
+  combination: string;
+  color: CardColor;
+  pointLvl1: number;
+  pointLvl2: number;
 }

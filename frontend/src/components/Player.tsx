@@ -38,13 +38,11 @@ export const Player = ({
         <span className="font-heading text-midnight-ice text-sm truncate max-w-[80px]">
           {name}
         </span>
-        <div className={`flex flex-col gap-0.5 mt-1 font-sans text-[10px] font-bold ${isRight ? 'items-end' : 'items-start'}`}>
-          <span className="text-red-alert uppercase">
-            Score: {score}
-          </span>
-          <span className="text-midnight-ice/60">
-            Pions: {nb_of_pieces}
-          </span>
+        <div
+          className={`flex flex-col gap-0.5 mt-1 font-sans text-[10px] font-bold ${isRight ? 'items-end' : 'items-start'}`}
+        >
+          <span className="text-red-alert uppercase">Score: {score}</span>
+          <span className="text-midnight-ice/60">Pions: {nb_of_pieces}</span>
         </div>
       </div>
     </div>
