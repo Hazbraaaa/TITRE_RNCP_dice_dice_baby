@@ -1,8 +1,7 @@
 package com.dicedicebaby.controller;
 
-import com.dicedicebaby.entity.CardEntity;
+import com.dicedicebaby.dto.response.GameSetupResponseDTO;
 import com.dicedicebaby.service.GameSetupService;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +23,10 @@ public class GameSetupController {
   // region Routes
   @GetMapping("/setup")
   @ResponseStatus(HttpStatus.CREATED)
-  public List<CardEntity> getBoard(
+  public GameSetupResponseDTO setup(
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
-    return gameSetupService.getBoard();
+    // Return Setup
+    return gameSetupService.setupNewGame();
   }
   // endregion
 }

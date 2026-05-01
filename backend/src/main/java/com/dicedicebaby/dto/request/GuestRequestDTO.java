@@ -1,4 +1,4 @@
-package com.dicedicebaby.dto;
+package com.dicedicebaby.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

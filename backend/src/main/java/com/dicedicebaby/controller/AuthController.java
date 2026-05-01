@@ -1,6 +1,7 @@
 package com.dicedicebaby.controller;
 
-import com.dicedicebaby.dto.*;
+import com.dicedicebaby.dto.request.*;
+import com.dicedicebaby.dto.response.PlayerResponseDTO;
 import com.dicedicebaby.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

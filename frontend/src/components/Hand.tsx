@@ -1,28 +1,30 @@
-import { Dice } from './Dice';
+import { BoardDice } from './BoardDice';
+import type { Dice } from '../types/dice';
 
-export default function Hand({ dices = [] }) {
-  // Mock data
-  const displayDices =
-    dices.length > 0
-      ? dices
-      : [
-          { id: 1, value: 1, locked: false },
-          { id: 2, value: 3, locked: false },
-          { id: 3, value: 6, locked: false },
-          { id: 4, value: 3, locked: false },
-          { id: 5, value: 2, locked: false },
-        ];
+interface HandProps {
+  hand: Dice[];
+  selectedIds: number[];
+  onToggleDice: (id: number) => void;
+}
+
+export default function Hand({ hand, selectedIds, onToggleDice }: HandProps) {
+  const sortedHand = [...hand].sort((a, b) => a.id - b.id);
 
   return (
     <div className="flex flex-wrap gap-3 p-4 bg-midnight-ice/10 border-2 border-dashed border-midnight-ice/30 rounded-xl justify-center items-center">
-      {displayDices.map((dice) => (
-        <div
-          key={dice.id}
-          className="transition-transform hover:scale-110 cursor-pointer"
-        >
-          <Dice value={dice.value} locked={dice.locked} />
-        </div>
-      ))}
+      {sortedHand.map((dice) => {
+        const isSelected = selectedIds.includes(dice.id);
+
+        return (
+          <div
+            key={dice.id}
+            className="transition-transform hover:scale-110 cursor-pointer"
+            onClick={() => onToggleDice(dice.id)}
+          >
+            <BoardDice value={dice.value} locked={isSelected} />
+          </div>
+        );
+      })}
     </div>
   );
 }

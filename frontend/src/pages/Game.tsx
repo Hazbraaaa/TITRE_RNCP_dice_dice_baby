@@ -3,11 +3,11 @@ import Hand from '../components/Hand';
 import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
 import { usePartyAuth } from '../hooks/usePartyAuth';
-import { useGameSetup } from '../hooks/useGameSetup';
+import { useGame } from '../hooks/useGame';
 
 export default function Game() {
   const { connectedPlayers } = usePartyAuth();
-  const { cards } = useGameSetup();
+  const { cards, dices, keptDiceIds, toggleDice, handleRoll } = useGame();
 
   const playersForBoard = connectedPlayers.map((p) => ({
     id: p.playerId,
@@ -39,11 +39,16 @@ export default function Game() {
 
           {/* Hand */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[6px_6px_0px_0px_rgba(1,54,89,1)] p-6 flex flex-col gap-4">
-            <Hand />
+            <Hand
+              hand={dices}
+              selectedIds={keptDiceIds}
+              onToggleDice={toggleDice}
+            />
             <Button
               variant="primary"
               fullWidth
               className="py-6 text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+              onClick={handleRoll}
             >
               LANCER !
             </Button>
