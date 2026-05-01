@@ -1,7 +1,7 @@
 // ---------- REQUESTS TO BACKEND API ----------
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export async function registerUser(userData: {
+export async function registerUser(payload: {
   username: string;
   email: string;
   password: string;
@@ -13,7 +13,7 @@ export async function registerUser(userData: {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
 
     // Verify response status, throw error if not ok
@@ -36,7 +36,7 @@ export async function registerUser(userData: {
   }
 }
 
-export async function loginUser(userData: {
+export async function loginUser(payload: {
   email: string;
   password: string;
   playerNumber: number | undefined;
@@ -47,7 +47,7 @@ export async function loginUser(userData: {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
 
     // Verify response status, throw error if not ok
@@ -70,7 +70,7 @@ export async function loginUser(userData: {
   }
 }
 
-export async function guestUser(userData: {
+export async function guestUser(payload: {
   username: string;
   playerNumber: number | undefined;
 }) {
@@ -79,7 +79,7 @@ export async function guestUser(userData: {
     const response = await fetch(`${apiUrl}/auth/guest`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
 
     // Verify response status, throw error if not ok
@@ -131,7 +131,7 @@ export async function fetchSession() {
   }
 }
 
-export async function logoutUser(userData: {
+export async function logoutUser(payload: {
   username: string;
   playerNumber: number | undefined;
 }) {
@@ -140,7 +140,7 @@ export async function logoutUser(userData: {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -161,7 +161,7 @@ export async function logoutUser(userData: {
   }
 }
 
-export async function updateUser(userData: {
+export async function updateUser(payload: {
   username: string;
   email: string;
   newPassword: string;
@@ -170,7 +170,7 @@ export async function updateUser(userData: {
 }) {
   try {
     const sanitizedData = Object.fromEntries(
-      Object.entries(userData).map(([key, value]) => [
+      Object.entries(payload).map(([key, value]) => [
         key,
         value === '' ? null : value,
       ])
@@ -199,7 +199,7 @@ export async function updateUser(userData: {
   }
 }
 
-export async function deleteUser(userData: {
+export async function deleteUser(payload: {
   username: string;
   password: string;
   playerNumber: number | undefined;
@@ -209,7 +209,7 @@ export async function deleteUser(userData: {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {

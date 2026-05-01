@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import com.dicedicebaby.dto.GuestRequestDTO;
-import com.dicedicebaby.dto.LoginRequestDTO;
-import com.dicedicebaby.dto.PlayerResponseDTO;
-import com.dicedicebaby.dto.RegistrationRequestDTO;
+import com.dicedicebaby.dto.request.GuestRequestDTO;
+import com.dicedicebaby.dto.request.LoginRequestDTO;
+import com.dicedicebaby.dto.request.RegistrationRequestDTO;
+import com.dicedicebaby.dto.response.PlayerResponseDTO;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
 import com.dicedicebaby.security.CookieUtils;

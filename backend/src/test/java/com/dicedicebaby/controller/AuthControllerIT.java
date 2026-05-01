@@ -6,9 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.dicedicebaby.config.Constant;
-import com.dicedicebaby.dto.GuestRequestDTO;
-import com.dicedicebaby.dto.LoginRequestDTO;
-import com.dicedicebaby.dto.RegistrationRequestDTO;
+import com.dicedicebaby.dto.request.GuestRequestDTO;
+import com.dicedicebaby.dto.request.LoginRequestDTO;
+import com.dicedicebaby.dto.request.RegistrationRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

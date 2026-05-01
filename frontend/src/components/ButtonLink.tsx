@@ -28,7 +28,7 @@ export const ButtonLink = ({
     <Link
       to={disabled ? '#' : to}
       onClick={(e) => disabled && e.preventDefault()}
-      className={`${buttonVariants.base} ${currentVariant} ${widthStyle} px-6 py-4 text-lg md:text-xl rounded ${className}`}
+      className={`${buttonVariants.base} ${currentVariant} ${widthStyle} px-6 py-4 text-lg md:text-xl hover:scale-[1.02] active:scale-[0.98] rounded ${className}`}
     >
       {children}
     </Link>
