@@ -71,8 +71,11 @@ public class AuthController {
 
   @PostMapping("/guest")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO guest(@Valid @RequestBody GuestRequestDTO request) {
-    return authService.guest(request);
+  public PlayerResponseDTO guest(
+      @Valid @RequestBody GuestRequestDTO request,
+      HttpServletResponse response,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    return authService.guest(request, response, existingCookie);
   }
 
   @PostMapping("/update")

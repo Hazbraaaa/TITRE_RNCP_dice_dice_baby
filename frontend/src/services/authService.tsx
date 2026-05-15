@@ -78,6 +78,7 @@ export async function guestUser(payload: {
     // Send request with body to API to add a guest user
     const response = await fetch(`${apiUrl}/auth/guest`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
