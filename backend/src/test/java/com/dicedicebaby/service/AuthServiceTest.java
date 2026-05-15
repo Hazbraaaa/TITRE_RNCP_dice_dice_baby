@@ -122,6 +122,7 @@ public class AuthServiceTest {
     // region GIVEN
     // Prepare input data
     GuestRequestDTO request = new GuestRequestDTO("Pingu", 1);
+    String existingCookie = "token-in-cookie";
 
     // Use real entity to have input data
     PlayerEntity player = new PlayerEntity();
@@ -136,7 +137,7 @@ public class AuthServiceTest {
     // endregion
 
     // region WHEN
-    PlayerResponseDTO result = authService.guest(request);
+    PlayerResponseDTO result = authService.guest(request, response, existingCookie);
     // endregion
 
     // region THEN

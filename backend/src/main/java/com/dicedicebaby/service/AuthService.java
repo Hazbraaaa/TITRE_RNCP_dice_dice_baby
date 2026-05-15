@@ -197,10 +197,18 @@ public class AuthService {
   }
 
   @Transactional
-  public PlayerResponseDTO guest(GuestRequestDTO request) {
+  public PlayerResponseDTO guest(
+      GuestRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Create player for a guest
     PlayerEntity player =
         playerService.createPlayerForGuest(request.username(), request.playerNumber());
+
+    // Generate and set current token to player
+    String token = jwtUtils.generateToken(request.username());
+    player.setCurrentToken(token);
+
+    // Add new token in existing cookie
+    cookieUtils.addTokenToCookie(token, existingCookie, response);
 
     return new PlayerResponseDTO(
         player.getId(),
