@@ -1,7 +1,7 @@
 package com.dicedicebaby.controller;
 
 import com.dicedicebaby.dto.request.*;
-import com.dicedicebaby.dto.response.PlayerResponseDTO;
+import com.dicedicebaby.dto.response.ConnectedPlayerResponseDTO;
 import com.dicedicebaby.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -28,14 +28,14 @@ public class AuthController {
   // region Routes
   @GetMapping("/session")
   @ResponseStatus(HttpStatus.OK)
-  public List<PlayerResponseDTO> getCurrentSession(
+  public List<ConnectedPlayerResponseDTO> getCurrentSession(
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     return authService.getCurrentSession(existingCookie);
   }
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO register(
+  public ConnectedPlayerResponseDTO register(
       @Valid @RequestBody RegistrationRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
@@ -44,7 +44,7 @@ public class AuthController {
 
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public PlayerResponseDTO login(
+  public ConnectedPlayerResponseDTO login(
       @Valid @RequestBody LoginRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
@@ -71,7 +71,7 @@ public class AuthController {
 
   @PostMapping("/guest")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO guest(
+  public ConnectedPlayerResponseDTO guest(
       @Valid @RequestBody GuestRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
@@ -80,7 +80,7 @@ public class AuthController {
 
   @PostMapping("/update")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public PlayerResponseDTO update(
+  public ConnectedPlayerResponseDTO update(
       @Valid @RequestBody UpdateRequestDTO request,
       HttpServletResponse response,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {

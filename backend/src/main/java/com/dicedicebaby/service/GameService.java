@@ -1,10 +1,11 @@
 package com.dicedicebaby.service;
 
 import com.dicedicebaby.dto.request.RollRequestDTO;
-import com.dicedicebaby.dto.response.DiceResponseDTO;
-import com.dicedicebaby.dto.response.RollResponseDTO;
+import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.entity.DiceEntity;
 import com.dicedicebaby.entity.DiceSetEntity;
+import com.dicedicebaby.entity.GameEntity;
+import com.dicedicebaby.mapper.GameMapper;
 import com.dicedicebaby.repository.DiceSetRepository;
 import java.util.Random;
 import org.springframework.stereotype.Service;
@@ -16,19 +17,21 @@ public class GameService {
   // region Attributes
   private final DiceSetRepository diceSetRepository;
   private final Random random = new Random();
+  private final GameMapper gameMapper;
 
   // endregion
 
   // region Constructor
-  public GameService(DiceSetRepository diceSetRepository) {
+  public GameService(DiceSetRepository diceSetRepository, GameMapper gameMapper) {
     this.diceSetRepository = diceSetRepository;
+    this.gameMapper = gameMapper;
   }
 
   // endregion
 
   // region Methods
   @Transactional
-  public RollResponseDTO rollDices(RollRequestDTO request) {
+  public GameResponseDTO rollDices(RollRequestDTO request) {
     DiceSetEntity diceSet =
         diceSetRepository
             .findById(request.diceSetId())
@@ -46,12 +49,13 @@ public class GameService {
     }
     diceSetRepository.save(diceSet);
 
-    return new RollResponseDTO(
-        diceSet.getId(), diceSet.getDices().stream().map(this::mapToDiceResponseDTO).toList());
-  }
+    // Get game from diceset id
+    GameEntity game = diceSet.getGame();
+    if (game == null) {
+      throw new RuntimeException("Aucune partie associée à ce set de dés");
+    }
 
-  private DiceResponseDTO mapToDiceResponseDTO(DiceEntity dice) {
-    return new DiceResponseDTO(dice.getId(), dice.getValue(), dice.isKept());
+    return gameMapper.mapToGameResponseDTO(game);
   }
   // endregion
 }

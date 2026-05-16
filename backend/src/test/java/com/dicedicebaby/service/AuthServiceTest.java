@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import com.dicedicebaby.dto.request.GuestRequestDTO;
 import com.dicedicebaby.dto.request.LoginRequestDTO;
 import com.dicedicebaby.dto.request.RegistrationRequestDTO;
-import com.dicedicebaby.dto.response.PlayerResponseDTO;
+import com.dicedicebaby.dto.response.ConnectedPlayerResponseDTO;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
 import com.dicedicebaby.security.CookieUtils;
@@ -66,7 +66,7 @@ public class AuthServiceTest {
 
     // region WHEN
     // Execute the service method
-    PlayerResponseDTO result = authService.register(request, response, existingCookie);
+    ConnectedPlayerResponseDTO result = authService.register(request, response, existingCookie);
     // endregion
 
     // region THEN
@@ -104,7 +104,7 @@ public class AuthServiceTest {
 
     // region WHEN
     // Execute the service method
-    PlayerResponseDTO result = authService.login(request, response, existingCookie);
+    ConnectedPlayerResponseDTO result = authService.login(request, response, existingCookie);
     // endregion
 
     // region THEN
@@ -137,7 +137,7 @@ public class AuthServiceTest {
     // endregion
 
     // region WHEN
-    PlayerResponseDTO result = authService.guest(request, response, existingCookie);
+    ConnectedPlayerResponseDTO result = authService.guest(request, response, existingCookie);
     // endregion
 
     // region THEN

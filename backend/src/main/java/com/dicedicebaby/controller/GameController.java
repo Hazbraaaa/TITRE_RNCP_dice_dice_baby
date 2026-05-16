@@ -1,7 +1,7 @@
 package com.dicedicebaby.controller;
 
 import com.dicedicebaby.dto.request.RollRequestDTO;
-import com.dicedicebaby.dto.response.RollResponseDTO;
+import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class GameController {
   // region Routes
   @PostMapping("/roll")
   @ResponseStatus(HttpStatus.OK)
-  public RollResponseDTO roll(
+  public GameResponseDTO roll(
       @RequestBody RollRequestDTO request,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     // Return new dice set after roll

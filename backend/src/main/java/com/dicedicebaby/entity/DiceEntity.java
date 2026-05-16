@@ -17,7 +17,7 @@ public class DiceEntity extends AuditableEntity {
   @Column private boolean isKept;
 
   @ManyToOne
-  @JoinColumn(name = "diceSet_id")
+  @JoinColumn(name = "dice_set_id")
   private DiceSetEntity diceSet;
 
   // endregion

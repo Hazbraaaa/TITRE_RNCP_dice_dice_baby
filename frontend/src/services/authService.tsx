@@ -236,11 +236,10 @@ export interface AuthenticatedPlayer {
   playerId: number;
   username: string;
   playerNumber: number;
-  score: number;
   isGuest: boolean;
 }
 
-export const STORAGE_KEY = 'DDB_game_players';
+export const STORAGE_KEY = 'DDB_lobby_players';
 
 export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
   // Get existing players from local storage

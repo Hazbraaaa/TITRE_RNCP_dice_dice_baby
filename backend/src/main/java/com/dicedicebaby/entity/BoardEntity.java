@@ -4,16 +4,16 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "dice_sets")
-public class DiceSetEntity extends AuditableEntity {
-
+@Table(name = "boards")
+public class BoardEntity extends AuditableEntity {
   // region Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToMany(mappedBy = "diceSet", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<DiceEntity> dices;
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OrderBy("id ASC")
+  private List<GameCardEntity> gameCards;
 
   @OneToOne
   @JoinColumn(name = "game_id")
@@ -22,7 +22,7 @@ public class DiceSetEntity extends AuditableEntity {
   // endregion
 
   // region Constructor
-  public DiceSetEntity() {}
+  public BoardEntity() {}
 
   // endregion
 
@@ -35,12 +35,12 @@ public class DiceSetEntity extends AuditableEntity {
     this.id = id;
   }
 
-  public List<DiceEntity> getDices() {
-    return dices;
+  public List<GameCardEntity> getGameCards() {
+    return gameCards;
   }
 
-  public void setDices(List<DiceEntity> dices) {
-    this.dices = dices;
+  public void setGameCards(List<GameCardEntity> gameCards) {
+    this.gameCards = gameCards;
   }
 
   public GameEntity getGame() {

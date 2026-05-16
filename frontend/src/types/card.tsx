@@ -6,4 +6,6 @@ export interface Card {
   color: CardColor;
   pointLvl1: number;
   pointLvl2: number;
+  ownerPointLvl1: number | null;
+  ownerPointLvl2: number | null;
 }

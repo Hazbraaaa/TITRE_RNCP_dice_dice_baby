@@ -13,4 +13,6 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
   boolean existsByPlayerUsername(String playerUsername);
 
   PlayerEntity findByAccountId(Long accountId);
+
+  PlayerEntity findByCurrentToken(String currentToken);
 }

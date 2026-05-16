@@ -2,19 +2,30 @@ import ScoreBoard from '../components/ScoreBoard';
 import Hand from '../components/Hand';
 import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
-import { usePartyAuth } from '../hooks/usePartyAuth';
 import { useGame } from '../hooks/useGame';
 
 export default function Game() {
-  const { connectedPlayers } = usePartyAuth();
-  const { cards, dices, keptDiceIds, toggleDice, handleRoll } = useGame();
+  const { game, cards, dices, keptDiceIds, toggleDice, handleRoll } = useGame();
 
-  const playersForBoard = connectedPlayers.map((p) => ({
-    id: p.playerId,
-    number: p.playerNumber,
-    name: p.username || `Joueur ${p.playerNumber}`,
-    score: 0,
-    nb_of_pieces: 6,
+  // If the game data is not yet available, show a loading state
+  if (!game) {
+    return (
+      <div className="min-h-screen bg-frost-white/30 flex items-center justify-center">
+        <div className="font-heading text-2xl text-midnight-ice animate-pulse uppercase">
+          Création de la table de jeu...
+        </div>
+      </div>
+    );
+  }
+
+  // Transform the players data for the ScoreBoard component
+  const playersForBoard = game.players.map((player, index) => ({
+    id: player.playerId,
+    number: index + 1,
+    name: player.username || `Joueur ${player.playerId}`,
+    score: player.score,
+    nb_of_pieces: player.nbOfPieces,
+    isCurrent: player.playerId === game.currentPlayer.playerId,
   }));
 
   return (
@@ -24,6 +35,18 @@ export default function Game() {
         <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
           Dice Dice <span className="text-red-alert">Baby</span>
         </h1>
+
+        {/* Game info (MOVE ELSEWHERE) */}
+        <div className="mt-2 font-heading text-xs md:text-sm text-midnight-ice/60 uppercase tracking-wider">
+          Manche{' '}
+          <span className="text-midnight-ice font-bold">
+            #{game.roundNumber}
+          </span>{' '}
+          — Au tour de :{' '}
+          <span className="text-red-alert font-bold">
+            {game.currentPlayer.username}
+          </span>
+        </div>
       </header>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
