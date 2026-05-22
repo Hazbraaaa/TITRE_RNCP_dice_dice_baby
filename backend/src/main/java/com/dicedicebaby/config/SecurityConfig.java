@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
@@ -21,10 +23,23 @@ public class SecurityConfig {
 
   // Need to be modified after development (disable and permitAll !)
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
+      throws Exception {
+    MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector);
+
     http.cors(withDefaults())
         .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .authorizeHttpRequests(
+            auth ->
+                auth
+                    // Keep explicitly builder MVC for Swagger
+                    .requestMatchers(mvc.pattern("/v3/api-docs"), mvc.pattern("/v3/api-docs/**"))
+                    .permitAll()
+                    .requestMatchers(mvc.pattern("/swagger-ui/**"), mvc.pattern("/swagger-ui.html"))
+                    .permitAll()
+                    // Keep the rest open for dev
+                    .anyRequest()
+                    .permitAll())
         .httpBasic(withDefaults());
 
     return http.build();

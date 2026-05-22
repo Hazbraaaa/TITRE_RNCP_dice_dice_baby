@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/game")
+@RequestMapping("/game")
 public class GameSetupController {
   // region Attributes
   private final GameSetupService gameSetupService;
