@@ -1,12 +1,13 @@
 package com.dicedicebaby.controller;
 
-import com.dicedicebaby.dto.response.GameSetupResponseDTO;
+import com.dicedicebaby.config.Constant;
+import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameSetupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/game")
+@RequestMapping("/game")
 public class GameSetupController {
   // region Attributes
   private final GameSetupService gameSetupService;
@@ -23,10 +24,10 @@ public class GameSetupController {
   // region Routes
   @GetMapping("/setup")
   @ResponseStatus(HttpStatus.CREATED)
-  public GameSetupResponseDTO setup(
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+  public GameResponseDTO setup(
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return Setup
-    return gameSetupService.setupNewGame();
+    return gameSetupService.setupNewGame(existingCookie);
   }
   // endregion
 }

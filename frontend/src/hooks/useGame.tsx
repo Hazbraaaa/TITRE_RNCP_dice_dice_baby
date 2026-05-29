@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { rollDices } from '../services/gameService';
 import { setupNewGame } from '../services/gameSetupService';
-import type { Card } from '../types/card';
-import type { Dice } from '../types/dice';
+import type { Game } from '../types/game';
+
+const STORAGE_KEY = 'DDB_game_info';
 
 export const useGame = () => {
-  const [dices, setDices] = useState<Dice[]>([]);
-  const [cards, setCards] = useState<Card[]>([]);
-  const [diceSetId, setDiceSetId] = useState<number | null>(null);
-  const [keptDiceIds, setKeptDiceIds] = useState<number[]>([]);
+  // Store game in local state and sync with localStorage for persistence across reloads
+  const [game, setGame] = useState<Game | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  });
 
+  // Extract relevant game data for the UI
   useEffect(() => {
     const initGame = async () => {
+      if (game) return;
+
       try {
         const data = await setupNewGame();
-        setCards(data.board);
-        setDices(data.dices);
-        setDiceSetId(data.diceSetId);
+        setGame(data);
       } catch (error) {
         console.error('Erreur setup:', error);
       }
@@ -24,28 +27,54 @@ export const useGame = () => {
     initGame();
   }, []);
 
-  const toggleDice = (id: number) => {
-    setKeptDiceIds((prev) =>
-      prev.includes(id) ? prev.filter((diceId) => diceId !== id) : [...prev, id]
+  // Sync game state to localStorage whenever it changes
+  useEffect(() => {
+    if (game) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(game));
+    }
+  }, [game]);
+
+  // Local actions to toggle dice selection and handle rolling, which will update the game state accordingly
+  const toggleDice = (diceId: number) => {
+    if (!game) return;
+
+    const updatedDices = game.diceSet.dices.map((d) =>
+      d.id === diceId ? { ...d, isKept: !d.isKept } : d
     );
+
+    setGame({
+      ...game,
+      diceSet: { ...game.diceSet, dices: updatedDices },
+    });
   };
 
+  // Handler for rolling the dice, which will call the backend and update the game state with the new data
   const handleRoll = async () => {
-    if (!diceSetId) return;
+    if (!game) return;
+
+    const keptDiceIds = game.diceSet.dices
+      .filter((d) => d.isKept)
+      .map((d) => d.id);
+
     try {
-      const data = await rollDices({
-        diceSetId: diceSetId,
-        keptDiceIds: keptDiceIds,
+      const updatedGame: Game = await rollDices({
+        diceSetId: game.diceSet.id,
+        keptDiceIds,
       });
-      setDices(data.dices);
-      const newKeptIds = data.dices
-        .filter((d: Dice) => d.isKept)
-        .map((d: Dice) => d.id);
-      setKeptDiceIds(newKeptIds);
+      setGame(updatedGame);
     } catch (error) {
-      console.error(error);
+      console.error('Erreur lors du lancer de dés:', error);
     }
   };
 
-  return { dices, cards, keptDiceIds, toggleDice, handleRoll };
+  // Return the game state and actions for use in the component
+  return {
+    game,
+    cards: game?.board || [],
+    dices: game?.diceSet.dices || [],
+    keptDiceIds:
+      game?.diceSet.dices.filter((d) => d.isKept).map((d) => d.id) || [],
+    toggleDice,
+    handleRoll,
+  };
 };

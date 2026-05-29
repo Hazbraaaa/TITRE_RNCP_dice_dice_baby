@@ -1,7 +1,8 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.request.*;
-import com.dicedicebaby.dto.response.PlayerResponseDTO;
+import com.dicedicebaby.dto.response.ConnectedPlayerResponseDTO;
 import com.dicedicebaby.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
   // region Attributes
@@ -28,26 +29,26 @@ public class AuthController {
   // region Routes
   @GetMapping("/session")
   @ResponseStatus(HttpStatus.OK)
-  public List<PlayerResponseDTO> getCurrentSession(
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+  public List<ConnectedPlayerResponseDTO> getCurrentSession(
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.getCurrentSession(existingCookie);
   }
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO register(
+  public ConnectedPlayerResponseDTO register(
       @Valid @RequestBody RegistrationRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.register(request, response, existingCookie);
   }
 
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public PlayerResponseDTO login(
+  public ConnectedPlayerResponseDTO login(
       @Valid @RequestBody LoginRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.login(request, response, existingCookie);
   }
 
@@ -56,7 +57,7 @@ public class AuthController {
   public void logout(
       @Valid @RequestBody LogoutRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     authService.logout(request, response, existingCookie);
   }
 
@@ -65,25 +66,25 @@ public class AuthController {
   public void delete(
       @Valid @RequestBody DeleteRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     authService.delete(request, response, existingCookie);
   }
 
   @PostMapping("/guest")
   @ResponseStatus(HttpStatus.CREATED)
-  public PlayerResponseDTO guest(
+  public ConnectedPlayerResponseDTO guest(
       @Valid @RequestBody GuestRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.guest(request, response, existingCookie);
   }
 
   @PostMapping("/update")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public PlayerResponseDTO update(
+  public ConnectedPlayerResponseDTO update(
       @Valid @RequestBody UpdateRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.update(request, response, existingCookie);
   }
   // endregion

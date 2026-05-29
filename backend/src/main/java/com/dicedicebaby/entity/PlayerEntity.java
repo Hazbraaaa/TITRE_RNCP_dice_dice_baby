@@ -24,6 +24,10 @@ public class PlayerEntity extends AuditableEntity {
 
   @Column private int score;
 
+  @ManyToOne
+  @JoinColumn(name = "game_id")
+  private GameEntity game;
+
   @Column private String currentToken;
 
   // endregion
@@ -80,6 +84,14 @@ public class PlayerEntity extends AuditableEntity {
 
   public void setScore(int score) {
     this.score = score;
+  }
+
+  public GameEntity getGame() {
+    return game;
+  }
+
+  public void setGame(GameEntity game) {
+    this.game = game;
   }
 
   public String getCurrentToken() {

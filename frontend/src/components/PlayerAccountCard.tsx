@@ -1,3 +1,4 @@
+import type { AuthenticatedPlayer } from '../services/authService';
 import { Button } from './Button';
 
 type PlayerAccountCardProps = {
@@ -20,7 +21,7 @@ export default function PlayerAccountCard({
           {currentPlayer.username}
         </p>
         <p className="text-[10px] md:text-xs opacity-80 font-bold uppercase tracking-widest">
-          Score: {currentPlayer.score}
+          Score: En attente de la partie
         </p>
       </div>
       <div className="flex gap-2">

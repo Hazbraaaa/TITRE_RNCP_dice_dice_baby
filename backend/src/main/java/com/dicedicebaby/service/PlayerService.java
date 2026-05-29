@@ -66,6 +66,20 @@ public class PlayerService {
   }
 
   @Transactional
+  public PlayerEntity getPlayerByToken(String token) {
+    // Get player from a username
+    PlayerEntity player = playerRepository.findByCurrentToken(token);
+
+    // Check if player found
+    if (player == null) {
+      throw new RuntimeException("Profil joueur introuvable");
+    }
+
+    // Return player from database
+    return player;
+  }
+
+  @Transactional
   public PlayerEntity createPlayerForGuest(String username, int playerNumber) {
     // Create a player for a guest
     PlayerEntity player = new PlayerEntity();

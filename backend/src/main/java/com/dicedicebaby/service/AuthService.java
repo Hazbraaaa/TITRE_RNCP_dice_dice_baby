@@ -2,7 +2,7 @@ package com.dicedicebaby.service;
 
 import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.request.*;
-import com.dicedicebaby.dto.response.PlayerResponseDTO;
+import com.dicedicebaby.dto.response.ConnectedPlayerResponseDTO;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
 import com.dicedicebaby.repository.AccountRepository;
@@ -53,8 +53,8 @@ public class AuthService {
 
   // region Methods
   @Transactional
-  public List<PlayerResponseDTO> getCurrentSession(String existingCookie) {
-    List<PlayerResponseDTO> players = new ArrayList<>();
+  public List<ConnectedPlayerResponseDTO> getCurrentSession(String existingCookie) {
+    List<ConnectedPlayerResponseDTO> players = new ArrayList<>();
 
     // Return empty list of players if no one connected
     if (existingCookie == null || existingCookie.isEmpty()) {
@@ -75,12 +75,11 @@ public class AuthService {
 
         // Add player to players list
         players.add(
-            new PlayerResponseDTO(
+            new ConnectedPlayerResponseDTO(
                 player.getId(),
                 player.getPlayerUsername(),
                 player.getIsGuest(),
-                player.getPlayerNumber(),
-                player.getScore()));
+                player.getPlayerNumber()));
 
       } catch (Exception e) {
         // If token is invalid or expired, ignore it
@@ -92,7 +91,7 @@ public class AuthService {
   }
 
   @Transactional
-  public PlayerResponseDTO register(
+  public ConnectedPlayerResponseDTO register(
       RegistrationRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Create account
     AccountEntity account =
@@ -109,16 +108,12 @@ public class AuthService {
     cookieUtils.addTokenToCookie(token, existingCookie, response);
 
     // Return PlayerDTO
-    return new PlayerResponseDTO(
-        player.getId(),
-        player.getPlayerUsername(),
-        player.getIsGuest(),
-        player.getPlayerNumber(),
-        player.getScore());
+    return new ConnectedPlayerResponseDTO(
+        player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
   @Transactional
-  public PlayerResponseDTO login(
+  public ConnectedPlayerResponseDTO login(
       LoginRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Check authentication
     AccountEntity account = accountService.getAccount(request.email(), request.password());
@@ -137,12 +132,8 @@ public class AuthService {
     cookieUtils.addTokenToCookie(token, existingCookie, response);
 
     // Return PlayerDTO
-    return new PlayerResponseDTO(
-        player.getId(),
-        player.getPlayerUsername(),
-        player.getIsGuest(),
-        player.getPlayerNumber(),
-        player.getScore());
+    return new ConnectedPlayerResponseDTO(
+        player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
   @Transactional
@@ -197,7 +188,7 @@ public class AuthService {
   }
 
   @Transactional
-  public PlayerResponseDTO guest(
+  public ConnectedPlayerResponseDTO guest(
       GuestRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Create player for a guest
     PlayerEntity player =
@@ -210,16 +201,12 @@ public class AuthService {
     // Add new token in existing cookie
     cookieUtils.addTokenToCookie(token, existingCookie, response);
 
-    return new PlayerResponseDTO(
-        player.getId(),
-        player.getPlayerUsername(),
-        player.getIsGuest(),
-        player.getPlayerNumber(),
-        player.getScore());
+    return new ConnectedPlayerResponseDTO(
+        player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
   @Transactional
-  public PlayerResponseDTO update(
+  public ConnectedPlayerResponseDTO update(
       UpdateRequestDTO request, HttpServletResponse response, String existingCookie) {
     // Check authentication
     AccountEntity account =
@@ -274,12 +261,8 @@ public class AuthService {
     playerRepository.save(player);
 
     // Return player
-    return new PlayerResponseDTO(
-        player.getId(),
-        player.getPlayerUsername(),
-        player.getIsGuest(),
-        player.getPlayerNumber(),
-        player.getScore());
+    return new ConnectedPlayerResponseDTO(
+        player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
   // endregion
 }
