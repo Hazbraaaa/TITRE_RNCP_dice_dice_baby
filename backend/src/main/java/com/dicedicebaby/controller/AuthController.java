@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.request.*;
 import com.dicedicebaby.dto.response.ConnectedPlayerResponseDTO;
 import com.dicedicebaby.service.AuthService;
@@ -29,7 +30,7 @@ public class AuthController {
   @GetMapping("/session")
   @ResponseStatus(HttpStatus.OK)
   public List<ConnectedPlayerResponseDTO> getCurrentSession(
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.getCurrentSession(existingCookie);
   }
 
@@ -38,7 +39,7 @@ public class AuthController {
   public ConnectedPlayerResponseDTO register(
       @Valid @RequestBody RegistrationRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.register(request, response, existingCookie);
   }
 
@@ -47,7 +48,7 @@ public class AuthController {
   public ConnectedPlayerResponseDTO login(
       @Valid @RequestBody LoginRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.login(request, response, existingCookie);
   }
 
@@ -56,7 +57,7 @@ public class AuthController {
   public void logout(
       @Valid @RequestBody LogoutRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     authService.logout(request, response, existingCookie);
   }
 
@@ -65,7 +66,7 @@ public class AuthController {
   public void delete(
       @Valid @RequestBody DeleteRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     authService.delete(request, response, existingCookie);
   }
 
@@ -74,7 +75,7 @@ public class AuthController {
   public ConnectedPlayerResponseDTO guest(
       @Valid @RequestBody GuestRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.guest(request, response, existingCookie);
   }
 
@@ -83,7 +84,7 @@ public class AuthController {
   public ConnectedPlayerResponseDTO update(
       @Valid @RequestBody UpdateRequestDTO request,
       HttpServletResponse response,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     return authService.update(request, response, existingCookie);
   }
   // endregion

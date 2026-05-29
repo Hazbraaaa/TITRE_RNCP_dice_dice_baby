@@ -34,7 +34,7 @@ public class AuthControllerIT {
     // No GIVEN
     // region WHEN
     mockMvc
-        .perform(get("/api/auth/session"))
+        .perform(get("/auth/session"))
         // endregion
         // region Then
         .andExpect(status().isOk());
@@ -53,7 +53,7 @@ public class AuthControllerIT {
     // Execute request and verify results
     mockMvc
         .perform(
-            post("/api/auth/register")
+            post("/auth/register")
                 // Mandatory to avoid 403 when security is enabled
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +68,6 @@ public class AuthControllerIT {
         // Validate cookie
         .andExpect(cookie().exists(Constant.COOKIE_NAME));
     // endregion
-
   }
 
   @Test
@@ -78,7 +77,7 @@ public class AuthControllerIT {
     RegistrationRequestDTO signup =
         new RegistrationRequestDTO("Pingu", "pingu@test.com", "pass", 1);
     mockMvc.perform(
-        post("/api/auth/register")
+        post("/auth/register")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(signup)));
@@ -91,7 +90,7 @@ public class AuthControllerIT {
     // Execute request and verify results
     mockMvc
         .perform(
-            post("/api/auth/login")
+            post("/auth/login")
                 // Mandatory to avoid 403 when security is enabled
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +118,7 @@ public class AuthControllerIT {
     // Execute request and verify results
     mockMvc
         .perform(
-            post("/api/auth/guest")
+            post("/auth/guest")
                 // Mandatory to avoid 403 when security is enabled
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)

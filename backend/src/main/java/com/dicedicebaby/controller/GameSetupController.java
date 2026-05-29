@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameSetupService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class GameSetupController {
   @GetMapping("/setup")
   @ResponseStatus(HttpStatus.CREATED)
   public GameResponseDTO setup(
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return Setup
     return gameSetupService.setupNewGame(existingCookie);
   }
