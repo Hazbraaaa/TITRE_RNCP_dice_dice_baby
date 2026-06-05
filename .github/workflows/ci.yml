@@ -27,10 +27,23 @@ jobs:
           cd backend
           mvn spotless:check compile
       
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          mvn test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+          SPRING_DATASOURCE_DRIVERCLASSNAME: org.h2.Driver
+          SPRING_DATASOURCE_USERNAME: sa
+          SPRING_DATASOURCE_PASSWORD: ""
+          SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+          SPRING_JPA_SHOW_SQL: "true"
+          SPRING_FLYWAY_ENABLED: "false"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Test Backend
+      - name: Build Backend Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -59,10 +72,15 @@ jobs:
           npm ci --legacy-peer-deps
           npm run lint
 
+      # - name: Run Frontend Tests
+      #   run: |
+      #     cd frontend
+      #     npm run test
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Test Frontend
+      - name: Build Frontend Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
