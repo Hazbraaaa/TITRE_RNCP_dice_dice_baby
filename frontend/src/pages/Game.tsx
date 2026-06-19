@@ -5,7 +5,15 @@ import { Button } from '../components/Button';
 import { useGame } from '../hooks/useGame';
 
 export default function Game() {
-  const { game, cards, dices, keptDiceIds, toggleDice, handleRoll } = useGame();
+  const {
+    game,
+    cards,
+    dices,
+    keptDiceIds,
+    toggleDice,
+    handleRoll,
+    handleEndTurn,
+  } = useGame();
 
   // If the game data is not yet available, show a loading state
   if (!game) {
@@ -78,6 +86,13 @@ export default function Game() {
               <span className="text-sm font-normal mt-1 opacity-80">
                 ({game.rollsLeft} restants)
               </span>
+            </Button>
+            <Button
+              variant={game.rollsLeft === 3 ? 'disabled' : 'warning'}
+              onClick={handleEndTurn}
+              disabled={game.rollsLeft === 3}
+            >
+              <div>FIN DU TOUR</div>
             </Button>
           </section>
         </div>

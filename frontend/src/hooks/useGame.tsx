@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { rollDices } from '../services/gameService';
+import { rollDices, endTurn } from '../services/gameService';
 import { setupNewGame } from '../services/gameSetupService';
 import type { Game } from '../types/game';
 
@@ -67,6 +67,25 @@ export const useGame = () => {
     }
   };
 
+  // Handler for ending turn, which will call the backend and update the game state with the new data
+  const handleEndTurn = async () => {
+    if (!game) return;
+
+    const keptDiceIds = game.diceSet.dices
+      .filter((d) => d.isKept)
+      .map((d) => d.id);
+
+    try {
+      const updatedGame: Game = await endTurn({
+        diceSetId: game.diceSet.id,
+        keptDiceIds,
+      });
+      setGame(updatedGame);
+    } catch (error) {
+      console.error('Erreur lors de lavérification de fin de tour:', error);
+    }
+  };
+
   // Return the game state and actions for use in the component
   return {
     game,
@@ -76,5 +95,6 @@ export const useGame = () => {
       game?.diceSet.dices.filter((d) => d.isKept).map((d) => d.id) || [],
     toggleDice,
     handleRoll,
+    handleEndTurn,
   };
 };
