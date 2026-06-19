@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.dto.request.EndTurnRequestDTO;
 import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameService;
@@ -27,8 +28,17 @@ public class GameController {
   public GameResponseDTO roll(
       @RequestBody RollRequestDTO request,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
-    // Return new dice set after roll
+    // Return updated game response after roll
     return gameService.rollDices(request);
+  }
+
+  @PostMapping("/end-turn")
+  @ResponseStatus(HttpStatus.OK)
+  public GameResponseDTO endTurn(
+      @RequestBody EndTurnRequestDTO request,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    // Return updated game response after end turn
+    return gameService.checkEndTurn(request);
   }
   // endregion
 }
