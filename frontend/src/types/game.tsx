@@ -7,6 +7,7 @@ export type GameState = 'IN_PROGRESS' | 'FINISHED';
 export interface Game {
   id: number;
   state: GameState;
+  rollsLeft: number;
   roundNumber: number;
   board: Card[];
   diceSet: DiceSet;

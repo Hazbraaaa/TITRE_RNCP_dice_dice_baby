@@ -26,6 +26,9 @@ public class GameEntity extends AuditableEntity {
   @JoinColumn(name = "current_player_id")
   private PlayerEntity currentPlayer;
 
+  @Column(nullable = false)
+  private int rollsLeft = 3;
+
   @Column private int roundNumber = 1;
 
   @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
@@ -93,6 +96,14 @@ public class GameEntity extends AuditableEntity {
 
   public void setRoundNumber(int roundNumber) {
     this.roundNumber = roundNumber;
+  }
+
+  public int getRollsLeft() {
+    return rollsLeft;
+  }
+
+  public void setRollsLeft(int rollsLeft) {
+    this.rollsLeft = rollsLeft;
   }
 
   // endregion

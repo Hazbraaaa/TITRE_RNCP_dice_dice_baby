@@ -17,6 +17,7 @@ public class GameMapper {
     return new GameResponseDTO(
         game.getId(),
         game.getState(),
+        game.getRollsLeft(),
         game.getRoundNumber(),
         boardDTO,
         diceSetDTO,

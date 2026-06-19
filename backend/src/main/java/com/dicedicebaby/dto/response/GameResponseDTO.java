@@ -6,6 +6,7 @@ import java.util.List;
 public record GameResponseDTO(
     Long id,
     GameState state,
+    int rollsLeft,
     int roundNumber,
     List<CardResponseDTO> board,
     DiceSetResponseDTO diceSet,

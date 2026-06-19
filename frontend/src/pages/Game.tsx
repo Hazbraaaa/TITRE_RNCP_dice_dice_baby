@@ -68,12 +68,16 @@ export default function Game() {
               onToggleDice={toggleDice}
             />
             <Button
-              variant="primary"
+              variant={game.rollsLeft <= 0 ? 'disabled' : 'primary'}
               fullWidth
-              className="py-6 text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+              className="flex flex-col items-center justify-center py-6 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
               onClick={handleRoll}
+              disabled={game.rollsLeft <= 0}
             >
-              LANCER !
+              <div>LANCER LES DÉS</div>
+              <span className="text-sm font-normal mt-1 opacity-80">
+                ({game.rollsLeft} restants)
+              </span>
             </Button>
           </section>
         </div>
