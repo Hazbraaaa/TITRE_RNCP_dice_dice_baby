@@ -18,20 +18,20 @@ export const BoardDice = ({ value, locked = false }: BoardDiceProps) => {
   return (
     <div
       className={`
-        relative w-14 h-14 md:w-16 md:h-16 rounded-xl border-4 flex items-center justify-center transition-all duration-200
+      relative w-12 h-12 md:w-14 md:h-14 rounded-xl border-[3px] md:border-4 flex items-center justify-center transition-all duration-200
         ${
           locked
-            ? 'bg-frost-white border-polar-blue shadow-none translate-y-1'
-            : 'bg-frost-white border-midnight-ice shadow-[4px_4px_0px_0px_rgba(1,54,89,1)]'
+            ? 'bg-frost-white border-polar-blue shadow-none translate-y-0.5'
+            : 'bg-frost-white border-midnight-ice shadow-[3px_3px_0px_0px_rgba(1,54,89,1)]'
         }
       `}
     >
-      <div className="grid grid-cols-3 grid-rows-3 gap-1 w-10 h-10 md:w-11 md:h-11">
+      <div className="grid grid-cols-3 grid-rows-3 gap-0.5 w-8 h-8 md:w-9 md:h-9">
         {[...Array(9)].map((_, i) => (
           <div key={i} className="flex items-center justify-center">
             {dots.includes(i) && (
               <div
-                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full ${
+                className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
                   locked ? 'bg-polar-blue' : 'bg-midnight-ice'
                 }`}
               />
@@ -42,11 +42,11 @@ export const BoardDice = ({ value, locked = false }: BoardDiceProps) => {
 
       {/* Petit badge "Check" en bas à droite si sélectionné */}
       {locked && (
-        <div className="absolute -bottom-2.5 -right-2.5 bg-polar-blue text-frost-white rounded-full p-0.5 border-2 border-midnight-ice shadow-sm flex items-center justify-center w-4 h-4 md:w-4.5 md:h-4.5 translate-y-[-4px]">
+        <div className="absolute -bottom-1.5 -right-1.5 bg-polar-blue text-frost-white rounded-full p-0.5 border-2 border-midnight-ice shadow-sm flex items-center justify-center w-4 h-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
-            className="w-3 h-3 md:w-3.5 md:h-3.5"
+            className="w-2.5 h-2.5"
             fill="currentColor"
           >
             <path
