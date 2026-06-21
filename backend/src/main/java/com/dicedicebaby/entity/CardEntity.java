@@ -1,6 +1,7 @@
 package com.dicedicebaby.entity;
 
 import com.dicedicebaby.enums.CardColor;
+import com.dicedicebaby.enums.CardRequirement;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,8 +12,9 @@ public class CardEntity extends AuditableEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Enumerated(EnumType.STRING)
   @Column(unique = true, nullable = false)
-  private String combination;
+  private CardRequirement combination;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
@@ -40,11 +42,11 @@ public class CardEntity extends AuditableEntity {
     this.id = id;
   }
 
-  public String getCombination() {
+  public CardRequirement getCombination() {
     return combination;
   }
 
-  public void setCombination(String combination) {
+  public void setCombination(CardRequirement combination) {
     this.combination = combination;
   }
 

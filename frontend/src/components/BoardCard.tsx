@@ -1,5 +1,6 @@
 import { colorVariants } from '../types/colorVariants';
 import type { Card } from '../types/card';
+import { CardRequirement } from '../types/enums/cardRequirement';
 
 type BoardCardProps = Card & {
   className?: string;
@@ -13,6 +14,8 @@ export const BoardCard = ({
   className = '',
 }: BoardCardProps) => {
   const colors = colorVariants[color];
+  const displayName =
+    CardRequirement[combination as keyof typeof CardRequirement] || combination;
 
   return (
     <div
@@ -22,7 +25,7 @@ export const BoardCard = ({
       <div
         className={`col-start-1 col-span-3 row-start-2 row-span-3 flex items-center justify-center ${colors.dark} rounded px-0.5 leading-tight`}
       >
-        {combination}
+        {displayName}
       </div>
 
       {/* Slot point Lvl1 */}
