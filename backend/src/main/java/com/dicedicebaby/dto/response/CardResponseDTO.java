@@ -1,10 +1,11 @@
 package com.dicedicebaby.dto.response;
 
 import com.dicedicebaby.enums.CardColor;
+import com.dicedicebaby.enums.CardRequirement;
 
 public record CardResponseDTO(
     Long id,
-    String combination,
+    CardRequirement combination,
     CardColor color,
     int pointLvl1,
     int pointLvl2,
