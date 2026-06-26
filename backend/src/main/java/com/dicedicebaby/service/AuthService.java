@@ -102,7 +102,7 @@ public class AuthService {
 
     // Generate and set current token to player
     String token = jwtUtils.generateToken(account.getUsername());
-    player.setCurrentToken(token);
+    player.setCurrentJwt(token);
 
     // Add new token in existing cookie
     cookieUtils.addTokenToCookie(token, existingCookie, response);
@@ -126,7 +126,7 @@ public class AuthService {
 
     // Generate and update token to player
     String token = jwtUtils.generateToken(account.getUsername());
-    player.setCurrentToken(token);
+    player.setCurrentJwt(token);
 
     // Add new token in existing cookie
     cookieUtils.addTokenToCookie(token, existingCookie, response);
@@ -196,7 +196,7 @@ public class AuthService {
 
     // Generate and set current token to player
     String token = jwtUtils.generateToken(request.username());
-    player.setCurrentToken(token);
+    player.setCurrentJwt(token);
 
     // Add new token in existing cookie
     cookieUtils.addTokenToCookie(token, existingCookie, response);
@@ -254,7 +254,7 @@ public class AuthService {
     // If username change, so change token from cookie
     if (usernameChanged) {
       String newToken = jwtUtils.generateToken(account.getUsername());
-      player.setCurrentToken(newToken);
+      player.setCurrentJwt(newToken);
       cookieUtils.updateTokenToCookie(oldToken, newToken, existingCookie, response);
     }
 

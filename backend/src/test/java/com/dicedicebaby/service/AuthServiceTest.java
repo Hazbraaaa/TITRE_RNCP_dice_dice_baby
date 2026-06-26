@@ -116,7 +116,7 @@ public class AuthServiceTest {
     // entity
     assertThat(result.username()).isEqualTo("Pingu");
     assertThat(result.isGuest()).isFalse();
-    verify(player).setCurrentToken("mock-jwt-token");
+    verify(player).setCurrentJwt("mock-jwt-token");
     verify(cookieUtils).addTokenToCookie(eq("mock-jwt-token"), eq(existingCookie), eq(response));
     // endregion
   }
@@ -156,7 +156,7 @@ public class AuthServiceTest {
     // entity
     assertThat(result.username()).isEqualTo("Pingu");
     verify(player).setPlayerNumber(2);
-    verify(player).setCurrentToken("new-token");
+    verify(player).setCurrentJwt("new-token");
     verify(cookieUtils).addTokenToCookie(eq("new-token"), eq(existingCookie), eq(response));
     // endregion
   }
@@ -189,7 +189,7 @@ public class AuthServiceTest {
     // and no interactions with accountService or jwtUtils
     assertThat(result.username()).isEqualTo("Pingu");
     assertThat(result.isGuest()).isTrue();
-    verify(player).setCurrentToken("guest-jwt-token");
+    verify(player).setCurrentJwt("guest-jwt-token");
     verify(cookieUtils).addTokenToCookie(eq("guest-jwt-token"), eq(existingCookie), eq(response));
     verifyNoInteractions(accountService);
     // endregion

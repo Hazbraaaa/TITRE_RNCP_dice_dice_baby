@@ -2,7 +2,7 @@ type PlayerProps = {
   number: number;
   name: string;
   score: number;
-  nb_of_pieces: number;
+  remainingChips: number;
   align?: 'left' | 'right';
   className?: string;
 };
@@ -11,7 +11,7 @@ export const Player = ({
   number,
   name,
   score,
-  nb_of_pieces,
+  remainingChips,
   align = 'left',
   className = '',
 }: PlayerProps) => {
@@ -44,7 +44,7 @@ export const Player = ({
           Score: {score}
         </span>
         <span className="text-midnight-ice/60 font-sans font-bold text-[10px]">
-          Pions: {nb_of_pieces}
+          Pions: {remainingChips}
         </span>
       </div>
     </div>

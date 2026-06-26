@@ -50,8 +50,8 @@ public class GameSetupServiceTest {
     player2.setId(2L);
     player2.setPlayerUsername("Pong");
 
-    when(playerRepository.findByCurrentToken("tokenPlayer1")).thenReturn(player1);
-    when(playerRepository.findByCurrentToken("tokenPlayer2")).thenReturn(player2);
+    when(playerRepository.findByCurrentJwt("tokenPlayer1")).thenReturn(player1);
+    when(playerRepository.findByCurrentJwt("tokenPlayer2")).thenReturn(player2);
 
     // Prepare board of 16 cards
     List<CardEntity> board = new ArrayList<>();

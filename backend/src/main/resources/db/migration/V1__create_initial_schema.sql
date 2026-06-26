@@ -24,7 +24,8 @@ CREATE TABLE players (
     account_id BIGINT UNIQUE,
     player_number INT,
     score INT,
-    current_token VARCHAR(255),
+    remaining_chips INT,
+    current_jwt VARCHAR(255),
 
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE,

@@ -111,6 +111,15 @@ public class GameService {
       throw new IllegalArgumentException("Les dés ne correspondent pas aux exigences de la carte.");
     }
 
+    // Get current player
+    PlayerEntity currentPlayer = game.getCurrentPlayer();
+
+    // Add score of game card for current player
+    currentPlayer.setScore(currentPlayer.getScore() + gameCard.getCard().getPointLvl1());
+
+    // Withdraw a token for current player
+    currentPlayer.setRemainingChips(currentPlayer.getRemainingChips() - 1);
+
     // Set new turn condition
     game = setNewTurn(game);
 

@@ -14,5 +14,5 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
 
   PlayerEntity findByAccountId(Long accountId);
 
-  PlayerEntity findByCurrentToken(String currentToken);
+  PlayerEntity findByCurrentJwt(String currentJwt);
 }
