@@ -6,11 +6,17 @@ import type { Game } from '../types/game';
 const STORAGE_KEY = 'DDB_game_info';
 
 export const useGame = () => {
+  // State to hold any alert messages for the user
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+
   // Store game in local state and sync with localStorage for persistence across reloads
   const [game, setGame] = useState<Game | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : null;
   });
+
+  // Store the currently selected card ID in local state
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
   // Extract relevant game data for the UI
   useEffect(() => {
@@ -48,6 +54,11 @@ export const useGame = () => {
     });
   };
 
+  // Local action to toggle card selection
+  const toggleSelectCard = (cardId: number) => {
+    setSelectedCardId((prev) => (prev === cardId ? null : cardId));
+  };
+
   // Handler for rolling the dice, which will call the backend and update the game state with the new data
   const handleRoll = async () => {
     if (!game) return;
@@ -79,22 +90,30 @@ export const useGame = () => {
       const updatedGame: Game = await endTurn({
         diceSetId: game.diceSet.id,
         keptDiceIds,
+        gameCardId: selectedCardId !== null ? selectedCardId : undefined,
       });
       setGame(updatedGame);
-    } catch (error) {
-      console.error('Erreur lors de lavérification de fin de tour:', error);
+      setSelectedCardId(null);
+      setAlertMessage(null);
+    } catch (error: any) {
+      console.error('Erreur lors de la vérification de fin de tour:', error);
+      setAlertMessage(error.message);
     }
   };
 
   // Return the game state and actions for use in the component
   return {
+    alertMessage,
     game,
     cards: game?.board || [],
     dices: game?.diceSet.dices || [],
     keptDiceIds:
       game?.diceSet.dices.filter((d) => d.isKept).map((d) => d.id) || [],
+    selectedCardId,
     toggleDice,
+    toggleSelectCard,
     handleRoll,
     handleEndTurn,
+    clearAlert: () => setAlertMessage(null),
   };
 };

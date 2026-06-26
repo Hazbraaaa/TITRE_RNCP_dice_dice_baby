@@ -37,6 +37,7 @@ export async function rollDices(payload: {
 export async function endTurn(payload: {
   diceSetId: number | null;
   keptDiceIds: number[];
+  gameCardId?: number;
 }) {
   try {
     // Send request with body to API to end the turn
