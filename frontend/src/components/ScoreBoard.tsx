@@ -6,7 +6,7 @@ type ScoreBoardProps = {
     number: number;
     name: string;
     score: number;
-    nb_of_pieces: number;
+    remainingChips: number;
   }[];
 };
 

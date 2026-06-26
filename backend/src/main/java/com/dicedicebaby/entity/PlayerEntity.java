@@ -24,11 +24,13 @@ public class PlayerEntity extends AuditableEntity {
 
   @Column private int score;
 
+  @Column private int remainingChips = 6;
+
   @ManyToOne
   @JoinColumn(name = "game_id")
   private GameEntity game;
 
-  @Column private String currentToken;
+  @Column private String currentJwt;
 
   // endregion
 
@@ -86,6 +88,14 @@ public class PlayerEntity extends AuditableEntity {
     this.score = score;
   }
 
+  public int getRemainingChips() {
+    return remainingChips;
+  }
+
+  public void setRemainingChips(int remainingChips) {
+    this.remainingChips = remainingChips;
+  }
+
   public GameEntity getGame() {
     return game;
   }
@@ -94,12 +104,12 @@ public class PlayerEntity extends AuditableEntity {
     this.game = game;
   }
 
-  public String getCurrentToken() {
-    return currentToken;
+  public String getCurrentJwt() {
+    return currentJwt;
   }
 
-  public void setCurrentToken(String currentToken) {
-    this.currentToken = currentToken;
+  public void setCurrentJwt(String currentJwt) {
+    this.currentJwt = currentJwt;
   }
   // endregion
 }

@@ -68,7 +68,7 @@ public class PlayerService {
   @Transactional
   public PlayerEntity getPlayerByToken(String token) {
     // Get player from a username
-    PlayerEntity player = playerRepository.findByCurrentToken(token);
+    PlayerEntity player = playerRepository.findByCurrentJwt(token);
 
     // Check if player found
     if (player == null) {

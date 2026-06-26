@@ -82,7 +82,7 @@ public class GameSetupService {
 
     // Get players from tokens
     for (String token : tokens) {
-      players.add(playerRepository.findByCurrentToken(token));
+      players.add(playerRepository.findByCurrentJwt(token));
     }
 
     // Return players

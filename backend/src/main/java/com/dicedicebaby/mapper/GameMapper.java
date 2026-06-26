@@ -65,7 +65,8 @@ public class GameMapper {
 
   private PlayerInGameResponseDTO mapToPlayerInGameDTO(PlayerEntity player) {
     if (player == null) return null;
+
     return new PlayerInGameResponseDTO(
-        player.getId(), player.getPlayerUsername(), player.getScore(), 6);
+        player.getId(), player.getPlayerUsername(), player.getScore(), player.getRemainingChips());
   }
 }

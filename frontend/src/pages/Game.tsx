@@ -38,7 +38,7 @@ export default function Game() {
     number: index + 1,
     name: player.username || `Joueur ${player.playerId}`,
     score: player.score,
-    nb_of_pieces: player.nbOfPieces,
+    remainingChips: player.remainingChips,
     isCurrent: player.playerId === game.currentPlayer.playerId,
   }));
 
