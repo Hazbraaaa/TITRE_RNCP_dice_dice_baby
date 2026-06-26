@@ -3,16 +3,21 @@ import Hand from '../components/Hand';
 import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
 import { useGame } from '../hooks/useGame';
+import Snackbar from '../components/SnackBar';
 
 export default function Game() {
   const {
+    alertMessage,
     game,
     cards,
     dices,
     keptDiceIds,
+    selectedCardId,
     toggleDice,
+    toggleSelectCard,
     handleRoll,
     handleEndTurn,
+    clearAlert,
   } = useGame();
 
   // If the game data is not yet available, show a loading state
@@ -88,9 +93,13 @@ export default function Game() {
               </span>
             </Button>
             <Button
-              variant={game.rollsLeft === 3 ? 'disabled' : 'warning'}
+              variant={
+                game.rollsLeft === 3 || selectedCardId === null
+                  ? 'disabled'
+                  : 'warning'
+              }
               onClick={handleEndTurn}
-              disabled={game.rollsLeft === 3}
+              disabled={game.rollsLeft === 3 || selectedCardId === null}
             >
               <div>FIN DU TOUR</div>
             </Button>
@@ -100,10 +109,17 @@ export default function Game() {
         {/* Game Board */}
         <div className="lg:col-span-8 order-2">
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm p-2 md:p-6 shadow-inner">
-            <GameBoard cards={cards} />
+            <GameBoard
+              cards={cards}
+              selectedCardId={selectedCardId}
+              onToggleCard={toggleSelectCard}
+            />
           </section>
         </div>
       </div>
+
+      {/* Snackbar */}
+      <Snackbar message={alertMessage} onClose={clearAlert} />
     </main>
   );
 }

@@ -133,6 +133,11 @@ public class GameService {
                     new RuntimeException(
                         "Joueur suivant introuvable pour le numéro : " + nextPlayerNumber));
 
+    // If next player number is one it's the end of the round, so increase round number
+    if (nextPlayerNumber == 1) {
+      game.setRoundNumber(game.getRoundNumber() + 1);
+    }
+
     // Change current player for game
     game.setCurrentPlayer(nextPlayer);
 
