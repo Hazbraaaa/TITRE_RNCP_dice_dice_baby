@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { rollDices, endTurn } from '../services/gameService';
+import { rollDices, endTurn, skipTurn } from '../services/gameService';
 import { setupNewGame } from '../services/gameSetupService';
 import type { Game } from '../types/game';
 
@@ -69,7 +69,7 @@ export const useGame = () => {
 
     try {
       const updatedGame: Game = await rollDices({
-        diceSetId: game.diceSet.id,
+        gameId: game.id,
         keptDiceIds,
       });
       setGame(updatedGame);
@@ -80,17 +80,29 @@ export const useGame = () => {
 
   // Handler for ending turn, which will call the backend and update the game state with the new data
   const handleEndTurn = async () => {
-    if (!game) return;
-
-    const keptDiceIds = game.diceSet.dices
-      .filter((d) => d.isKept)
-      .map((d) => d.id);
+    if (!game || !selectedCardId) return;
 
     try {
       const updatedGame: Game = await endTurn({
-        diceSetId: game.diceSet.id,
-        keptDiceIds,
-        gameCardId: selectedCardId !== null ? selectedCardId : undefined,
+        gameId: game.id,
+        gameCardId: selectedCardId,
+      });
+      setGame(updatedGame);
+      setSelectedCardId(null);
+      setAlertMessage(null);
+    } catch (error: any) {
+      console.error('Erreur lors de la vérification de fin de tour:', error);
+      setAlertMessage(error.message);
+    }
+  };
+
+  // Handler for skipping turn, which will call the backend and update the game state with the new data
+  const handleSkipTurn = async () => {
+    if (!game) return;
+
+    try {
+      const updatedGame: Game = await skipTurn({
+        gameId: game.id,
       });
       setGame(updatedGame);
       setSelectedCardId(null);
@@ -114,6 +126,7 @@ export const useGame = () => {
     toggleSelectCard,
     handleRoll,
     handleEndTurn,
+    handleSkipTurn,
     clearAlert: () => setAlertMessage(null),
   };
 };
