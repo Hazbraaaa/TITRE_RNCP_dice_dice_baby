@@ -17,6 +17,7 @@ export default function Game() {
     toggleSelectCard,
     handleRoll,
     handleEndTurn,
+    handleSkipTurn,
     clearAlert,
   } = useGame();
 
@@ -73,13 +74,16 @@ export default function Game() {
             <ScoreBoard players={playersForBoard} />
           </section>
 
-          {/* Hand */}
+          {/* Action zone */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[6px_6px_0px_0px_rgba(1,54,89,1)] p-6 flex flex-col gap-4">
+            {/* Hand of dices */}
             <Hand
               hand={dices}
               selectedIds={keptDiceIds}
               onToggleDice={toggleDice}
             />
+
+            {/* Throw Button */}
             <Button
               variant={game.rollsLeft <= 0 ? 'disabled' : 'primary'}
               fullWidth
@@ -92,6 +96,8 @@ export default function Game() {
                 ({game.rollsLeft} restants)
               </span>
             </Button>
+
+            {/* End Turn Button */}
             <Button
               variant={
                 game.rollsLeft === 3 || selectedCardId === null
@@ -103,6 +109,13 @@ export default function Game() {
             >
               <div>FIN DU TOUR</div>
             </Button>
+
+            {/* Skip Turn Button (only if no more rolls left) */}
+            {game.rollsLeft === 0 && (
+              <Button variant="warning" onClick={handleSkipTurn}>
+                <div>PASSER LE TOUR</div>
+              </Button>
+            )}
           </section>
         </div>
 

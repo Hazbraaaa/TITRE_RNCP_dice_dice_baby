@@ -2,6 +2,7 @@ package com.dicedicebaby.controller;
 
 import com.dicedicebaby.dto.request.EndTurnRequestDTO;
 import com.dicedicebaby.dto.request.RollRequestDTO;
+import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,15 @@ public class GameController {
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
     // Return updated game response after end turn
     return gameService.checkEndTurn(request);
+  }
+
+  @PostMapping("/skip-turn")
+  @ResponseStatus(HttpStatus.OK)
+  public GameResponseDTO skipTurn(
+      @RequestBody SkipTurnRequestDTO request,
+      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+    // Return updated game response after end turn
+    return gameService.skipTurn(request);
   }
   // endregion
 }

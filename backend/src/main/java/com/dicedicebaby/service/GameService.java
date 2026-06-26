@@ -2,6 +2,7 @@ package com.dicedicebaby.service;
 
 import com.dicedicebaby.dto.request.EndTurnRequestDTO;
 import com.dicedicebaby.dto.request.RollRequestDTO;
+import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.entity.*;
 import com.dicedicebaby.mapper.GameMapper;
@@ -47,21 +48,19 @@ public class GameService {
 
   @Transactional
   public GameResponseDTO rollDices(RollRequestDTO request) {
-    DiceSetEntity diceSet =
-        diceSetRepository
-            .findById(request.diceSetId())
-            .orElseThrow(() -> new RuntimeException("DiceSet introuvable"));
-
-    // Get game from diceset id
-    GameEntity game = diceSet.getGame();
-    if (game == null) {
-      throw new RuntimeException("Partie introuvable en base");
-    }
+    // Get game from game id
+    GameEntity game =
+        gameRepository
+            .findById(request.gameId())
+            .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
 
     // Check if there is rolls left
     if (game.getRollsLeft() <= 0) {
       throw new RuntimeException("Plus de lancers disponibles pour ce tour");
     }
+
+    // Get dice set from game
+    DiceSetEntity diceSet = game.getDiceSet();
 
     // Throw the dices
     for (DiceEntity dice : diceSet.getDices()) {
@@ -84,18 +83,14 @@ public class GameService {
 
   @Transactional
   public GameResponseDTO checkEndTurn(EndTurnRequestDTO request) {
-    // Get dice set from request
-    DiceSetEntity diceSet =
-        diceSetRepository
-            .findById(request.diceSetId())
-            .orElseThrow(() -> new RuntimeException("DiceSet introuvable"));
+    // Get game from game id
+    GameEntity game =
+        gameRepository
+            .findById(request.gameId())
+            .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
 
-    // TODO --- envoyer l'id de la game ou la recuperer autrement que depuis le diceset
-    // Get game from diceset id
-    GameEntity game = diceSet.getGame();
-    if (game == null) {
-      throw new RuntimeException("Partie introuvable en base");
-    }
+    // Get dice set from game
+    DiceSetEntity diceSet = game.getDiceSet();
 
     // Get game card from request
     GameCardEntity gameCard =
@@ -116,7 +111,27 @@ public class GameService {
       throw new IllegalArgumentException("Les dés ne correspondent pas aux exigences de la carte.");
     }
 
-    // region SET NEW TURN
+    // Set new turn condition
+    game = setNewTurn(game);
+
+    return gameMapper.mapToGameResponseDTO(game);
+  }
+
+  @Transactional
+  public GameResponseDTO skipTurn(SkipTurnRequestDTO request) {
+    // Get game from game id
+    GameEntity game =
+        gameRepository
+            .findById(request.gameId())
+            .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
+
+    // Set new turn condition
+    game = setNewTurn(game);
+
+    return gameMapper.mapToGameResponseDTO(game);
+  }
+
+  private GameEntity setNewTurn(GameEntity game) {
     // Get total players for game
     int totalPlayers = game.getPlayers().size();
 
@@ -141,16 +156,18 @@ public class GameService {
     // Change current player for game
     game.setCurrentPlayer(nextPlayer);
 
-    // Reset diceset to unkept dices
+    // Get dice set of game
+    DiceSetEntity diceSet = game.getDiceSet();
+
+    // Reset dice set to unkept dices
     if (diceSet.getDices() != null) {
       diceSet.getDices().forEach(dice -> dice.setKept(false));
     }
 
     // Reset rolls left to 3
     game.setRollsLeft(3);
-    // endregion
 
-    return gameMapper.mapToGameResponseDTO(game);
+    return game;
   }
   // endregion
 }
