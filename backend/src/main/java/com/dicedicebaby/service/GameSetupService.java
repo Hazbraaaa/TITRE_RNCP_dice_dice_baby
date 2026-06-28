@@ -49,9 +49,11 @@ public class GameSetupService {
     // Get players from cookie in game
     List<PlayerEntity> players = extractPlayersFromCookie(existingCookie);
 
-    // Set game in every players
+    // Set game in every players, and reset score and remaining chips
     for (PlayerEntity player : players) {
       player.setGame(game);
+      player.setScore(0);
+      player.setRemainingChips(6);
     }
 
     game.setPlayers(players);

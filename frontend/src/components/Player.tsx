@@ -1,3 +1,5 @@
+import { PLAYER_THEMES } from '../styles/playerThemes';
+
 type PlayerProps = {
   number: number;
   name: string;
@@ -17,6 +19,9 @@ export const Player = ({
 }: PlayerProps) => {
   const isRight = align === 'right';
 
+  // On récupère le thème du joueur actuel
+  const theme = PLAYER_THEMES[number];
+
   return (
     <div
       className={`
@@ -29,8 +34,13 @@ export const Player = ({
       `}
     >
       {/* Player number icon */}
-      <div className="flex-shrink-0 w-8 h-8 bg-polar-blue border-2 border-midnight-ice flex items-center justify-center rounded-full text-white font-heading text-xs shadow-sm">
-        {number}
+      <div className="flex-shrink-0 w-9 h-9 border-2 border-midnight-ice flex items-center justify-center rounded-full bg-polar-blue overflow-hidden shadow-sm relative">
+        {' '}
+        <img
+          src={theme.penguinSrc}
+          alt={`Joueur ${number}`}
+          className="w-full h-full object-cover scale-130 object-[center_top]"
+        />
       </div>
 
       {/* Player Info */}
