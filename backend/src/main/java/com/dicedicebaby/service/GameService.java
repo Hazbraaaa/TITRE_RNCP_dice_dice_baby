@@ -114,8 +114,8 @@ public class GameService {
     // Get current player
     PlayerEntity currentPlayer = game.getCurrentPlayer();
 
-    // Add score of game card for current player
-    currentPlayer.setScore(currentPlayer.getScore() + gameCard.getCard().getPointLvl1());
+    // Assign points, owner slot and handle business rules
+    assignCardPointsAndOwner(currentPlayer, gameCard);
 
     // Withdraw a token for current player
     currentPlayer.setRemainingChips(currentPlayer.getRemainingChips() - 1);
@@ -177,6 +177,24 @@ public class GameService {
     game.setRollsLeft(3);
 
     return game;
+  }
+
+  private void assignCardPointsAndOwner(PlayerEntity currentPlayer, GameCardEntity gameCard) {
+    if (currentPlayer.equals(gameCard.getOwnerPointLvl1())
+        || currentPlayer.equals(gameCard.getOwnerPointLvl2())) {
+      throw new IllegalArgumentException("Vous avez déjà validé cette carte.");
+    }
+
+    // Add score and make current player owner of the right level point for this game card
+    if (gameCard.getOwnerPointLvl1() == null) {
+      gameCard.setOwnerPointLvl1(currentPlayer);
+      currentPlayer.setScore(currentPlayer.getScore() + gameCard.getCard().getPointLvl1());
+    } else if (gameCard.getOwnerPointLvl2() == null) {
+      gameCard.setOwnerPointLvl2(currentPlayer);
+      currentPlayer.setScore(currentPlayer.getScore() + gameCard.getCard().getPointLvl2());
+    } else {
+      throw new IllegalArgumentException("Cette carte est déjà entièrement prise.");
+    }
   }
   // endregion
 }

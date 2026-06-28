@@ -32,12 +32,12 @@ public class GameMapper {
               CardEntity card = gameCard.getCard();
 
               // Check if owner is null
-              Integer owner1 =
+              Integer ownerPointLvl1 =
                   (gameCard.getOwnerPointLvl1() != null)
                       ? gameCard.getOwnerPointLvl1().getPlayerNumber()
                       : null;
 
-              Integer owner2 =
+              Integer ownerPointLvl2 =
                   (gameCard.getOwnerPointLvl2() != null)
                       ? gameCard.getOwnerPointLvl2().getPlayerNumber()
                       : null;
@@ -48,8 +48,8 @@ public class GameMapper {
                   card.getColor(),
                   card.getPointLvl1(),
                   card.getPointLvl2(),
-                  owner1,
-                  owner2);
+                  ownerPointLvl1,
+                  ownerPointLvl2);
             })
         .toList();
   }

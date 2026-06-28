@@ -19,14 +19,14 @@ export const CardRequirement = {
   SUM_21_22_23: 'Somme 21, 22 ou 23',
   LESS_THAN_9: 'Moins ou égale à 9',
   GREATER_THAN_26: 'Plus ou égale à 26',
-  ALL_EVEN: 'Toutes paires',
-  ALL_ODD: 'Toutes impaires',
-  SMALL_STRAIGHT: 'Suite petite',
-  LARGE_STRAIGHT: 'Suite grande',
-  FULL_HOUSE: 'Full house',
+  ALL_EVEN: 'Tous paires',
+  ALL_ODD: 'Tous impaires',
+  SMALL_STRAIGHT: 'Petite suite ',
+  LARGE_STRAIGHT: 'Grande suite',
+  FULL_HOUSE: 'Full',
   FOUR_OF_A_KIND: 'Carré',
-  ALL_DIFFERENT: 'Toutes différentes',
-  ALL_IDENTICAL: 'Toutes identiques',
+  ALL_DIFFERENT: 'Tous différents',
+  ALL_IDENTICAL: "Yam's",
 } as const;
 
 export type CardRequirement =

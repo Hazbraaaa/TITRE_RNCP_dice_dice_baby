@@ -1,4 +1,5 @@
 import { colorVariants } from '../types/colorVariants';
+import { PLAYER_THEMES } from '../styles/playerThemes';
 import type { Card } from '../types/card';
 import { CardRequirement } from '../types/enums/cardRequirement';
 
@@ -14,6 +15,8 @@ export const BoardCard = ({
   color,
   pointLvl1,
   pointLvl2,
+  ownerPointLvl1,
+  ownerPointLvl2,
   className = '',
   selectedCardId,
   onToggleCard,
@@ -38,16 +41,34 @@ export const BoardCard = ({
 
       {/* Slot point Lvl1 */}
       <div
-        className={`col-start-4 row-start-1 flex items-center justify-center w-4 h-4 text-[10px] ${colors.dark} rounded-full self-center justify-self-center`}
+        className={`relative col-start-4 row-start-1 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} rounded-full self-center justify-self-center`}
       >
         {pointLvl1}
+        {ownerPointLvl1 !== null && ownerPointLvl1 !== undefined && (
+          <div className="absolute inset-0 rounded-full flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
+            <img
+              src={PLAYER_THEMES[ownerPointLvl1]?.penguinSrc}
+              alt={`Joueur ${ownerPointLvl1}`}
+              className="w-full h-full object-cover scale-130 object-[center_top]"
+            />
+          </div>
+        )}
       </div>
 
       {/* Slot point Lvl2 */}
       <div
-        className={`col-start-4 row-start-2 flex items-center justify-center w-4 h-4 text-[10px] ${colors.dark} opacity-80 rounded-full border border-white/20 self-center justify-self-center`}
+        className={`relative col-start-4 row-start-2 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} opacity-80 rounded-full border border-white/20 self-center justify-self-center`}
       >
         {pointLvl2}
+        {ownerPointLvl2 !== null && ownerPointLvl2 !== undefined && (
+          <div className="absolute inset-0 rounded-full flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
+            <img
+              src={PLAYER_THEMES[ownerPointLvl2]?.penguinSrc}
+              alt={`Joueur ${ownerPointLvl2}`}
+              className="w-full h-full object-cover scale-130 object-[center_top]"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
