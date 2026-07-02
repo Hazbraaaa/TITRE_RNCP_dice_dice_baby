@@ -5,6 +5,7 @@ import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.entity.*;
+import com.dicedicebaby.enums.GameState;
 import com.dicedicebaby.mapper.GameMapper;
 import com.dicedicebaby.repository.DiceSetRepository;
 import com.dicedicebaby.repository.GameCardRepository;
@@ -120,8 +121,14 @@ public class GameService {
     // Withdraw a token for current player
     currentPlayer.setRemainingChips(currentPlayer.getRemainingChips() - 1);
 
-    // Set new turn condition
-    game = setNewTurn(game);
+    // Update game if where is a winner and game is finished
+    updateGameStateAndWinner(game);
+
+    // If game state is still in progress
+    if (game.getState() == GameState.IN_PROGRESS) {
+      // Set new turn condition
+      setNewTurn(game);
+    }
 
     return gameMapper.mapToGameResponseDTO(game);
   }
@@ -135,12 +142,31 @@ public class GameService {
             .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
 
     // Set new turn condition
-    game = setNewTurn(game);
+    setNewTurn(game);
 
     return gameMapper.mapToGameResponseDTO(game);
   }
 
-  private GameEntity setNewTurn(GameEntity game) {
+  private void updateGameStateAndWinner(GameEntity game) {
+    // Get current player
+    PlayerEntity currentPlayer = game.getCurrentPlayer();
+
+    // Get conditions of victory
+    boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == 0;
+    boolean hasReachedTargetScore = currentPlayer.getScore() >= 15;
+
+    // If one condition is check set winner and game as finished
+    if (hasNoChipsLeft || hasReachedTargetScore) {
+      game.setState(GameState.FINISHED);
+      game.setWinner(currentPlayer);
+    }
+    // Else keep game in progress
+    else {
+      game.setState(GameState.IN_PROGRESS);
+    }
+  }
+
+  private void setNewTurn(GameEntity game) {
     // Get total players for game
     int totalPlayers = game.getPlayers().size();
 
@@ -175,8 +201,6 @@ public class GameService {
 
     // Reset rolls left to 3
     game.setRollsLeft(3);
-
-    return game;
   }
 
   private void assignCardPointsAndOwner(PlayerEntity currentPlayer, GameCardEntity gameCard) {

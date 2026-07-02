@@ -13,6 +13,7 @@ public class GameMapper {
     PlayerInGameResponseDTO currentPlayerDTO = mapToPlayerInGameDTO(game.getCurrentPlayer());
     List<PlayerInGameResponseDTO> playersDTO =
         game.getPlayers().stream().map(this::mapToPlayerInGameDTO).toList();
+    Long winnerId = game.getWinner() != null ? game.getWinner().getId() : null;
 
     return new GameResponseDTO(
         game.getId(),
@@ -22,7 +23,8 @@ public class GameMapper {
         boardDTO,
         diceSetDTO,
         currentPlayerDTO,
-        playersDTO);
+        playersDTO,
+        winnerId);
   }
 
   private List<CardResponseDTO> mapToBoardResponseDTO(BoardEntity board) {
