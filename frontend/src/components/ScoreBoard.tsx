@@ -10,7 +10,9 @@ type ScoreBoardProps = {
   }[];
 };
 
-export default function ScoreBoard({ players = [] }: ScoreBoardProps) {
+export default function ScoreBoard({ 
+  players = [] 
+}: ScoreBoardProps) {
   return (
     <div className="grid grid-cols-2 gap-4 bg-transparent">
       {players.map((player, index) => (

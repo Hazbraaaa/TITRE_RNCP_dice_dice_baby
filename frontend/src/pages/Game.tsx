@@ -33,9 +33,11 @@ export default function Game() {
   }
 
   // Transform the players data for the ScoreBoard component
-  const playersForBoard = game.players.map((player, index) => ({
+  const playersForBoard = [...game.players]
+  .sort((a, b) => a.playerNumber - b.playerNumber)
+  .map((player) => ({
     id: player.playerId,
-    number: index + 1,
+    number: player.playerNumber,
     name: player.username || `Joueur ${player.playerId}`,
     score: player.score,
     remainingChips: player.remainingChips,
@@ -49,18 +51,6 @@ export default function Game() {
         <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
           Dice Dice <span className="text-red-alert">Baby</span>
         </h1>
-
-        {/* Game info (MOVE ELSEWHERE) */}
-        <div className="mt-2 font-heading text-xs md:text-sm text-midnight-ice/60 uppercase tracking-wider">
-          Manche{' '}
-          <span className="text-midnight-ice font-bold">
-            #{game.roundNumber}
-          </span>{' '}
-          — Au tour de :{' '}
-          <span className="text-red-alert font-bold">
-            {game.currentPlayer.username}
-          </span>
-        </div>
       </header>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -68,9 +58,17 @@ export default function Game() {
         <div className="lg:col-span-4 flex flex-col gap-6 order-1">
           {/* Scoreboard */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-4">
-            <h2 className="font-heading text-midnight-ice/60 text-xs uppercase mb-3 ml-1">
-              Tableau des scores
-            </h2>
+            {/* Game info (MOVE ELSEWHERE) */}
+            <div className="mb-2 font-heading text-xs md:text-sm text-midnight-ice/60 uppercase tracking-wider">
+              Manche{' '}
+              <span className="text-midnight-ice font-bold">
+                {game.roundNumber}
+              </span>
+              {' '}— Au tour de :{' '}
+              <span className="text-red-alert font-bold">
+                {game.currentPlayer.username}
+              </span>
+            </div>
             <ScoreBoard players={playersForBoard} />
           </section>
 

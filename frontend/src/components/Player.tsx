@@ -18,8 +18,6 @@ export const Player = ({
   className = '',
 }: PlayerProps) => {
   const isRight = align === 'right';
-
-  // On récupère le thème du joueur actuel
   const theme = PLAYER_THEMES[number];
 
   return (

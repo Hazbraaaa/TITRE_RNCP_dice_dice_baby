@@ -75,7 +75,7 @@ export const BoardCard = ({
 
       {/* Slot point Lvl2 */}
       <div
-        className={`relative col-start-4 row-start-2 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} opacity-80 rounded-full border border-white/20 self-center justify-self-center`}
+        className={`relative col-start-4 row-start-2 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} rounded-full self-center justify-self-center`}
       >
         {pointLvl2}
         {ownerPointLvl2 !== null && ownerPointLvl2 !== undefined && (
