@@ -67,6 +67,10 @@ public class GameMapper {
     if (player == null) return null;
 
     return new PlayerInGameResponseDTO(
-        player.getId(), player.getPlayerUsername(), player.getScore(), player.getRemainingChips());
+        player.getId(),
+        player.getPlayerNumber(),
+        player.getPlayerUsername(),
+        player.getScore(),
+        player.getRemainingChips());
   }
 }

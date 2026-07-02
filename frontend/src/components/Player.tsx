@@ -18,8 +18,6 @@ export const Player = ({
   className = '',
 }: PlayerProps) => {
   const isRight = align === 'right';
-
-  // On récupère le thème du joueur actuel
   const theme = PLAYER_THEMES[number];
 
   return (
@@ -28,7 +26,7 @@ export const Player = ({
         flex items-center gap-3 p-2
         bg-frost-white border-2 border-midnight-ice 
         shadow-[3px_3px_0px_0px_rgba(1,54,89,1)]
-        rounded-sm min-w-[160px]
+        rounded-sm min-w-[140px] sm:min-w-[160px]
         ${isRight ? 'flex-row-reverse text-right' : 'flex-row text-left'}
         ${className}
       `}

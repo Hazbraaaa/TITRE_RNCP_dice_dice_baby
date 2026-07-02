@@ -1,10 +1,10 @@
-import type { CardRequirement } from './enums/cardRequirement';
+import type { eCardRequirement } from './enums/eCardRequirement';
 
 export type CardColor = 'green' | 'blue' | 'red';
 
 export interface Card {
   id: number;
-  combination: CardRequirement;
+  combination: eCardRequirement;
   color: CardColor;
   pointLvl1: number;
   pointLvl2: number;
