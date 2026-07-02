@@ -1,7 +1,8 @@
 import { colorVariants } from '../types/colorVariants';
 import { PLAYER_THEMES } from '../styles/playerThemes';
 import type { Card } from '../types/card';
-import { CardRequirement } from '../types/enums/cardRequirement';
+import { eCardRequirement } from '../types/enums/eCardRequirement';
+import { eDiceContext } from '../types/enums/eDiceContext';
 import { BoardDice } from './BoardDice';
 import { getUiForCombination } from '../features/game/helpers/cardUIMapper';
 
@@ -24,18 +25,24 @@ export const BoardCard = ({
   onToggleCard,
 }: BoardCardProps) => {
   const colors = colorVariants[color];
-  const displayName = CardRequirement[combination as keyof typeof CardRequirement] || combination;
+  const displayName =
+    eCardRequirement[combination as keyof typeof eCardRequirement] ||
+    combination;
   const isSelected = selectedCardId === id;
-  const ui = getUiForCombination(combination as keyof typeof CardRequirement, displayName);
+  const ui = getUiForCombination(
+    combination as keyof typeof eCardRequirement,
+    displayName
+  );
 
-  const maxWithDiceMap = {
-    2: 'max-w-[52px]',
-    3: 'max-w-[76px]',
-  };
+  const maxDice = ui.type === 'dice' ? ui.maxDicePerLine : 3;
+  const containerWidth =
+    maxDice === 2
+      ? 'max-w-[54px] md:max-w-[64px]'
+      : 'max-w-[78px] md:max-w-[96px]';
 
   return (
     <div
-      className={`aspect-square w-full grid grid-cols-4 grid-rows-4 gap-1.5 ${colors.base} rounded-md p-1.5 relative text-white text-[10px] text-center font-semibold cursor-pointer transition-all ${isSelected ? 'ring-2 ring-midnight-ice scale-105 z-10 shadow-lg' : 'hover:scale-105'} ${className}`} 
+      className={`aspect-square w-full grid grid-cols-4 grid-rows-4 gap-1.5 ${colors.base} rounded-md p-1.5 relative text-white text-[10px] text-center font-semibold cursor-pointer transition-all ${isSelected ? 'ring-2 ring-midnight-ice scale-105 z-10 shadow-lg' : 'hover:scale-105'} ${className}`}
       onClick={() => onToggleCard(id)}
     >
       {/* Combination */}
@@ -43,15 +50,35 @@ export const BoardCard = ({
         className={`col-start-1 col-span-3 row-start-2 row-span-3 flex items-center justify-center ${colors.dark} rounded px-0.5 p-1 leading-tight`}
       >
         {ui.type === 'dice' ? (
-          <div
-            className={`flex flex-wrap gap-1 justify-center items-center mx-auto ${maxWithDiceMap[ui.maxDicePerLine]}`}
-          >
-            {ui.values.map((faceValue, index) => (
-              <BoardDice key={index} value={faceValue} size="sm" />
-            ))}
+          <div className="w-full h-full flex justify-center items-center">
+            {/* Mobile version */}
+            <div
+              className={`md:hidden flex flex-wrap gap-0.5 justify-center items-center content-center w-full h-full ${containerWidth}`}
+            >
+              {ui.values.map((faceValue, index) => (
+                <BoardDice
+                  key={`mb-${id}-${index}`}
+                  value={faceValue}
+                  context={eDiceContext.CARD_MOBILE}
+                />
+              ))}
+            </div>
+
+            {/* Desktop version */}
+            <div
+              className={`hidden md:flex flex-wrap gap-1 justify-center items-center content-center w-full h-full ${containerWidth}`}
+            >
+              {ui.values.map((faceValue, index) => (
+                <BoardDice
+                  key={`dt-${id}-${index}`}
+                  value={faceValue}
+                  context={eDiceContext.CARD_DESKTOP}
+                />
+              ))}
+            </div>
           </div>
         ) : (
-          <span className="uppercase text-bold text-[9px] md:text-[10px] whitespace-pre-line px-0.5">
+          <span className="uppercase text-[8px] md:text-xs whitespace-pre-line px-0.5">
             {ui.label}
           </span>
         )}
@@ -59,7 +86,7 @@ export const BoardCard = ({
 
       {/* Slot point Lvl1 */}
       <div
-        className={`relative col-start-4 row-start-1 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} rounded-full self-center justify-self-center`}
+        className={`relative col-start-4 row-start-1 flex items-center justify-center w-3.5 h-3.5 md:w-6 md:h-6 text-[8px] md:text-xs ${colors.dark} rounded-full self-center justify-self-center`}
       >
         {pointLvl1}
         {ownerPointLvl1 !== null && ownerPointLvl1 !== undefined && (
@@ -75,7 +102,7 @@ export const BoardCard = ({
 
       {/* Slot point Lvl2 */}
       <div
-        className={`relative col-start-4 row-start-2 flex items-center justify-center w-6 h-6 text-[10px] ${colors.dark} rounded-full self-center justify-self-center`}
+        className={`relative col-start-4 row-start-2 flex items-center justify-center w-3.5 h-3.5 md:w-6 md:h-6 text-[8px] md:text-xs ${colors.dark} rounded-full self-center justify-self-center`}
       >
         {pointLvl2}
         {ownerPointLvl2 !== null && ownerPointLvl2 !== undefined && (
@@ -88,6 +115,6 @@ export const BoardCard = ({
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 };

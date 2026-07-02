@@ -1,4 +1,4 @@
-export const CardRequirement = {
+export const eCardRequirement = {
   // Pairs
   PAIR_1: 'Paire de 1',
   PAIR_2: 'Paire de 2',
@@ -29,5 +29,5 @@ export const CardRequirement = {
   ALL_IDENTICAL: "Yam's",
 } as const;
 
-export type CardRequirement =
-  (typeof CardRequirement)[keyof typeof CardRequirement];
+export type eCardRequirement =
+  (typeof eCardRequirement)[keyof typeof eCardRequirement];
