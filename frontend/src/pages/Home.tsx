@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ButtonLink } from '../components/ButtonLink';
 import { Button } from '../components/Button';
 import { usePwaInstall } from '../components/usePwaInstall';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
@@ -108,19 +109,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full flex flex-row items-center justify-between gap-4 mt-auto pb-4 pt-4 border-t border-polar-blue/10">
-        <div className="flex-1 flex justify-center">
-          {isInstallable && (
-            <Button
-              variant="warning"
-              onClick={install}
-              className="px-4 py-2 rounded-lg"
-            >
-              📲 Installer
-            </Button>
-          )}
-        </div>
-      </footer>
+      <Footer isInstallable={isInstallable} onInstall={install} />
     </main>
   );
 }

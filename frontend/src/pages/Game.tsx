@@ -2,6 +2,7 @@ import ScoreBoard from '../components/ScoreBoard';
 import Hand from '../components/Hand';
 import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
+import Footer from '../components/Footer';
 import { useGame } from '../hooks/useGame';
 import Snackbar from '../components/SnackBar';
 import EndGameModal from '../components/EndGameModal';
@@ -48,7 +49,7 @@ export default function Game() {
     }));
 
   return (
-    <main className="min-h-screen bg-frost-white/30 py-4 px-4 md:px-8">
+    <main className="min-h-screen bg-frost-white/30 py-2 px-4 md:px-8">
       {/* Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left zone */}
@@ -152,6 +153,9 @@ export default function Game() {
         onGoToMenu={handleGoToMenu}
         game={game}
       />
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }

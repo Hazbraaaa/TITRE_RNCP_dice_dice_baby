@@ -3,6 +3,7 @@ import App from '../App.tsx';
 import Home from '../pages/Home';
 import PartyLauncher from '../pages/PartyLauncher';
 import Game from '../pages/Game';
+import Legal from '../pages/Legal';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'party-launcher', element: <PartyLauncher /> },
       { path: 'game', element: <Game /> },
+      { path: 'legal', element: <Legal /> },
     ],
   },
 ]);

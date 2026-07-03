@@ -7,6 +7,7 @@ import AccountModal from '../components/AccountModal';
 import { ButtonLink } from '../components/ButtonLink';
 import { usePartyAuth } from '../hooks/usePartyAuth';
 import PlayerAccountCard from '../components/PlayerAccountCard';
+import Footer from '../components/Footer';
 
 export default function PartyLauncher() {
   const [searchParams] = useSearchParams();
@@ -31,7 +32,7 @@ export default function PartyLauncher() {
 
   // ---------- Render ----------
   return (
-    <main className="flex flex-col items-center justify-between min-h-[92vh] py-6 px-4 max-w-5xl mx-auto">
+    <main className="flex flex-col items-center justify-between min-h-screen py-6 px-4 max-w-5xl mx-auto">
       <header className="w-full text-center mb-6">
         <h2 className="text-3xl md:text-5xl font-heading text-polar-blue uppercase drop-shadow-sm">
           Identification
@@ -49,7 +50,7 @@ export default function PartyLauncher() {
       )}
 
       {isValidPlayersCount ? (
-        <div className="w-full flex flex-col flex-grow justify-center gap-8">
+        <div className="w-full flex flex-col flex-grow gap-8">
           {/* Players grid : 1 col on mobile, 2 on tablet/desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-4xl mx-auto">
             {Array.from({ length: playersCount }).map((_, index) => {
@@ -97,7 +98,7 @@ export default function PartyLauncher() {
           </div>
 
           {/* Launch party button */}
-          <div className="flex flex-col items-center gap-4 mt-auto">
+          <div className="flex flex-col items-center gap-4">
             <ButtonLink
               to={`/game`}
               disabled={connectedPlayers.length < playersCount}
@@ -177,6 +178,9 @@ export default function PartyLauncher() {
           errorMessage={error}
         />
       )}
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }
