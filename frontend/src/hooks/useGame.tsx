@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { rollDices, endTurn, skipTurn, leaveGame } from '../services/gameService';
+import {
+  rollDices,
+  endTurn,
+  skipTurn,
+  leaveGame,
+} from '../services/gameService';
 import { setupNewGame } from '../services/gameSetupService';
 import { useNavigate } from 'react-router-dom';
 import type { Game } from '../types/game';
@@ -125,7 +130,7 @@ export const useGame = () => {
       setSelectedCardId(null);
       setAlertMessage(null);
     } catch (error) {
-      console.error('Erreur lors de la création d\'une nouvelle partie:', error);
+      console.error("Erreur lors de la création d'une nouvelle partie:", error);
     }
   };
 
@@ -145,7 +150,7 @@ export const useGame = () => {
     localStorage.removeItem('DDB_lobby_players');
 
     // Redirect to the main menu using React Router's navigate function
-    navigate('/'); 
+    navigate('/');
   };
 
   // Return the game state and actions for use in the component

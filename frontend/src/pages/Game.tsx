@@ -49,13 +49,10 @@ export default function Game() {
 
   return (
     <main className="min-h-screen bg-frost-white/30 py-4 px-4 md:px-8">
-
       {/* Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
         {/* Left zone */}
         <div className="lg:col-span-4 flex flex-col gap-4 order-1">
-
           {/* Header */}
           <header className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-2 text-center">
             <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
@@ -121,13 +118,10 @@ export default function Game() {
             {/* Skip Turn Button (only if no more rolls left) */}
             {game.rollsLeft === 0 && (
               <Button
-                variant={
-                  selectedCardId === null
-                    ? 'warning'
-                    : 'outlined'
-                }
+                variant={selectedCardId === null ? 'warning' : 'outlined'}
                 size="md"
-                onClick={handleSkipTurn}>
+                onClick={handleSkipTurn}
+              >
                 <div>PASSER LE TOUR</div>
               </Button>
             )}
