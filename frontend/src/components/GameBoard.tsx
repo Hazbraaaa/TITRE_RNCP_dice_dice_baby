@@ -14,7 +14,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div className="flex justify-center items-center w-full h-full">
-      <div className="grid grid-cols-4 gap-1.5 md:gap-2 w-full max-w-[340px] md:max-w-[550px] mx-auto">
+      <div className="grid grid-cols-4 gap-1.5 md:gap-2 w-full max-w-[340px] md:max-w-[600px] mx-auto">
         {cards.map((card) => (
           <BoardCard
             key={card.id}

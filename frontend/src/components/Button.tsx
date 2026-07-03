@@ -7,6 +7,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   variant?: keyof typeof buttonVariants.colors;
+  size?: keyof typeof buttonVariants.sizes;
   type?: 'button' | 'submit' | 'reset';
   fullWidth?: boolean;
 };
@@ -17,6 +18,7 @@ export const Button = ({
   children,
   className = '',
   variant = 'primary',
+  size = 'lg',
   type = 'button',
   fullWidth = false,
 }: ButtonProps) => {
@@ -27,7 +29,7 @@ export const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${buttonVariants.base} ${buttonVariants.colors[variant]} ${widthStyle} px-6 py-4 text-lg hover:scale-[1.02] active:scale-[0.98] md:text-xl rounded ${className}`}
+      className={`${buttonVariants.base} ${buttonVariants.colors[variant]} ${buttonVariants.sizes[size]} ${widthStyle} hover:scale-[1.02] active:scale-[0.98] rounded ${className}`}
     >
       {children}
     </button>

@@ -47,7 +47,7 @@ export const BoardCard = ({
     >
       {/* Combination */}
       <div
-        className={`col-start-1 col-span-3 row-start-2 row-span-3 flex items-center justify-center ${colors.dark} rounded px-0.5 p-1 leading-tight`}
+        className={`col-start-1 col-span-3 row-start-2 row-span-3 flex items-center justify-center ${colors.dark} rounded-lg px-0.5 p-1 leading-tight`}
       >
         {ui.type === 'dice' ? (
           <div className="w-full h-full flex justify-center items-center">
@@ -86,11 +86,11 @@ export const BoardCard = ({
 
       {/* Slot point Lvl1 */}
       <div
-        className={`relative col-start-4 row-start-1 flex items-center justify-center w-3.5 h-3.5 md:w-6 md:h-6 text-[8px] md:text-xs ${colors.dark} rounded-full self-center justify-self-center`}
+        className={`relative col-start-4 row-start-1 flex items-center justify-center w-3.5 h-3.5 md:w-8 md:h-8 text-[8px] md:text-xs ${colors.dark} rounded-lg self-center justify-self-center`}
       >
         {pointLvl1}
         {ownerPointLvl1 !== null && ownerPointLvl1 !== undefined && (
-          <div className="absolute inset-0 rounded-full flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
+          <div className="absolute inset-0 rounded-lg flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
             <img
               src={PLAYER_THEMES[ownerPointLvl1]?.penguinSrc}
               alt={`Joueur ${ownerPointLvl1}`}
@@ -102,11 +102,11 @@ export const BoardCard = ({
 
       {/* Slot point Lvl2 */}
       <div
-        className={`relative col-start-4 row-start-2 flex items-center justify-center w-3.5 h-3.5 md:w-6 md:h-6 text-[8px] md:text-xs ${colors.dark} rounded-full self-center justify-self-center`}
+        className={`relative col-start-4 row-start-2 flex items-center justify-center w-3.5 h-3.5 md:w-8 md:h-8 text-[8px] md:text-xs ${colors.dark} rounded-lg self-center justify-self-center`}
       >
         {pointLvl2}
         {ownerPointLvl2 !== null && ownerPointLvl2 !== undefined && (
-          <div className="absolute inset-0 rounded-full flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
+          <div className="absolute inset-0 rounded-lg flex items-center justify-center shadow-sm animate-popIn bg-polar-blue overflow-hidden">
             <img
               src={PLAYER_THEMES[ownerPointLvl2]?.penguinSrc}
               alt={`Joueur ${ownerPointLvl2}`}
