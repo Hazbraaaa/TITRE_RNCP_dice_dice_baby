@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import { rollDices, endTurn, skipTurn } from '../services/gameService';
+import { rollDices, endTurn, skipTurn, leaveGame } from '../services/gameService';
 import { setupNewGame } from '../services/gameSetupService';
+import { useNavigate } from 'react-router-dom';
 import type { Game } from '../types/game';
 
 const STORAGE_KEY = 'DDB_game_info';
 
 export const useGame = () => {
+  // React Router's navigation hook for programmatic navigation
+  const navigate = useNavigate();
+
   // State to hold any alert messages for the user
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
@@ -88,8 +92,8 @@ export const useGame = () => {
         gameCardId: selectedCardId,
       });
       setGame(updatedGame);
-      setSelectedCardId(null);
       setAlertMessage(null);
+      setSelectedCardId(null);
     } catch (error: any) {
       console.error('Erreur lors de la vérification de fin de tour:', error);
       setAlertMessage(error.message);
@@ -113,6 +117,37 @@ export const useGame = () => {
     }
   };
 
+  // Handler for rematch, which will reset the game state and start a new game
+  const handleRematch = async () => {
+    try {
+      const newGame: Game = await setupNewGame();
+      setGame(newGame);
+      setSelectedCardId(null);
+      setAlertMessage(null);
+    } catch (error) {
+      console.error('Erreur lors de la création d\'une nouvelle partie:', error);
+    }
+  };
+
+  // Handler for going back to the menu, which will clear the game state and navigate to the main menu
+  const handleGoToMenu = async () => {
+    try {
+      await leaveGame();
+    } catch (error) {
+      console.error('Erreur lors de la suppression des données de jeu:', error);
+    }
+
+    // Clear game state and localStorage
+    setGame(null);
+    setSelectedCardId(null);
+    setAlertMessage(null);
+    localStorage.removeItem('DDB_game_info');
+    localStorage.removeItem('DDB_lobby_players');
+
+    // Redirect to the main menu using React Router's navigate function
+    navigate('/'); 
+  };
+
   // Return the game state and actions for use in the component
   return {
     alertMessage,
@@ -127,6 +162,8 @@ export const useGame = () => {
     handleRoll,
     handleEndTurn,
     handleSkipTurn,
+    handleRematch,
+    handleGoToMenu,
     clearAlert: () => setAlertMessage(null),
   };
 };

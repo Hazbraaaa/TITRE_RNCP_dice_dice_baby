@@ -4,6 +4,7 @@ import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
 import { useGame } from '../hooks/useGame';
 import Snackbar from '../components/SnackBar';
+import EndGameModal from '../components/EndGameModal';
 
 export default function Game() {
   const {
@@ -18,6 +19,8 @@ export default function Game() {
     handleRoll,
     handleEndTurn,
     handleSkipTurn,
+    handleRematch,
+    handleGoToMenu,
     clearAlert,
   } = useGame();
 
@@ -101,17 +104,23 @@ export default function Game() {
               variant={
                 game.rollsLeft === 3 || selectedCardId === null
                   ? 'disabled'
-                  : 'warning'
+                  : 'secondary'
               }
               onClick={handleEndTurn}
               disabled={game.rollsLeft === 3 || selectedCardId === null}
             >
-              <div>FIN DU TOUR</div>
+              <div>VALIDER LE CHOIX</div>
             </Button>
 
             {/* Skip Turn Button (only if no more rolls left) */}
             {game.rollsLeft === 0 && (
-              <Button variant="warning" onClick={handleSkipTurn}>
+              <Button 
+              variant={
+                selectedCardId === null
+                  ? 'warning'
+                  : 'outlined'
+              }
+              onClick={handleSkipTurn}>
                 <div>PASSER LE TOUR</div>
               </Button>
             )}
@@ -132,6 +141,15 @@ export default function Game() {
 
       {/* Snackbar */}
       <Snackbar message={alertMessage} onClose={clearAlert} />
+
+      {/* End game modal */}
+      <EndGameModal
+        isOpen={game?.state === 'FINISHED'}
+        onClose={() => setAlertMessage(null)}
+        onRematch={handleRematch}
+        onGoToMenu={handleGoToMenu}
+        game={game}
+      />
     </main>
   );
 }

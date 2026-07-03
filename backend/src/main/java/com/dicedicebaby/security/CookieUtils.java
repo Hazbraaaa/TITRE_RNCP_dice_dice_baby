@@ -88,4 +88,18 @@ public class CookieUtils {
     // Add cookie to response Http
     response.addCookie(cookie);
   }
+
+  public void clearCookie(HttpServletResponse response) {
+    // Create a cookie with the same name but empty
+    Cookie cookie = new Cookie(Constant.COOKIE_NAME, "");
+    cookie.setHttpOnly(true);
+
+    // ------ Change setSecure to true when in PROD ------
+    cookie.setSecure(false);
+    cookie.setPath("/");
+    cookie.setMaxAge(0);
+
+    // Add cookie to response Http
+    response.addCookie(cookie);
+  }
 }

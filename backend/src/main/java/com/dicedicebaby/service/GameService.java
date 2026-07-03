@@ -7,10 +7,11 @@ import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.entity.*;
 import com.dicedicebaby.enums.GameState;
 import com.dicedicebaby.mapper.GameMapper;
-import com.dicedicebaby.repository.DiceSetRepository;
 import com.dicedicebaby.repository.GameCardRepository;
 import com.dicedicebaby.repository.GameRepository;
+import com.dicedicebaby.security.CookieUtils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Random;
 import org.springframework.stereotype.Service;
@@ -20,27 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameService {
 
   // region Attributes
-  private final DiceSetRepository diceSetRepository;
   private final GameRepository gameRepository;
   private final GameCardRepository gameCardRepository;
   private final CardValidationService cardValidationService;
   private final Random random = new Random();
   private final GameMapper gameMapper;
+  private final CookieUtils cookieUtils;
 
   // endregion
 
   // region Constructor
   public GameService(
-      DiceSetRepository diceSetRepository,
       GameRepository gameRepository,
       GameCardRepository gameCardRepository,
       CardValidationService cardValidationService,
-      GameMapper gameMapper) {
-    this.diceSetRepository = diceSetRepository;
+      GameMapper gameMapper,
+      CookieUtils cookieUtils) {
     this.gameRepository = gameRepository;
     this.gameCardRepository = gameCardRepository;
     this.cardValidationService = cardValidationService;
     this.gameMapper = gameMapper;
+    this.cookieUtils = cookieUtils;
   }
 
   // endregion
@@ -147,13 +148,20 @@ public class GameService {
     return gameMapper.mapToGameResponseDTO(game);
   }
 
+  public void leaveGame(HttpServletResponse response) {
+    // Clear the cookie
+    cookieUtils.clearCookie(response);
+
+    // More actions to clean the database, archive game, etc...
+  }
+
   private void updateGameStateAndWinner(GameEntity game) {
     // Get current player
     PlayerEntity currentPlayer = game.getCurrentPlayer();
 
     // Get conditions of victory
     boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == 0;
-    boolean hasReachedTargetScore = currentPlayer.getScore() >= 15;
+    boolean hasReachedTargetScore = currentPlayer.getScore() >= 5;
 
     // If one condition is check set winner and game as finished
     if (hasNoChipsLeft || hasReachedTargetScore) {
