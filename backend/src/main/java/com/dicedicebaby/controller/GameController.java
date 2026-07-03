@@ -5,6 +5,7 @@ import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.service.GameService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +48,15 @@ public class GameController {
   public GameResponseDTO skipTurn(
       @RequestBody SkipTurnRequestDTO request,
       @CookieValue(name = "jwt_session", required = false) String existingCookie) {
-    // Return updated game response after end turn
+    // Return updated game response after skip turn
     return gameService.skipTurn(request);
+  }
+
+  @PostMapping("/leave")
+  @ResponseStatus(HttpStatus.OK)
+  public void leaveGame(HttpServletResponse response) {
+    // Nothing return after leave game
+    gameService.leaveGame(response);
   }
   // endregion
 }

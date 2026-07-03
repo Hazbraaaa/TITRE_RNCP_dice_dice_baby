@@ -11,4 +11,5 @@ public record GameResponseDTO(
     List<CardResponseDTO> board,
     DiceSetResponseDTO diceSet,
     PlayerInGameResponseDTO currentPlayer,
-    List<PlayerInGameResponseDTO> players) {}
+    List<PlayerInGameResponseDTO> players,
+    Long winnerId) {}

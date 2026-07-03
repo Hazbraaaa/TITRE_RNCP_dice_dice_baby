@@ -5,11 +5,13 @@ import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
 import com.dicedicebaby.dto.response.GameResponseDTO;
 import com.dicedicebaby.entity.*;
+import com.dicedicebaby.enums.GameState;
 import com.dicedicebaby.mapper.GameMapper;
-import com.dicedicebaby.repository.DiceSetRepository;
 import com.dicedicebaby.repository.GameCardRepository;
 import com.dicedicebaby.repository.GameRepository;
+import com.dicedicebaby.security.CookieUtils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Random;
 import org.springframework.stereotype.Service;
@@ -19,27 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameService {
 
   // region Attributes
-  private final DiceSetRepository diceSetRepository;
   private final GameRepository gameRepository;
   private final GameCardRepository gameCardRepository;
   private final CardValidationService cardValidationService;
   private final Random random = new Random();
   private final GameMapper gameMapper;
+  private final CookieUtils cookieUtils;
 
   // endregion
 
   // region Constructor
   public GameService(
-      DiceSetRepository diceSetRepository,
       GameRepository gameRepository,
       GameCardRepository gameCardRepository,
       CardValidationService cardValidationService,
-      GameMapper gameMapper) {
-    this.diceSetRepository = diceSetRepository;
+      GameMapper gameMapper,
+      CookieUtils cookieUtils) {
     this.gameRepository = gameRepository;
     this.gameCardRepository = gameCardRepository;
     this.cardValidationService = cardValidationService;
     this.gameMapper = gameMapper;
+    this.cookieUtils = cookieUtils;
   }
 
   // endregion
@@ -120,8 +122,14 @@ public class GameService {
     // Withdraw a token for current player
     currentPlayer.setRemainingChips(currentPlayer.getRemainingChips() - 1);
 
-    // Set new turn condition
-    game = setNewTurn(game);
+    // Update game if where is a winner and game is finished
+    updateGameStateAndWinner(game);
+
+    // If game state is still in progress
+    if (game.getState() == GameState.IN_PROGRESS) {
+      // Set new turn condition
+      setNewTurn(game);
+    }
 
     return gameMapper.mapToGameResponseDTO(game);
   }
@@ -135,12 +143,38 @@ public class GameService {
             .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
 
     // Set new turn condition
-    game = setNewTurn(game);
+    setNewTurn(game);
 
     return gameMapper.mapToGameResponseDTO(game);
   }
 
-  private GameEntity setNewTurn(GameEntity game) {
+  public void leaveGame(HttpServletResponse response) {
+    // Clear the cookie
+    cookieUtils.clearCookie(response);
+
+    // More actions to clean the database, archive game, etc...
+  }
+
+  private void updateGameStateAndWinner(GameEntity game) {
+    // Get current player
+    PlayerEntity currentPlayer = game.getCurrentPlayer();
+
+    // Get conditions of victory
+    boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == 0;
+    boolean hasReachedTargetScore = currentPlayer.getScore() >= 5;
+
+    // If one condition is check set winner and game as finished
+    if (hasNoChipsLeft || hasReachedTargetScore) {
+      game.setState(GameState.FINISHED);
+      game.setWinner(currentPlayer);
+    }
+    // Else keep game in progress
+    else {
+      game.setState(GameState.IN_PROGRESS);
+    }
+  }
+
+  private void setNewTurn(GameEntity game) {
     // Get total players for game
     int totalPlayers = game.getPlayers().size();
 
@@ -175,8 +209,6 @@ public class GameService {
 
     // Reset rolls left to 3
     game.setRollsLeft(3);
-
-    return game;
   }
 
   private void assignCardPointsAndOwner(PlayerEntity currentPlayer, GameCardEntity gameCard) {

@@ -93,3 +93,27 @@ export async function skipTurn(payload: { gameId: number }) {
     throw error;
   }
 }
+
+export async function leaveGame() {
+  try {
+    // Send request to API to leave the game
+    const response = await fetch(`${apiUrl}/game/leave`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    // Verify response status, throw error if not ok
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(
+        errorBody.message || `Erreur serveur: ${response.status}`
+      );
+    }
+  } catch (error: any) {
+    // Log the error for debugging purposes
+    console.error('Erreur dans leaveGame:', error.message);
+
+    // Rethrow the error to be handled by the caller React component
+    throw error;
+  }
+}

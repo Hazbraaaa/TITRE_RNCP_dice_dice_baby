@@ -13,4 +13,5 @@ export interface Game {
   diceSet: DiceSet;
   currentPlayer: PlayerInGame;
   players: PlayerInGame[];
+  winnerId?: number;
 }

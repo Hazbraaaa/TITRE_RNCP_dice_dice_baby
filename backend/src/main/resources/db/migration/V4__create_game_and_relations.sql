@@ -19,12 +19,18 @@ CREATE TABLE games (
     rolls_left  INT NOT NULL DEFAULT 3,
     round_number INT NOT NULL DEFAULT 1,
     current_player_id BIGINT,
+    winner_id BIGINT NULL,
 
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE,
 
     CONSTRAINT fk_game_current_player
        FOREIGN KEY (current_player_id)
+           REFERENCES players (id)
+           ON DELETE SET NULL,
+
+    CONSTRAINT fk_game_winner
+        FOREIGN KEY (winner_id)
            REFERENCES players (id)
            ON DELETE SET NULL
 );
@@ -89,6 +95,7 @@ CREATE TABLE game_cards (
 );
 
 CREATE INDEX idx_games_current_player ON games (current_player_id);
+CREATE INDEX idx_games_winner_id ON games(winner_id);
 CREATE INDEX idx_boards_game ON boards (game_id);
 CREATE INDEX idx_game_cards_board ON game_cards (board_id);
 CREATE INDEX idx_players_game ON players (game_id);

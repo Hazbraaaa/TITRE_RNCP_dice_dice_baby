@@ -32,7 +32,7 @@ export const Player = ({
       `}
     >
       {/* Player number icon */}
-      <div className="flex-shrink-0 w-9 h-9 border-2 border-midnight-ice flex items-center justify-center rounded-full bg-polar-blue overflow-hidden shadow-sm relative">
+      <div className="relative flex-shrink-0 w-10 h-10 border-2 border-midnight-ice flex items-center justify-center rounded-lg bg-polar-blue overflow-hidden shadow-sm">
         {' '}
         <img
           src={theme.penguinSrc}

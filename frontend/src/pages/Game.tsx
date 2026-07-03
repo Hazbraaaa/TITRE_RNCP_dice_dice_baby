@@ -4,6 +4,7 @@ import GameBoard from '../components/GameBoard';
 import { Button } from '../components/Button';
 import { useGame } from '../hooks/useGame';
 import Snackbar from '../components/SnackBar';
+import EndGameModal from '../components/EndGameModal';
 
 export default function Game() {
   const {
@@ -18,6 +19,8 @@ export default function Game() {
     handleRoll,
     handleEndTurn,
     handleSkipTurn,
+    handleRematch,
+    handleGoToMenu,
     clearAlert,
   } = useGame();
 
@@ -46,16 +49,17 @@ export default function Game() {
 
   return (
     <main className="min-h-screen bg-frost-white/30 py-4 px-4 md:px-8">
-      {/* Header */}
-      <header className="text-center mb-6">
-        <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
-          Dice Dice <span className="text-red-alert">Baby</span>
-        </h1>
-      </header>
-
+      {/* Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Scoreboard and Throwing Zone */}
-        <div className="lg:col-span-4 flex flex-col gap-6 order-1">
+        {/* Left zone */}
+        <div className="lg:col-span-4 flex flex-col gap-4 order-1">
+          {/* Header */}
+          <header className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-2 text-center">
+            <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
+              Dice Dice <span className="text-red-alert">Baby</span>
+            </h1>
+          </header>
+
           {/* Scoreboard */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-4">
             {/* Game info */}
@@ -85,8 +89,9 @@ export default function Game() {
             {/* Throw Button */}
             <Button
               variant={game.rollsLeft <= 0 ? 'disabled' : 'primary'}
+              size="md"
               fullWidth
-              className="flex flex-col items-center justify-center py-6 text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+              className="flex flex-col items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
               onClick={handleRoll}
               disabled={game.rollsLeft <= 0}
             >
@@ -101,25 +106,31 @@ export default function Game() {
               variant={
                 game.rollsLeft === 3 || selectedCardId === null
                   ? 'disabled'
-                  : 'warning'
+                  : 'secondary'
               }
+              size="md"
               onClick={handleEndTurn}
               disabled={game.rollsLeft === 3 || selectedCardId === null}
             >
-              <div>FIN DU TOUR</div>
+              <div>VALIDER LE CHOIX</div>
             </Button>
 
             {/* Skip Turn Button (only if no more rolls left) */}
             {game.rollsLeft === 0 && (
-              <Button variant="warning" onClick={handleSkipTurn}>
+              <Button
+                variant={selectedCardId === null ? 'warning' : 'outlined'}
+                size="md"
+                onClick={handleSkipTurn}
+              >
                 <div>PASSER LE TOUR</div>
               </Button>
             )}
           </section>
         </div>
 
-        {/* Game Board */}
+        {/* Right zone */}
         <div className="lg:col-span-8 order-2">
+          {/* Game Board */}
           <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-2 md:p-4">
             <GameBoard
               cards={cards}
@@ -132,6 +143,15 @@ export default function Game() {
 
       {/* Snackbar */}
       <Snackbar message={alertMessage} onClose={clearAlert} />
+
+      {/* End game modal */}
+      <EndGameModal
+        isOpen={game?.state === 'FINISHED'}
+        onClose={() => setAlertMessage(null)}
+        onRematch={handleRematch}
+        onGoToMenu={handleGoToMenu}
+        game={game}
+      />
     </main>
   );
 }

@@ -23,7 +23,7 @@ public class GameEntity extends AuditableEntity {
   private DiceSetEntity diceSet;
 
   @ManyToOne
-  @JoinColumn(name = "current_player_id")
+  @JoinColumn(name = "current_player_id", nullable = true)
   private PlayerEntity currentPlayer;
 
   @Column(nullable = false)
@@ -33,6 +33,10 @@ public class GameEntity extends AuditableEntity {
 
   @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
   private List<PlayerEntity> players;
+
+  @ManyToOne
+  @JoinColumn(name = "winner_id", nullable = true)
+  private PlayerEntity winner;
 
   // endregion
 
@@ -104,6 +108,14 @@ public class GameEntity extends AuditableEntity {
 
   public void setRollsLeft(int rollsLeft) {
     this.rollsLeft = rollsLeft;
+  }
+
+  public PlayerEntity getWinner() {
+    return winner;
+  }
+
+  public void setWinner(PlayerEntity winner) {
+    this.winner = winner;
   }
 
   // endregion
