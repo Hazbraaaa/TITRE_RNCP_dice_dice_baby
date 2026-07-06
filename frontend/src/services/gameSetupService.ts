@@ -5,7 +5,7 @@ export async function setupNewGame() {
   try {
     // Send request with body to API to setup a new game
     const response = await fetch(`${apiUrl}/game/setup`, {
-      method: 'GET',
+      method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     });

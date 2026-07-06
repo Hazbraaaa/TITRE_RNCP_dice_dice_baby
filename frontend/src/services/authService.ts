@@ -138,7 +138,7 @@ export async function logoutUser(payload: {
 }) {
   try {
     const response = await fetch(`${apiUrl}/auth/logout`, {
-      method: 'POST',
+      method: 'DELETE',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -178,7 +178,7 @@ export async function updateUser(payload: {
     );
 
     const response = await fetch(`${apiUrl}/auth/update`, {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sanitizedData),
@@ -207,7 +207,7 @@ export async function deleteUser(payload: {
 }) {
   try {
     const response = await fetch(`${apiUrl}/auth/delete`, {
-      method: 'POST',
+      method: 'DELETE',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

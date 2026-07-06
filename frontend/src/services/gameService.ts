@@ -98,7 +98,7 @@ export async function leaveGame() {
   try {
     // Send request to API to leave the game
     const response = await fetch(`${apiUrl}/game/leave`, {
-      method: 'POST',
+      method: 'DELETE',
       credentials: 'include',
     });
 

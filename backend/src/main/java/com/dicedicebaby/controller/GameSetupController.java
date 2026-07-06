@@ -22,7 +22,7 @@ public class GameSetupController {
   // endregion
 
   // region Routes
-  @GetMapping("/setup")
+  @PostMapping("/setup")
   @ResponseStatus(HttpStatus.CREATED)
   public GameResponseDTO setup(
       @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
