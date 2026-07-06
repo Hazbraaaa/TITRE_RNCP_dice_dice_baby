@@ -19,7 +19,8 @@ public class Constant {
     public static final int NO_ROLLS_LEFT = 0;
     public static final int FIRST_PLAYER_NUMBER = 1;
 
-    public record CardData(CardRequirement combination, CardColor color, int pointLvl1, int pointLvl2) {}
+    public record CardData(
+        CardRequirement combination, CardColor color, int pointLvl1, int pointLvl2) {}
 
     public static final List<CardData> DEFAULT_CARDS =
         List.of(

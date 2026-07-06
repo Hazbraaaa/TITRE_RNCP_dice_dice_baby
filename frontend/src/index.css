@@ -1,13 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 @import 'tailwindcss';
-
-/* Import Font Family */
-@font-face {
-  font-family: 'EB Garamond Regular';
-  src: url('./assets/fonts/EBGaramond-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* Design Tokens */
 @theme {
@@ -18,24 +10,29 @@
   --color-frost-white: #f6fffd;
   --color-snow-ashes: #4d7a9d;
   --color-red-alert: #c74a1e;
+  --color-red-alert-hover: #a53d18;
+  --color-green-success: #16a34a;
+  --color-green-success-hover: #15803d;
 
   /* Font Families */
   --font-heading: 'Luckiest Guy', 'Arial Black', serif;
   --font-body: 'Inter', sans-serif;
 }
 
+@utility neo-brutal-border {
+  @apply bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)];
+}
+
 /* Default global styles */
 @layer base {
   body {
-    @apply bg-glacier-aqua text-midnight-ice font-body uppercase;
+    @apply bg-glacier-aqua text-midnight-ice font-heading uppercase;
     margin: 0;
     min-height: 100vh;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-heading;
+  input, textarea, select {
+    font-family: var(--font-body) !important;
+    text-transform: none !important;
   }
 }

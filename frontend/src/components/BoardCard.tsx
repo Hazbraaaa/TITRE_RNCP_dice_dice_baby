@@ -42,7 +42,7 @@ export const BoardCard = ({
 
   return (
     <div
-      className={`aspect-square w-full grid grid-cols-4 grid-rows-4 gap-1.5 ${colors.base} rounded-md p-1.5 relative text-white text-[10px] text-center font-semibold cursor-pointer transition-all ${isSelected ? 'ring-2 ring-midnight-ice scale-105 z-10 shadow-lg' : 'hover:scale-105'} ${className}`}
+      className={`aspect-square w-full grid grid-cols-4 grid-rows-4 gap-1.5 ${colors.base} rounded-md p-1.5 relative text-frost-white font-body text-[10px] text-center font-semibold cursor-pointer transition-all ${isSelected ? 'ring-2 ring-midnight-ice scale-105 z-10 shadow-lg' : 'hover:scale-105'} ${className}`}
       onClick={() => onToggleCard(id)}
     >
       {/* Combination */}

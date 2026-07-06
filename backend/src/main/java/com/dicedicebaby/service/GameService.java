@@ -69,7 +69,8 @@ public class GameService {
     for (DiceEntity dice : diceSet.getDices()) {
       // Check if dice should be kept or roll from payload (kept impossible in first roll)
       boolean shouldBeKept =
-          game.getRollsLeft() != Constant.GameData.MAX_ROLLS_LEFT && request.keptDiceIds().contains(dice.getId());
+          game.getRollsLeft() != Constant.GameData.MAX_ROLLS_LEFT
+              && request.keptDiceIds().contains(dice.getId());
       dice.setKept(shouldBeKept);
 
       // Roll only the right dices

@@ -20,7 +20,7 @@ export default function Legal() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <main className="min-h-screen py-8 px-4 max-w-3xl mx-auto text-midnight-ice">
+    <main className="min-h-screen py-8 px-4 max-w-3xl mx-auto font-body text-midnight-ice">
       {/* Return button */}
       <div className="mb-8">
         <button
@@ -32,7 +32,7 @@ export default function Legal() {
       </div>
 
       {/* Main Title */}
-      <h1 className="text-3xl font-heading uppercase tracking-tight text-center mb-12 border-b-2 border-polar-blue/20 pb-4">
+      <h1 className="text-3xl uppercase tracking-tight text-center mb-12 border-b-2 border-polar-blue/20 pb-4">
         Informations Légales
       </h1>
 
@@ -186,7 +186,7 @@ export default function Legal() {
       </div>
 
       {/* Copyright */}
-      <div className="text-center text-xs text-midnight-ice/40 mt-16">
+      <div className="text-center text-xs font-heading text-midnight-ice/40 mt-16">
         © {currentYear} DICE DICE BABY. Tous droits réservés.
       </div>
     </main>
