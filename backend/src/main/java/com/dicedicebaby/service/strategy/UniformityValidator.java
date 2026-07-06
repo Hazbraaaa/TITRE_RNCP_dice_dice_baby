@@ -1,5 +1,6 @@
 package com.dicedicebaby.service.strategy;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.enums.CardRequirement;
 import com.dicedicebaby.enums.CombinationType;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ public class UniformityValidator implements CombinationValidator {
 
   @Override
   public boolean isValid(List<Integer> diceValues, CardRequirement cardRequirement) {
-    if (diceValues == null || diceValues.size() < 5) {
+    if (diceValues == null || diceValues.size() < Constant.GameData.DICE_COUNT) {
       return false;
     }
 

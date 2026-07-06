@@ -9,7 +9,17 @@ public class Constant {
   public static final String SEPARATOR = "¤";
 
   public static class GameData {
-    public record CardData(CardRequirement combination, CardColor color, int ptLvl1, int ptLvl2) {}
+    public static final int INITIAL_POINTS = 0;
+    public static final int WINNING_POINTS = 5;
+    public static final int INITIAL_CHIPS = 6;
+    public static final int NO_CHIPS_LEFT = 0;
+    public static final int MAX_DICE_VALUE = 6;
+    public static final int DICE_COUNT = 5;
+    public static final int MAX_ROLLS_LEFT = 3;
+    public static final int NO_ROLLS_LEFT = 0;
+    public static final int FIRST_PLAYER_NUMBER = 1;
+
+    public record CardData(CardRequirement combination, CardColor color, int pointLvl1, int pointLvl2) {}
 
     public static final List<CardData> DEFAULT_CARDS =
         List.of(

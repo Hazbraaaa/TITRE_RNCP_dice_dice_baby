@@ -52,8 +52,8 @@ public class GameSetupService {
     // Set game in every players, and reset score and remaining chips
     for (PlayerEntity player : players) {
       player.setGame(game);
-      player.setScore(0);
-      player.setRemainingChips(6);
+      player.setScore(Constant.GameData.INITIAL_POINTS);
+      player.setRemainingChips(Constant.GameData.INITIAL_CHIPS);
     }
 
     game.setPlayers(players);
@@ -123,9 +123,9 @@ public class GameSetupService {
     diceSet.setGame(game);
 
     List<DiceEntity> dices = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < Constant.GameData.DICE_COUNT; i++) {
       DiceEntity dice = new DiceEntity();
-      dice.setValue(1);
+      dice.setValue(Constant.GameData.MAX_DICE_VALUE);
       dice.setKept(false);
       dice.setDiceSet(diceSet);
       dices.add(dice);
