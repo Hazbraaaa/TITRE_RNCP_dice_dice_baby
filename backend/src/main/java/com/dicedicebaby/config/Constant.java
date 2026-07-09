@@ -18,6 +18,7 @@ public class Constant {
     public static final int MAX_ROLLS_LEFT = 3;
     public static final int NO_ROLLS_LEFT = 0;
     public static final int FIRST_PLAYER_NUMBER = 1;
+    public static final int BOARD_CARD_COUNT = 16;
 
     public record CardData(
         CardRequirement combination, CardColor color, int pointLvl1, int pointLvl2) {}
