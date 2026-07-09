@@ -1,5 +1,6 @@
 package com.dicedicebaby.service;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.request.EndTurnRequestDTO;
 import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
@@ -57,7 +58,7 @@ public class GameService {
             .orElseThrow(() -> new EntityNotFoundException("Cette partie n'existe pas"));
 
     // Check if there is rolls left
-    if (game.getRollsLeft() <= 0) {
+    if (game.getRollsLeft() <= Constant.GameData.NO_ROLLS_LEFT) {
       throw new RuntimeException("Plus de lancers disponibles pour ce tour");
     }
 
@@ -68,12 +69,13 @@ public class GameService {
     for (DiceEntity dice : diceSet.getDices()) {
       // Check if dice should be kept or roll from payload (kept impossible in first roll)
       boolean shouldBeKept =
-          game.getRollsLeft() != 3 && request.keptDiceIds().contains(dice.getId());
+          game.getRollsLeft() != Constant.GameData.MAX_ROLLS_LEFT
+              && request.keptDiceIds().contains(dice.getId());
       dice.setKept(shouldBeKept);
 
       // Roll only the right dices
       if (!dice.isKept()) {
-        dice.setValue(random.nextInt(6) + 1);
+        dice.setValue(random.nextInt(Constant.GameData.MAX_DICE_VALUE) + 1);
       }
     }
 
@@ -152,7 +154,7 @@ public class GameService {
     // Clear the cookie
     cookieUtils.clearCookie(response);
 
-    // More actions to clean the database, archive game, etc...
+    // TODO ------- More actions to clean the database, archive game, etc...
   }
 
   private void updateGameStateAndWinner(GameEntity game) {
@@ -160,8 +162,8 @@ public class GameService {
     PlayerEntity currentPlayer = game.getCurrentPlayer();
 
     // Get conditions of victory
-    boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == 0;
-    boolean hasReachedTargetScore = currentPlayer.getScore() >= 5;
+    boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == Constant.GameData.NO_CHIPS_LEFT;
+    boolean hasReachedTargetScore = currentPlayer.getScore() >= Constant.GameData.WINNING_POINTS;
 
     // If one condition is check set winner and game as finished
     if (hasNoChipsLeft || hasReachedTargetScore) {
@@ -192,7 +194,7 @@ public class GameService {
                         "Joueur suivant introuvable pour le numéro : " + nextPlayerNumber));
 
     // If next player number is one it's the end of the round, so increase round number
-    if (nextPlayerNumber == 1) {
+    if (nextPlayerNumber == Constant.GameData.FIRST_PLAYER_NUMBER) {
       game.setRoundNumber(game.getRoundNumber() + 1);
     }
 
@@ -208,7 +210,7 @@ public class GameService {
     }
 
     // Reset rolls left to 3
-    game.setRollsLeft(3);
+    game.setRollsLeft(Constant.GameData.MAX_ROLLS_LEFT);
   }
 
   private void assignCardPointsAndOwner(PlayerEntity currentPlayer, GameCardEntity gameCard) {

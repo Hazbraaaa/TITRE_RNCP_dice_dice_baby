@@ -1,5 +1,6 @@
 package com.dicedicebaby.entity;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.enums.GameState;
 import jakarta.persistence.*;
 import java.util.List;
@@ -27,7 +28,7 @@ public class GameEntity extends AuditableEntity {
   private PlayerEntity currentPlayer;
 
   @Column(nullable = false)
-  private int rollsLeft = 3;
+  private int rollsLeft = Constant.GameData.MAX_ROLLS_LEFT;
 
   @Column private int roundNumber = 1;
 

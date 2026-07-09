@@ -55,14 +55,14 @@ export default function Game() {
         {/* Left zone */}
         <div className="lg:col-span-4 flex flex-col gap-4 order-1">
           {/* Header */}
-          <header className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-2 text-center">
+          <header className="bg-frost-white neo-brutal-border p-2 text-center">
             <h1 className="font-heading text-2xl md:text-4xl text-polar-blue uppercase tracking-tighter drop-shadow-sm">
               Dice Dice <span className="text-red-alert">Baby</span>
             </h1>
           </header>
 
           {/* Scoreboard */}
-          <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-4">
+          <section className="bg-frost-white neo-brutal-border p-4">
             {/* Game info */}
             <div className="mb-2 font-heading text-xs md:text-sm text-midnight-ice/60 uppercase tracking-wider">
               Manche{' '}
@@ -79,7 +79,7 @@ export default function Game() {
           </section>
 
           {/* Action zone */}
-          <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-4 flex flex-col gap-4">
+          <section className="bg-frost-white neo-brutal-border p-4 flex flex-col gap-4">
             {/* Hand of dices */}
             <Hand
               hand={dices}
@@ -132,7 +132,7 @@ export default function Game() {
         {/* Right zone */}
         <div className="lg:col-span-8 order-2">
           {/* Game Board */}
-          <section className="bg-frost-white border-[3px] border-midnight-ice rounded-sm shadow-[4px_4px_0px_0px_rgba(1,54,89,1)] p-2 md:p-4">
+          <section className="bg-frost-white neo-brutal-border p-2 md:p-4">
             <GameBoard
               cards={cards}
               selectedCardId={selectedCardId}

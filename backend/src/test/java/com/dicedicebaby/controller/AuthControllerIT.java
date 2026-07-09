@@ -37,6 +37,7 @@ public class AuthControllerIT {
         .perform(get("/auth/session"))
         // endregion
         // region Then
+        // Validate HTTP status 200 Ok
         .andExpect(status().isOk());
     // endregion
   }
@@ -98,8 +99,8 @@ public class AuthControllerIT {
                 .content(objectMapper.writeValueAsString(request)))
         // endregion
         // region THEN
-        // Validate HTTP status 202 Accepted
-        .andExpect(status().isAccepted())
+        // Validate HTTP status 200 Ok
+        .andExpect(status().isOk())
         // Validate specific fields in the JSON response
         .andExpect(jsonPath("$.username").value("Pingu"))
         // Validate cookie

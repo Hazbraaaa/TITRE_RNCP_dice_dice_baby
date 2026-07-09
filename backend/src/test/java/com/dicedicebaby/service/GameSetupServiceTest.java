@@ -55,7 +55,7 @@ public class GameSetupServiceTest {
 
     // Prepare board of 16 cards
     List<CardEntity> board = new ArrayList<>();
-    for (long i = 1; i <= 16; i++) {
+    for (long i = 1; i <= Constant.GameData.BOARD_CARD_COUNT; i++) {
       CardEntity card = new CardEntity();
       card.setId(i);
       board.add(card);
@@ -86,15 +86,19 @@ public class GameSetupServiceTest {
 
                   // Verify board
                   assertThat(game.getBoard()).isNotNull();
-                  assertThat(game.getBoard().getGameCards()).hasSize(16);
+                  assertThat(game.getBoard().getGameCards())
+                      .hasSize(Constant.GameData.BOARD_CARD_COUNT);
                   assertThat(game.getBoard().getGameCards().get(0).getCard().getId()).isEqualTo(1);
 
                   // Verify dice set
                   assertThat(game.getDiceSet()).isNotNull();
-                  assertThat(game.getDiceSet().getDices()).hasSize(5);
+                  assertThat(game.getDiceSet().getDices()).hasSize(Constant.GameData.DICE_COUNT);
                   assertThat(
                           game.getDiceSet().getDices().stream()
-                              .allMatch(d -> d.getValue() == 1 && !d.isKept()))
+                              .allMatch(
+                                  d ->
+                                      d.getValue() == Constant.GameData.MAX_DICE_VALUE
+                                          && !d.isKept()))
                       .isTrue();
 
                   return true;

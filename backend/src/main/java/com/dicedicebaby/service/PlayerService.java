@@ -1,5 +1,6 @@
 package com.dicedicebaby.service;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.entity.AccountEntity;
 import com.dicedicebaby.entity.PlayerEntity;
 import com.dicedicebaby.repository.PlayerRepository;
@@ -30,7 +31,7 @@ public class PlayerService {
     player.setPlayerUsername(account.getUsername());
     player.setIsGuest(false);
     player.setAccount(account);
-    player.setScore(0);
+    player.setScore(Constant.GameData.INITIAL_POINTS);
     player.setPlayerNumber(playerNumber);
 
     // Return saved player in database
@@ -87,7 +88,7 @@ public class PlayerService {
     player.setPlayerUsername(username);
     player.setIsGuest(true);
     player.setAccount(null);
-    player.setScore(0);
+    player.setScore(Constant.GameData.INITIAL_POINTS);
     player.setPlayerNumber(playerNumber);
 
     // Return saved player in database

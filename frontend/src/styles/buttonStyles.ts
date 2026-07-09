@@ -3,9 +3,9 @@ export const buttonVariants = {
 
   colors: {
     primary: 'bg-polar-blue text-frost-white hover:bg-midnight-ice',
-    secondary: 'bg-green-600 text-white hover:bg-green-700',
+    secondary: 'bg-green-success text-frost-white hover:bg-green-success-hover',
     warning:
-      'bg-red-alert hover:bg-midnight-ice text-white p-2 rounded-md transition-colors',
+      'bg-red-alert hover:bg-red-alert-hover text-frost-white transition-colors',
     outlined:
       'border-2 border-polar-blue text-polar-blue bg-transparent shadow-none hover:bg-polar-blue hover:text-frost-white',
     disabled:

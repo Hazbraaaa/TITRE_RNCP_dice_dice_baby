@@ -1,5 +1,6 @@
 package com.dicedicebaby.controller;
 
+import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.dto.request.EndTurnRequestDTO;
 import com.dicedicebaby.dto.request.RollRequestDTO;
 import com.dicedicebaby.dto.request.SkipTurnRequestDTO;
@@ -29,7 +30,7 @@ public class GameController {
   @ResponseStatus(HttpStatus.OK)
   public GameResponseDTO roll(
       @RequestBody RollRequestDTO request,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after roll
     return gameService.rollDices(request);
   }
@@ -38,7 +39,7 @@ public class GameController {
   @ResponseStatus(HttpStatus.OK)
   public GameResponseDTO endTurn(
       @RequestBody EndTurnRequestDTO request,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after end turn
     return gameService.checkEndTurn(request);
   }
@@ -47,13 +48,13 @@ public class GameController {
   @ResponseStatus(HttpStatus.OK)
   public GameResponseDTO skipTurn(
       @RequestBody SkipTurnRequestDTO request,
-      @CookieValue(name = "jwt_session", required = false) String existingCookie) {
+      @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after skip turn
     return gameService.skipTurn(request);
   }
 
-  @PostMapping("/leave")
-  @ResponseStatus(HttpStatus.OK)
+  @DeleteMapping("/leave")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void leaveGame(HttpServletResponse response) {
     // Nothing return after leave game
     gameService.leaveGame(response);

@@ -44,7 +44,7 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @ResponseStatus(HttpStatus.OK)
   public ConnectedPlayerResponseDTO login(
       @Valid @RequestBody LoginRequestDTO request,
       HttpServletResponse response,
@@ -52,8 +52,8 @@ public class AuthController {
     return authService.login(request, response, existingCookie);
   }
 
-  @PostMapping("/logout")
-  @ResponseStatus(HttpStatus.OK)
+  @DeleteMapping("/logout")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void logout(
       @Valid @RequestBody LogoutRequestDTO request,
       HttpServletResponse response,
@@ -61,8 +61,8 @@ public class AuthController {
     authService.logout(request, response, existingCookie);
   }
 
-  @PostMapping("/delete")
-  @ResponseStatus(HttpStatus.OK)
+  @DeleteMapping("/delete")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(
       @Valid @RequestBody DeleteRequestDTO request,
       HttpServletResponse response,
@@ -79,8 +79,8 @@ public class AuthController {
     return authService.guest(request, response, existingCookie);
   }
 
-  @PostMapping("/update")
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @PutMapping("/update")
+  @ResponseStatus(HttpStatus.OK)
   public ConnectedPlayerResponseDTO update(
       @Valid @RequestBody UpdateRequestDTO request,
       HttpServletResponse response,

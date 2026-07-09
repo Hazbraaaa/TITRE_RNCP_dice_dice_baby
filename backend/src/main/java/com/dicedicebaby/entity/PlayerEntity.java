@@ -1,5 +1,6 @@
 package com.dicedicebaby.entity;
 
+import com.dicedicebaby.config.Constant;
 import jakarta.persistence.*;
 
 @Entity
@@ -24,7 +25,7 @@ public class PlayerEntity extends AuditableEntity {
 
   @Column private int score;
 
-  @Column private int remainingChips = 6;
+  @Column private int remainingChips = Constant.GameData.INITIAL_CHIPS;
 
   @ManyToOne
   @JoinColumn(name = "game_id")

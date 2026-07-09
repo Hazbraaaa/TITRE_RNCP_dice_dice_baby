@@ -48,7 +48,7 @@ export const Player = ({
         <span className="font-heading text-midnight-ice text-sm truncate max-w-[80px]">
           {name}
         </span>
-        <span className="text-red-alert uppercase font-sans font-bold text-[10px]">
+        <span className="text-red-alert font-sans font-bold text-[10px]">
           Score: {score}
         </span>
         <span className="text-midnight-ice/60 font-sans font-bold text-[10px]">

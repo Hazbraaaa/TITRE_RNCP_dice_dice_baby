@@ -60,7 +60,7 @@ public class DatabaseSeeder implements CommandLineRunner {
       testPlayer.setPlayerUsername(testAccount.getUsername());
       testPlayer.setIsGuest(false);
       testPlayer.setAccount(testAccount);
-      testPlayer.setScore(0);
+      testPlayer.setScore(Constant.GameData.INITIAL_POINTS);
 
       playerRepository.save(testPlayer);
 
@@ -81,8 +81,8 @@ public class DatabaseSeeder implements CommandLineRunner {
                     CardEntity entity = new CardEntity();
                     entity.setCombination(CardData.combination());
                     entity.setColor(CardData.color());
-                    entity.setPointLvl1(CardData.ptLvl1());
-                    entity.setPointLvl2(CardData.ptLvl2());
+                    entity.setPointLvl1(CardData.pointLvl1());
+                    entity.setPointLvl2(CardData.pointLvl2());
                     return entity;
                   })
               .toList();
