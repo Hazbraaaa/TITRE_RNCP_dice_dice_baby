@@ -1,5 +1,5 @@
 # FRONTEND - DEV ONLY
-FROM node:22-alpine
+FROM node:26-alpine
 
 # Dossier interne du conteneur
 WORKDIR /app
