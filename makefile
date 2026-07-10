@@ -17,7 +17,7 @@ DB_SERVICE = db
 # MAIN RULES (Docker)
 # ==============================================================================
 
-.PHONY: up down restart build status logs
+.PHONY: up down restart build status logs reset
 
 # Launch the application in detached mode
 up:
@@ -42,6 +42,10 @@ status:
 logs:
 	$(DC) logs -f
 
+# Destroy all volumes and restart the application
+reset:
+	$(DC) down -v
+	$(DC) up -d --build
 
 # ==============================================================================
 # SHORTCUTS FOR CONTAINERS (Logs, Shell)
@@ -74,7 +78,7 @@ shell-db:
 # SPECIFIC COMMANDS FOR TECH STACK
 # ==============================================================================
 
-.PHONY: mvn-clean mvn-spotless test-back npm-lint npm-lint-fix test-front psql
+.PHONY: mvn-clean mvn-spotless test-back npm-lint npm-lint-fix test-front psql check-commit
 
 # Launch a Clean & Package Maven directly in the Back container
 mvn-clean:
@@ -106,8 +110,9 @@ npm-lint-fix:
 test-front:
 	$(DC) exec $(FRONT_SERVICE) npm run test
 
-# Connect directly to the Postgres database (replace 'user' and 'dbname')
+# Connect directly to the Postgres database
 psql:
 	$(DC) exec -it $(DB_SERVICE) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
+# Run all checks before committing code
 check-commit: mvn-spotless npm-lint test-back test-front
