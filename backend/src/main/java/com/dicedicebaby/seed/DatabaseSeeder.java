@@ -49,9 +49,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     if (accountRepository.count() == 0) {
       // Create test account
       AccountEntity testAccount = new AccountEntity();
-      testAccount.setUsername("test");
-      testAccount.setEmail("test@test.fr");
-      testAccount.setPasswordHash(passwordEncoder.encode("Test!123"));
+      testAccount.setUsername("clem");
+      testAccount.setEmail("clem@test.fr");
+      testAccount.setPasswordHash(passwordEncoder.encode("Mypassword!123"));
 
       accountRepository.save(testAccount);
 
@@ -64,7 +64,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
       playerRepository.save(testPlayer);
 
-      System.out.println("Seeding terminé: Compte et Joueur 'test' créés.");
+      System.out.println("Seeding terminé: Compte et Joueur 'clem' créés.");
     } else {
       System.out.println("Seeding ignoré: Des comptes existent déjà en base.");
     }
