@@ -164,11 +164,9 @@ export default function PartyLauncher() {
       {/* Set Account modal */}
       {openModal?.type === 'account' && (
         <AccountModal
-          currentPlayer={
-            connectedPlayers.find(
-              (p) => p.playerNumber === openModal.playerNumber
-            )!
-          }
+          currentPlayer={connectedPlayers.find(
+            (p) => p.playerNumber === openModal.playerNumber
+          )!}
           isOpen
           onClose={closeModal}
           onUpdate={update}
