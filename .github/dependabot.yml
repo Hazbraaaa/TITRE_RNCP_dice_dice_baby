@@ -1,14 +1,25 @@
 version: 2
 
 updates:
-  # Backend Maven
+  # ------ Backend Maven ------
   - package-ecosystem: "maven"
     directory: "/backend"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "09:00"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
+    groups:
+      # Components JWT updates are grouped together to avoid multiple PRs for the same update.
+      jjwt:
+        patterns:
+          - "io.jsonwebtoken:*"
+    ignore:
+      # Ignore Springdoc OpenAPI major updates for now, as they are not compatible with Spring Boot 2.x.
+      - dependency-name: "org.springdoc:springdoc-openapi-starter-webmvc-ui"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "maven"
@@ -16,14 +27,36 @@ updates:
       prefix: "deps"
       include: "scope"
 
-  # Frontend / Node.js
+
+  # ------ Frontend / Node.js ------
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "09:30"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
+    groups:
+      # React, React DOM and their types are grouped together to avoid multiple PRs for the same update.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Vite and related packages are grouped together to avoid multiple PRs for the same update.
+      vite:
+        patterns:
+          - "vite"
+          - "vitest"
+          - "@vitejs/*"
+          - "vite-plugin-*"
+    ignore:
+      # Ignore Vite major updates for now, as they may introduce breaking changes that require manual intervention.
+      - dependency-name: "vite"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "npm"
@@ -31,13 +64,15 @@ updates:
       prefix: "deps"
       include: "scope"
 
-  # GitHub Actions
+
+  # ------ GitHub Actions ------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "10:00"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
     labels:
       - "dependencies"
@@ -46,14 +81,21 @@ updates:
       prefix: "ci"
       include: "scope"
 
-  # Dockerfile backend
+
+  # ------ Dockerfile backend ------
   - package-ecosystem: "docker"
     directory: "/backend"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "10:30"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
+    ignore:
+      # Ignore Eclipse Temurin major updates for now, as they may introduce breaking changes that require manual intervention.
+      - dependency-name: "eclipse-temurin"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "docker"
@@ -61,14 +103,21 @@ updates:
       prefix: "deps"
       include: "scope"
 
-  # Dockerfile frontend
+
+  # ------ Dockerfile frontend ------
   - package-ecosystem: "docker"
     directory: "/frontend"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "10:45"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
+    ignore:
+      # Ignore Node.js major updates for now, as they may introduce breaking changes that require manual intervention.
+      - dependency-name: "node"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "docker"
@@ -76,13 +125,15 @@ updates:
       prefix: "deps"
       include: "scope"
 
-  # docker-compose.yml à la racine
+
+  # ------ docker-compose.yml ------
   - package-ecosystem: "docker-compose"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "friday"
       time: "11:00"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 3
     labels:
       - "dependencies"
