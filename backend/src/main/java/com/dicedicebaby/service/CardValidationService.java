@@ -25,6 +25,14 @@ public class CardValidationService {
   // endregion
 
   // region Methods
+  /**
+   * Checks whether the dice satisfy a card requirement.
+   *
+   * @param diceValues the rolled dice values
+   * @param gameCardEntity the card to validate
+   * @return {@code true} if the card requirement is satisfied
+   * @throws IllegalArgumentException if the card data is invalid
+   */
   public boolean validateCard(List<Integer> diceValues, GameCardEntity gameCardEntity) {
     if (gameCardEntity == null || gameCardEntity.getCard() == null) {
       throw new IllegalArgumentException(

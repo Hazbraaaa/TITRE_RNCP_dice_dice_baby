@@ -11,6 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtils {
 
+  /**
+   * Adds a token to the session cookie.
+   *
+   * @param newToken the token to add
+   * @param existingCookie the current session cookie
+   * @param response the HTTP response
+   */
   public void addTokenToCookie(
       String newToken, String existingCookie, HttpServletResponse response) {
     String updatedValue =
@@ -29,6 +36,13 @@ public class CookieUtils {
     response.addCookie(cookie);
   }
 
+  /**
+   * Removes a token from the session cookie.
+   *
+   * @param tokenToDelete the token to remove
+   * @param existingCookie the current session cookie
+   * @param response the HTTP response
+   */
   public void deleteTokenToCookie(
       String tokenToDelete, String existingCookie, HttpServletResponse response) {
     List<String> tokens = new ArrayList<>(Arrays.asList(existingCookie.split(Constant.SEPARATOR)));
@@ -55,6 +69,14 @@ public class CookieUtils {
     response.addCookie(cookie);
   }
 
+  /**
+   * Replaces a token in the session cookie.
+   *
+   * @param oldToken the token to replace
+   * @param newToken the replacement token
+   * @param existingCookie the current session cookie
+   * @param response the HTTP response
+   */
   public void updateTokenToCookie(
       String oldToken, String newToken, String existingCookie, HttpServletResponse response) {
     // If no cookie, add token to new cookie
@@ -89,6 +111,11 @@ public class CookieUtils {
     response.addCookie(cookie);
   }
 
+  /**
+   * Deletes the session cookie.
+   *
+   * @param response the HTTP response
+   */
   public void clearCookie(HttpServletResponse response) {
     // Create a cookie with the same name but empty
     Cookie cookie = new Cookie(Constant.COOKIE_NAME, "");

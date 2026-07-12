@@ -1,13 +1,29 @@
 import { eCardRequirement } from '../../../types/enums/eCardRequirement';
 
+/**
+ * Name of a supported card requirement.
+ */
 export type CardRequirementKey = keyof typeof eCardRequirement;
 
+/**
+ * Value displayed on a dice face.
+ */
 export type DiceFace = number | string;
 
+/**
+ * Describes how a card requirement should be rendered.
+ */
 export type CardUiRender =
   | { type: 'dice'; values: DiceFace[]; maxDicePerLine: 2 | 3 }
   | { type: 'text'; label: string };
 
+/**
+ * Maps a card requirement to its visual representation.
+ *
+ * @param combination The card requirement to display.
+ * @param displayName The fallback label for unsupported requirements.
+ * @returns The dice or text representation of the requirement.
+ */
 export const getUiForCombination = (
   combination: CardRequirementKey,
   displayName: string

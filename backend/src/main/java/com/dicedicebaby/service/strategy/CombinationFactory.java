@@ -21,7 +21,13 @@ public class CombinationFactory {
     }
   }
 
-  // Guide to the right validator using requirement name
+  /**
+   * Returns the validator matching a card requirement.
+   *
+   * @param requirement the card requirement
+   * @return the matching combination validator
+   * @throws IllegalArgumentException if no validator supports the requirement
+   */
   public CombinationValidator getValidator(CardRequirement requirement) {
     String requirementName = requirement.name();
 

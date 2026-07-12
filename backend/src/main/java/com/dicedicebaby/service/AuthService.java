@@ -52,6 +52,12 @@ public class AuthService {
   // endregion
 
   // region Methods
+  /**
+   * Returns the players connected through the current cookie.
+   *
+   * @param existingCookie the current session cookie
+   * @return the connected players, or an empty list if no session exists
+   */
   @Transactional
   public List<ConnectedPlayerResponseDTO> getCurrentSession(String existingCookie) {
     List<ConnectedPlayerResponseDTO> players = new ArrayList<>();
@@ -90,6 +96,15 @@ public class AuthService {
     return players;
   }
 
+  /**
+   * Registers an account and adds its player to the session.
+   *
+   * @param request the registration data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   * @return the newly connected player
+   * @throws IllegalStateException if the username or email is already used
+   */
   @Transactional
   public ConnectedPlayerResponseDTO register(
       RegistrationRequestDTO request, HttpServletResponse response, String existingCookie) {
@@ -112,6 +127,15 @@ public class AuthService {
         player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
+  /**
+   * Authenticates a player and adds them to the session.
+   *
+   * @param request the login data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   * @return the connected player
+   * @throws RuntimeException if the credentials are invalid
+   */
   @Transactional
   public ConnectedPlayerResponseDTO login(
       LoginRequestDTO request, HttpServletResponse response, String existingCookie) {
@@ -136,6 +160,13 @@ public class AuthService {
         player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
+  /**
+   * Removes a player from the current session.
+   *
+   * @param request the logout data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   */
   @Transactional
   public void logout(
       LogoutRequestDTO request, HttpServletResponse response, String existingCookie) {
@@ -162,6 +193,14 @@ public class AuthService {
     }
   }
 
+  /**
+   * Deletes an account and removes its player from the session.
+   *
+   * @param request the account deletion data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   * @throws ResponseStatusException if authentication fails
+   */
   @Transactional
   public void delete(
       DeleteRequestDTO request, HttpServletResponse response, String existingCookie) {
@@ -187,6 +226,14 @@ public class AuthService {
     cookieUtils.deleteTokenToCookie(token, existingCookie, response);
   }
 
+  /**
+   * Creates a guest player and adds them to the session.
+   *
+   * @param request the guest data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   * @return the newly connected guest
+   */
   @Transactional
   public ConnectedPlayerResponseDTO guest(
       GuestRequestDTO request, HttpServletResponse response, String existingCookie) {
@@ -205,6 +252,16 @@ public class AuthService {
         player.getId(), player.getPlayerUsername(), player.getIsGuest(), player.getPlayerNumber());
   }
 
+  /**
+   * Updates the authenticated account and its player.
+   *
+   * @param request the updated account data
+   * @param response the HTTP response
+   * @param existingCookie the current session cookie
+   * @return the updated player
+   * @throws ResponseStatusException if authentication fails
+   * @throws IllegalStateException if the username or email is already used
+   */
   @Transactional
   public ConnectedPlayerResponseDTO update(
       UpdateRequestDTO request, HttpServletResponse response, String existingCookie) {

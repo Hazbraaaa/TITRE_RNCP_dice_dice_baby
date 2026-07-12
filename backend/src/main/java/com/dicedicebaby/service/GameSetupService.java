@@ -39,6 +39,13 @@ public class GameSetupService {
   // endregion
 
   // region Methods
+  /**
+   * Creates a new game for the players in the session.
+   *
+   * @param existingCookie the current session cookie
+   * @return the newly created game
+   * @throws IllegalStateException if the game cannot be created
+   */
   @Transactional
   public GameResponseDTO setupNewGame(String existingCookie) {
     // Create a game

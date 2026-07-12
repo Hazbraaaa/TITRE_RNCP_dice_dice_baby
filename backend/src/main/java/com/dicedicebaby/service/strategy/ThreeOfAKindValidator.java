@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ThreeOfAKindValidator implements CombinationValidator {
 
+  /** {@inheritDoc} */
   @Override
   public boolean isValid(List<Integer> diceValues, CardRequirement cardRequirement) {
     if (diceValues == null || diceValues.size() < Constant.GameData.DICE_COUNT) {
@@ -34,6 +35,7 @@ public class ThreeOfAKindValidator implements CombinationValidator {
     return count >= 3;
   }
 
+  /** {@inheritDoc} */
   @Override
   public CombinationType getCombinationName() {
     return CombinationType.THREE_OF_A_KIND;

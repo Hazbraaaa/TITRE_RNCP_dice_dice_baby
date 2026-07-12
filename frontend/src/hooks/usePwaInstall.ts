@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * Manages the browser prompt for installing the application as a PWA.
+ *
+ * @returns The installation availability and the action used to start it.
+ */
 export function usePwaInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);

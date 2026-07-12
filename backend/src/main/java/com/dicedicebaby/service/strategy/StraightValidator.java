@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StraightValidator implements CombinationValidator {
 
+  /** {@inheritDoc} */
   @Override
   public boolean isValid(List<Integer> diceValues, CardRequirement cardRequirement) {
     if (diceValues == null || diceValues.size() < Constant.GameData.DICE_COUNT) {
@@ -51,6 +52,7 @@ public class StraightValidator implements CombinationValidator {
     };
   }
 
+  /** {@inheritDoc} */
   @Override
   public CombinationType getCombinationName() {
     return CombinationType.STRAIGHT;

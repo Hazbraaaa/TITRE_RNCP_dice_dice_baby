@@ -1,10 +1,10 @@
 import Modal from './Modal';
 import { Button } from './Button';
 import type { Game } from '../types/game';
+import { Player } from './Player';
 
 type EndGameModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   onRematch: () => void;
   onGoToMenu: () => void;
   game: Game;
@@ -12,7 +12,6 @@ type EndGameModalProps = {
 
 export default function EndGameModal({
   isOpen,
-  onClose,
   onRematch,
   onGoToMenu,
   game,
@@ -22,20 +21,25 @@ export default function EndGameModal({
       ? game.players.find((p) => p.playerId === game.winnerId)
       : null;
 
-  const victoryMessage = winnerPlayer
-    ? `Fin de la partie ! Le gagnant est ${winnerPlayer.username}`
-    : 'Fin de la partie !';
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen}>
       <h2 className="text-3xl font-heading text-polar-blue mb-6 text-center uppercase tracking-tight">
         Fin de partie
       </h2>
 
       {/* Message with result zone*/}
-      {victoryMessage && (
-        <div className="mb-6 p-4 bg-polar-blue/10 border-2 border-polar-blue text-midnight-ice rounded-md text-sm font-bold uppercase text-center tracking-wide shadow-inner">
-          {victoryMessage}
+      {winnerPlayer && (
+        <div className="mb-6 flex flex-col items-center gap-3">
+          <p className="text-sm font-bold uppercase text-midnight-ice">
+            Le gagnant est
+          </p>
+
+          <Player
+            number={winnerPlayer.playerNumber}
+            name={winnerPlayer.username}
+            score={winnerPlayer.score}
+            remainingChips={winnerPlayer.remainingChips}
+          />
         </div>
       )}
 

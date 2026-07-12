@@ -11,6 +11,12 @@ import type { Game } from '../types/game';
 
 const STORAGE_KEY = 'DDB_game_info';
 
+/**
+ * Manages the current game state and player actions.
+ *
+ * @returns The game state and actions for rolling dice, ending turns,
+ * skipping turns and leaving the game.
+ */
 export const useGame = () => {
   // React Router's navigation hook for programmatic navigation
   const navigate = useNavigate();

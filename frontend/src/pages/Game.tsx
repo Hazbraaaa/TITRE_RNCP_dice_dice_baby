@@ -148,7 +148,6 @@ export default function Game() {
       {/* End game modal */}
       <EndGameModal
         isOpen={game?.state === 'FINISHED'}
-        onClose={() => setAlertMessage(null)}
         onRematch={handleRematch}
         onGoToMenu={handleGoToMenu}
         game={game}

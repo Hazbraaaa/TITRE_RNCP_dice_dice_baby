@@ -1,6 +1,12 @@
 // ---------- REQUESTS TO BACKEND API ----------
 const apiUrl = import.meta.env.VITE_API_URL;
 
+/**
+ * Creates a new game for the players in the current session.
+ *
+ * @returns The newly created game.
+ * @throws If the game cannot be created.
+ */
 export async function setupNewGame() {
   try {
     // Send request with body to API to setup a new game

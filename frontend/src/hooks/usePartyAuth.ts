@@ -18,6 +18,11 @@ interface OpenModalState {
   type: ModalType;
 }
 
+/**
+ * Manages player authentication and the current party session.
+ *
+ * @returns The connected players, modal state and authentication actions.
+ */
 export const usePartyAuth = () => {
   const [connectedPlayers, setConnectedPlayers] = useState(
     getPlayersFromLocalStorage()
