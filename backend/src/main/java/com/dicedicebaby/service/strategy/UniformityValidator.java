@@ -19,7 +19,7 @@ public class UniformityValidator implements CombinationValidator {
 
     // Check and return if uniformity validate requirement
     return switch (cardRequirement) {
-        // yield = break with a returned value (boolean in this case)
+      // yield = break with a returned value (boolean in this case)
       case ALL_IDENTICAL -> {
         // Get first dice value
         int firstDice = diceValues.getFirst();
