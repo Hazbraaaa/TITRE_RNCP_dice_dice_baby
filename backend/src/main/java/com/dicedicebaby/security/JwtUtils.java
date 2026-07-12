@@ -43,7 +43,12 @@ public class JwtUtils {
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
-  // Generate unique token
+  /**
+   * Generates an authentication token for a user.
+   *
+   * @param username the authenticated username
+   * @return the generated JWT
+   */
   public String generateToken(String username) {
     return Jwts.builder()
         .setSubject(username)
@@ -54,14 +59,26 @@ public class JwtUtils {
         .compact();
   }
 
-  // Extract username from token
+  /**
+   * Extracts the username from a JWT.
+   *
+   * @param token the JWT to parse
+   * @return the username stored in the token
+   */
   public String extractUsername(String token) {
     Claims claims =
         Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
     return claims.getSubject();
   }
 
-  // Validate and get token from cookie
+  /**
+   * Finds a valid token for a user in the session cookie.
+   *
+   * @param username the username to search for
+   * @param existingCookie the current session cookie
+   * @return the matching token
+   * @throws ResponseStatusException if no valid token is found
+   */
   public String validateAndGetToken(String username, String existingCookie) {
     if (existingCookie == null || existingCookie.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Session absente");
@@ -80,7 +97,14 @@ public class JwtUtils {
     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalide pour ce joueur");
   }
 
-  // Get account with given password from cookie
+  /**
+   * Authenticates and returns an account from the session cookie.
+   *
+   * @param password the raw account password
+   * @param existingCookie the current session cookie
+   * @return the authenticated account
+   * @throws ResponseStatusException if authentication fails
+   */
   public AccountEntity getAccountFromCookies(String password, String existingCookie) {
     if (existingCookie == null || existingCookie.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Session absente");

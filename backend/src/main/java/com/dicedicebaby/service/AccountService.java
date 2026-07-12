@@ -24,6 +24,15 @@ public class AccountService {
   // endregion
 
   // region Methods
+  /**
+   * Creates and saves a new account.
+   *
+   * @param username the account username
+   * @param email the account email
+   * @param password the raw password
+   * @return the saved account
+   * @throws IllegalStateException if the username or email is already used
+   */
   @Transactional
   public AccountEntity registerNewAccount(String username, String email, String password) {
     // Check unique account
@@ -44,6 +53,14 @@ public class AccountService {
     return accountRepository.save(newAccount);
   }
 
+  /**
+   * Authenticates and returns an account.
+   *
+   * @param email the account email
+   * @param password the raw password
+   * @return the authenticated account
+   * @throws RuntimeException if the credentials are invalid
+   */
   public AccountEntity getAccount(String email, String password) {
     // Search for account by email
     AccountEntity account = accountRepository.findByEmail(email);

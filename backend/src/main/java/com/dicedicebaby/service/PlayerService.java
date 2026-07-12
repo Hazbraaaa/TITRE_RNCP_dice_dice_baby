@@ -23,6 +23,13 @@ public class PlayerService {
   // endregion
 
   // region Methods
+  /**
+   * Creates and saves a player linked to an account.
+   *
+   * @param account the player account
+   * @param playerNumber the player's position
+   * @return the saved player
+   */
   @Transactional
   public PlayerEntity createPlayerForAccount(AccountEntity account, int playerNumber) {
     // Create a player from an account
@@ -38,6 +45,13 @@ public class PlayerService {
     return playerRepository.save(player);
   }
 
+  /**
+   * Finds the player linked to an account.
+   *
+   * @param account the account to search for
+   * @return the associated player
+   * @throws RuntimeException if no player is found
+   */
   @Transactional
   public PlayerEntity getPlayerByAccount(AccountEntity account) {
     // Get player from an account
@@ -52,6 +66,13 @@ public class PlayerService {
     return player;
   }
 
+  /**
+   * Finds a player by username.
+   *
+   * @param playerUsername the username to search for
+   * @return the matching player
+   * @throws RuntimeException if no player is found
+   */
   @Transactional
   public PlayerEntity getPlayerByPlayerUsername(String playerUsername) {
     // Get player from a username
@@ -66,6 +87,13 @@ public class PlayerService {
     return player;
   }
 
+  /**
+   * Finds a player by their current token.
+   *
+   * @param token the authentication token
+   * @return the matching player
+   * @throws RuntimeException if no player is found
+   */
   @Transactional
   public PlayerEntity getPlayerByToken(String token) {
     // Get player from a username
@@ -80,6 +108,14 @@ public class PlayerService {
     return player;
   }
 
+  /**
+   * Creates and saves a guest player.
+   *
+   * @param username the guest username
+   * @param playerNumber the player's position
+   * @return the saved guest player
+   * @throws IllegalStateException if the username is already used
+   */
   @Transactional
   public PlayerEntity createPlayerForGuest(String username, int playerNumber) {
     // Create a player for a guest

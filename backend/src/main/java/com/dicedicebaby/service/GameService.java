@@ -48,7 +48,13 @@ public class GameService {
   // endregion
 
   // region Methods
-
+  /**
+   * Rolls the available dice and updates the game.
+   *
+   * @param request the roll data
+   * @return the updated game
+   * @throws IllegalStateException if the roll is not allowed
+   */
   @Transactional
   public GameResponseDTO rollDices(RollRequestDTO request) {
     // Get game from game id
@@ -85,6 +91,13 @@ public class GameService {
     return gameMapper.mapToGameResponseDTO(game);
   }
 
+  /**
+   * Validates the selected card and ends the current turn.
+   *
+   * @param request the end-turn data
+   * @return the updated game
+   * @throws IllegalStateException if the turn cannot be completed
+   */
   @Transactional
   public GameResponseDTO checkEndTurn(EndTurnRequestDTO request) {
     // Get game from game id
@@ -136,6 +149,13 @@ public class GameService {
     return gameMapper.mapToGameResponseDTO(game);
   }
 
+  /**
+   * Skips the current player's turn.
+   *
+   * @param request the skip-turn data
+   * @return the updated game
+   * @throws IllegalStateException if the turn cannot be skipped
+   */
   @Transactional
   public GameResponseDTO skipTurn(SkipTurnRequestDTO request) {
     // Get game from game id
@@ -150,6 +170,11 @@ public class GameService {
     return gameMapper.mapToGameResponseDTO(game);
   }
 
+  /**
+   * Removes the current game session cookie.
+   *
+   * @param response the HTTP response
+   */
   public void leaveGame(HttpServletResponse response) {
     // Clear the cookie
     cookieUtils.clearCookie(response);
