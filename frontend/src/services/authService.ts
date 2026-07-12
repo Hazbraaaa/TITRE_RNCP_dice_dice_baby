@@ -1,6 +1,13 @@
 // ---------- REQUESTS TO BACKEND API ----------
 const apiUrl = import.meta.env.VITE_API_URL;
 
+/**
+ * Registers a new account and connects its player.
+ *
+ * @param payload The registration data.
+ * @returns The newly connected player.
+ * @throws If the registration request fails.
+ */
 export async function registerUser(payload: {
   username: string;
   email: string;
@@ -36,6 +43,13 @@ export async function registerUser(payload: {
   }
 }
 
+/**
+ * Authenticates an account and connects its player.
+ *
+ * @param payload The login credentials and player number.
+ * @returns The connected player.
+ * @throws If authentication fails.
+ */
 export async function loginUser(payload: {
   email: string;
   password: string;
@@ -70,6 +84,13 @@ export async function loginUser(payload: {
   }
 }
 
+/**
+ * Creates and connects a guest player.
+ *
+ * @param payload The guest username and player number.
+ * @returns The newly connected guest.
+ * @throws If the guest creation request fails.
+ */
 export async function guestUser(payload: {
   username: string;
   playerNumber: number | undefined;
@@ -103,6 +124,12 @@ export async function guestUser(payload: {
   }
 }
 
+/**
+ * Retrieves the players connected to the current session.
+ *
+ * @returns The connected players.
+ * @throws If the session request fails.
+ */
 export async function fetchSession() {
   try {
     // Request current session based on HttpOnly cookies
@@ -132,6 +159,12 @@ export async function fetchSession() {
   }
 }
 
+/**
+ * Disconnects a player from the current session.
+ *
+ * @param payload The player logout data.
+ * @throws If the logout request fails.
+ */
 export async function logoutUser(payload: {
   username: string;
   playerNumber: number | undefined;
@@ -162,6 +195,13 @@ export async function logoutUser(payload: {
   }
 }
 
+/**
+ * Updates the authenticated account.
+ *
+ * @param payload The account fields to update and current password.
+ * @returns The updated player.
+ * @throws If authentication or the update request fails.
+ */
 export async function updateUser(payload: {
   username: string;
   email: string;
@@ -200,6 +240,13 @@ export async function updateUser(payload: {
   }
 }
 
+/**
+ * Deletes the authenticated account.
+ *
+ * @param payload The deletion data.
+ * @returns The result of the deletion.
+ * @throws If the deletion request fails.
+ */
 export async function deleteUser(payload: {
   username: string;
   password: string;
@@ -241,6 +288,11 @@ export interface AuthenticatedPlayer {
 
 export const STORAGE_KEY = 'DDB_lobby_players';
 
+/**
+ * Saves or updates a player in local storage.
+ *
+ * @param player The authenticated player to save.
+ */
 export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
   // Get existing players from local storage
   const existingPlayers = getPlayersFromLocalStorage();
@@ -262,6 +314,11 @@ export const savePlayerToLocalStorage = (player: AuthenticatedPlayer) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPlayers));
 };
 
+/**
+ * Retrieves the players stored locally.
+ *
+ * @returns The stored players, or an empty array if none are available.
+ */
 export const getPlayersFromLocalStorage = (): AuthenticatedPlayer[] => {
   const data = localStorage.getItem(STORAGE_KEY);
 
@@ -269,11 +326,19 @@ export const getPlayersFromLocalStorage = (): AuthenticatedPlayer[] => {
   return data ? JSON.parse(data) : [];
 };
 
+/**
+ * Removes all locally stored players.
+ */
 export const clearPlayers = () => {
   // Remove all players from local storage
   localStorage.removeItem(STORAGE_KEY);
 };
 
+/**
+ * Removes a player from local storage.
+ *
+ * @param playerNumber The number of the player to remove.
+ */
 export const deletePlayerFromLocalStorage = (playerNumber: number) => {
   const players = getPlayersFromLocalStorage();
   // Keep only players without the specified player

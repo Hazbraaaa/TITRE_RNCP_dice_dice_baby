@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ButtonLink } from '../components/ButtonLink';
 import { Button } from '../components/Button';
-import { usePwaInstall } from '../components/usePwaInstall';
+import { usePwaInstall } from '../hooks/usePwaInstall';
 import Footer from '../components/Footer';
 
 export default function Home() {

@@ -1,6 +1,13 @@
 // ---------- REQUESTS TO BACKEND API ----------
 const apiUrl = import.meta.env.VITE_API_URL;
 
+/**
+ * Rolls the available dice for the current game.
+ *
+ * @param payload The game ID and IDs of the dice to keep.
+ * @returns The updated game.
+ * @throws If the roll request fails.
+ */
 export async function rollDices(payload: {
   gameId: number;
   keptDiceIds: number[];
@@ -34,6 +41,13 @@ export async function rollDices(payload: {
   }
 }
 
+/**
+ * Ends the current turn using the selected card.
+ *
+ * @param payload The game and selected card IDs.
+ * @returns The updated game.
+ * @throws If the turn cannot be completed.
+ */
 export async function endTurn(payload: { gameId: number; gameCardId: number }) {
   try {
     // Send request with body to API to end the turn
@@ -64,6 +78,13 @@ export async function endTurn(payload: { gameId: number; gameCardId: number }) {
   }
 }
 
+/**
+ * Skips the current player's turn.
+ *
+ * @param payload The current game ID.
+ * @returns The updated game.
+ * @throws If the turn cannot be skipped.
+ */
 export async function skipTurn(payload: { gameId: number }) {
   try {
     // Send request with body to API to skip the turn
@@ -94,6 +115,11 @@ export async function skipTurn(payload: { gameId: number }) {
   }
 }
 
+/**
+ * Leaves the current game and clears its server session.
+ *
+ * @throws If the leave-game request fails.
+ */
 export async function leaveGame() {
   try {
     // Send request to API to leave the game
