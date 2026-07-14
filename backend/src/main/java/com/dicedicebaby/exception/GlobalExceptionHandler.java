@@ -1,5 +1,7 @@
 package com.dicedicebaby.exception;
 
+import com.dicedicebaby.dto.response.ApiErrorResponseDTO;
+import com.dicedicebaby.enums.ApiErrorCode;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,7 +39,7 @@ public class GlobalExceptionHandler {
       DataIntegrityViolationException ex) {
     Map<String, String> response = new HashMap<>();
 
-    // On vérifie si l'erreur concerne le nom d'utilisateur
+    // Check if error come from player username
     String message = ex.getRootCause() != null ? ex.getRootCause().getMessage() : "";
 
     if (message.contains("players_player_username_key") || message.contains("player_username")) {
@@ -47,5 +49,17 @@ public class GlobalExceptionHandler {
     }
 
     return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+  }
+
+  @ExceptionHandler(ApiException.class)
+  public ResponseEntity<ApiErrorResponseDTO> handleApiException(ApiException ex) {
+
+    ApiErrorCode errorCode = ex.getErrorCode();
+
+    ApiErrorResponseDTO response =
+        new ApiErrorResponseDTO(
+            errorCode.getStatus().value(), errorCode.name(), errorCode.getMessage());
+
+    return ResponseEntity.status(errorCode.getStatus()).body(response);
   }
 }
