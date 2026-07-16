@@ -27,13 +27,6 @@ jobs:
           cd backend
           mvn verify
         env:
-          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-          SPRING_DATASOURCE_DRIVERCLASSNAME: org.h2.Driver
-          SPRING_DATASOURCE_USERNAME: sa
-          SPRING_DATASOURCE_PASSWORD: ""
-          SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-          SPRING_JPA_SHOW_SQL: "true"
-          SPRING_FLYWAY_ENABLED: "false"
           SPRING_PROFILES_ACTIVE: test
 
       - name: Set up Docker Buildx
