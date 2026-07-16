@@ -37,6 +37,8 @@ public class GameController {
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "Dice rolled successfully"),
     @ApiResponse(responseCode = "400", description = "Invalid roll request"),
+    @ApiResponse(responseCode = "401", description = "Session missing or invalid"),
+    @ApiResponse(responseCode = "403", description = "Session not authorized for this game"),
     @ApiResponse(responseCode = "404", description = "Game not found"),
     @ApiResponse(responseCode = "409", description = "Roll not allowed")
   })
@@ -46,7 +48,7 @@ public class GameController {
       @RequestBody RollRequestDTO request,
       @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after roll
-    return gameService.rollDices(request);
+    return gameService.rollDices(request, existingCookie);
   }
 
   @Operation(
@@ -55,6 +57,8 @@ public class GameController {
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "Turn ended successfully"),
     @ApiResponse(responseCode = "400", description = "Invalid card or dice combination"),
+    @ApiResponse(responseCode = "401", description = "Session missing or invalid"),
+    @ApiResponse(responseCode = "403", description = "Session not authorized for this game"),
     @ApiResponse(responseCode = "404", description = "Game or card not found"),
     @ApiResponse(responseCode = "409", description = "Turn cannot be completed")
   })
@@ -64,15 +68,15 @@ public class GameController {
       @RequestBody EndTurnRequestDTO request,
       @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after end turn
-    return gameService.checkEndTurn(request);
+    return gameService.checkEndTurn(request, existingCookie);
   }
 
-  @Operation(
-      summary = "Skip the current turn",
-      description = "Uses a chip to skip the current player's turn.")
+  @Operation(summary = "Skip the current turn", description = "Skip the current player's turn.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "Turn skipped successfully"),
     @ApiResponse(responseCode = "400", description = "Invalid skip request"),
+    @ApiResponse(responseCode = "401", description = "Session missing or invalid"),
+    @ApiResponse(responseCode = "403", description = "Session not authorized for this game"),
     @ApiResponse(responseCode = "404", description = "Game not found"),
     @ApiResponse(responseCode = "409", description = "Turn cannot be skipped")
   })
@@ -82,7 +86,7 @@ public class GameController {
       @RequestBody SkipTurnRequestDTO request,
       @CookieValue(name = Constant.COOKIE_NAME, required = false) String existingCookie) {
     // Return updated game response after skip turn
-    return gameService.skipTurn(request);
+    return gameService.skipTurn(request, existingCookie);
   }
 
   @Operation(summary = "Leave the game", description = "Clears the game session cookie.")

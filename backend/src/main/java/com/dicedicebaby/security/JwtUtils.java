@@ -2,6 +2,8 @@ package com.dicedicebaby.security;
 
 import com.dicedicebaby.config.Constant;
 import com.dicedicebaby.entity.AccountEntity;
+import com.dicedicebaby.enums.ApiErrorCode;
+import com.dicedicebaby.exception.ApiException;
 import com.dicedicebaby.repository.AccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +12,8 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -126,5 +130,39 @@ public class JwtUtils {
     }
     throw new ResponseStatusException(
         HttpStatus.UNAUTHORIZED, "Mot de passe incorrect ou session expirée");
+  }
+
+  /**
+   * Extract and returns list of players from the session cookie.
+   *
+   * @param existingCookie the current session cookie
+   * @return the set of players
+   * @throws ResponseStatusException if session cookie invalid
+   */
+  public Set<String> extractValidUsernames(String existingCookie) {
+    if (existingCookie == null || existingCookie.isBlank()) {
+      throw new ApiException(ApiErrorCode.SESSION_MISSING);
+    }
+
+    Set<String> usernames = new HashSet<>();
+
+    String[] tokens = existingCookie.split(Constant.SEPARATOR);
+
+    for (String token : tokens) {
+      try {
+        String username = extractUsername(token);
+
+        if (username != null && !username.isBlank()) {
+          usernames.add(username.toLowerCase());
+        }
+      } catch (Exception ignored) {
+      }
+    }
+
+    if (usernames.isEmpty()) {
+      throw new ApiException(ApiErrorCode.SESSION_INVALID);
+    }
+
+    return usernames;
   }
 }

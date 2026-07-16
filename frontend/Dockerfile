@@ -1,12 +1,11 @@
 # FRONTEND - DEV ONLY
 FROM node:22-alpine
 
-# Dossier interne du conteneur
 WORKDIR /app
 
-# Installer seulement les deps (optimisé)
+# Copy package.json and package-lock.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Les sources seront montées via volumes
+# Sources will be mounted via volumes
 CMD ["npm", "run", "dev", "--", "--host"]
