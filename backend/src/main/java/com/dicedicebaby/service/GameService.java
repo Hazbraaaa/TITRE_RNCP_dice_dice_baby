@@ -15,8 +15,8 @@ import com.dicedicebaby.repository.GameRepository;
 import com.dicedicebaby.security.CookieUtils;
 import com.dicedicebaby.security.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ public class GameService {
   private final GameRepository gameRepository;
   private final GameCardRepository gameCardRepository;
   private final CardValidationService cardValidationService;
-  private final Random random = new Random();
+  private final SecureRandom secureRandom = new SecureRandom();
   private final GameMapper gameMapper;
   private final CookieUtils cookieUtils;
   private final JwtUtils jwtUtils;
@@ -92,7 +92,7 @@ public class GameService {
 
       // Roll only the right dices
       if (!dice.isKept()) {
-        dice.setValue(random.nextInt(Constant.GameData.MAX_DICE_VALUE) + 1);
+        dice.setValue(secureRandom.nextInt(Constant.GameData.MAX_DICE_VALUE) + 1);
       }
     }
 
@@ -226,6 +226,7 @@ public class GameService {
     // Get conditions of victory
     boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == Constant.GameData.NO_CHIPS_LEFT;
     boolean hasReachedTargetScore = currentPlayer.getScore() >= Constant.GameData.WINNING_POINTS;
+    // TODO ------- CREATE method for checking lines...
 
     // If one condition is check set winner and game as finished
     if (hasNoChipsLeft || hasReachedTargetScore) {

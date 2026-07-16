@@ -1,14 +1,14 @@
 # BACKEND - DEV ONLY
 FROM eclipse-temurin:21-jdk AS dev
 
-# Installer Maven
+# Install Maven
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copier pom.xml pour installer les deps
+# Copy pom.xml and download dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Les sources seront montées par volumes, on ne les copie pas
-CMD ["mvn", "spring-boot:run"]
+# Sources will be mounted via volumes
+CMD ["sh", "-c", "./mvnw spotless:apply && ./mvnw spring-boot:run"]

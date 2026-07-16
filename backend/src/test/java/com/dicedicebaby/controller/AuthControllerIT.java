@@ -29,6 +29,8 @@ public class AuthControllerIT {
   // Used to serialize Java objects into JSON strings
   @Autowired private ObjectMapper objectMapper;
 
+  private static final String VALID_PASSWORD = "Password@007";
+
   @Test
   void getCurrentSession_WithoutCookie_ShouldReturnOk() throws Exception {
     // No GIVEN
@@ -47,7 +49,7 @@ public class AuthControllerIT {
     // region GIVEN
     // Prepare input data
     RegistrationRequestDTO request =
-        new RegistrationRequestDTO("Pingu", "pingu@test.com", "pass", 1);
+        new RegistrationRequestDTO("Pingu", "pingu@test.com", VALID_PASSWORD, 1);
     // endregion
 
     // region WHEN
@@ -76,7 +78,7 @@ public class AuthControllerIT {
     // region GIVEN
     // Register before trying to login
     RegistrationRequestDTO signup =
-        new RegistrationRequestDTO("Pingu", "pingu@test.com", "pass", 1);
+        new RegistrationRequestDTO("Pingu", "pingu@test.com", VALID_PASSWORD, 1);
     mockMvc.perform(
         post("/auth/register")
             .with(csrf())
@@ -84,7 +86,7 @@ public class AuthControllerIT {
             .content(objectMapper.writeValueAsString(signup)));
 
     // Prepare input data
-    LoginRequestDTO request = new LoginRequestDTO("pingu@test.com", "pass", 1);
+    LoginRequestDTO request = new LoginRequestDTO("pingu@test.com", VALID_PASSWORD, 1);
     // endregion
 
     // region WHEN
