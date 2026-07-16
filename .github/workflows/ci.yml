@@ -34,6 +34,7 @@ jobs:
           SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
           SPRING_JPA_SHOW_SQL: "true"
           SPRING_FLYWAY_ENABLED: "false"
+          SPRING_PROFILES_ACTIVE: test
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
