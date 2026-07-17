@@ -27,7 +27,7 @@ Cette section détaille les étapes pour lancer l'application complète (Backend
 2.  **Configuration des variables d'environnement :**
     Créez le fichier de configuration de l'environnement de développement à partir du modèle :
     ```bash
-    cp .env.example .env
+    cp .env.dev.example .env
     ```
     *(Veuillez vérifier et ajuster les valeurs nécessaires dans le nouveau fichier `.env`)*
 
@@ -48,14 +48,14 @@ Une fois l'orchestration Docker démarrée, les services sont disponibles sur vo
 ---
 ## 2. Technologies et Architecture
 
-Ce projet suit une architecture microservices conteneurisée utilisant la stack suivant :
+Ce projet suit une architecture trois tiers conteneurisée utilisant la stack suivante :
 
 | Service | Technologie | Description |
 | :--- | :--- | :--- |
 | **Frontend** | [React (TypeScript) + Vite](https://react.dev/) | PWA Responsive (Mobile-First), interface dynamique construite en composants réutilisables, stylisée avec TailwindCSS. |
 | **Backend** | [Java (Spring Boot)](https://spring.io/guides) | API RESTful structurée en couches (Controller, Service, Repository). Sécurisée par Spring Security et tokens JWT. |
 | **Base de Données** | [PostgreSQL](https://www.postgresql.org/) | Persistance relationnelle (Transactions ACID). Versioning du schéma géré par Flyway. |
-| **Conteneurisation** | [Docker / Docker Compose](https://docs.docker.com/) | Builds optimisés en multi-stage. |
+| **Conteneurisation** | [Docker / Docker Compose](https://docs.docker.com/) | Exécution isolée du frontend, du backend et de PostgreSQL dans des conteneurs dédiés au développement local. |
 
 
 ---
@@ -65,9 +65,9 @@ Pour faciliter la prise en main de l'application par les développeurs et les ut
 
 * Documentation interactive des routes (Swagger/OpenAPI) : Elle liste l'ensemble des endpoints (Auth, Game, ...) et permet de tester les requêtes en direct. [Consulter la documentation Swagger UI](http://localhost:8080/api/swagger-ui/index.html)
 
-> *Note : Assurez-vous que le conteneur Docker `dev_back` est bien actif sur le port 8080 avant de lancer le lien.*. 
+> *Note : Assurez-vous que le conteneur Docker `dev_back` est bien actif sur le port 8080 avant de lancer le lien.* 
 
-* Guide officiel des règles du jeu : Pour comprendre les mécaniques de Dice Dice Baby (lancers de dés, verrouillage, combinaisons de cartes), veuillez consulter le [Guide officiel des règles du jeu](./USER_GUIDE.md).
+* Guide officiel des règles du jeu : Pour comprendre les mécaniques de Dice Dice Baby (lancers de dés, verrouillage, combinaisons de cartes), veuillez consulter le [Guide officiel des règles du jeu](./docs/USER_GUIDE.md).
 
 ---
 ## 4. Structure du Répertoire
@@ -76,7 +76,8 @@ Pour faciliter la prise en main de l'application par les développeurs et les ut
 dice-dice-baby/
 ├── backend/            # Code source Java / Spring Boot (Maven)
 ├── frontend/           # Code source TypeScript / React (Vite)
-├── .env.example        # Modèle des variables d'environnement (Dev)
+├── docs/               # Documentation du projet
+├── .env.example        # Modèle des variables d'environnement (Dev, Prod)
 ├── docker-compose.yml  # Orchestrateur des conteneurs locaux
 └── README.md           # Documentation principale
 ```
@@ -87,4 +88,4 @@ dice-dice-baby/
 * **Auteur :** Clément HAZERA
 * **Licence :** [MIT License](https://opensource.org/licenses/MIT)
 
-> Le code source est sous licence MIT, ce qui permet la réutilisation et la modification à des fins personnelles et éducatives, **tout en conservant le droit d'auteur au profit de l'auteur original**. Veuillez consulter le fichier [LICENSE](LICENSE) pour plus de détails.
+> Le code source est sous licence MIT, ce qui permet la réutilisation et la modification à des fins personnelles et éducatives, **tout en conservant le droit d'auteur au profit de l'auteur original**.
