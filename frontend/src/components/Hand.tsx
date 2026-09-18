@@ -5,10 +5,16 @@ import { eDiceContext } from '../types/enums/eDiceContext';
 interface HandProps {
   hand: Dice[];
   selectedIds: number[];
+  isRolling: boolean;
   onToggleDice: (id: number) => void;
 }
 
-export default function Hand({ hand, selectedIds, onToggleDice }: HandProps) {
+export default function Hand({
+  hand,
+  selectedIds,
+  isRolling,
+  onToggleDice,
+}: HandProps) {
   const sortedHand = [...hand].sort((a, b) => a.id - b.id);
 
   return (
@@ -27,6 +33,7 @@ export default function Hand({ hand, selectedIds, onToggleDice }: HandProps) {
               <BoardDice
                 value={dice.value}
                 locked={isSelected}
+                isRolling={isRolling && !isSelected}
                 context={eDiceContext.HAND_MOBILE}
               />
             </div>
@@ -36,6 +43,7 @@ export default function Hand({ hand, selectedIds, onToggleDice }: HandProps) {
               <BoardDice
                 value={dice.value}
                 locked={isSelected}
+                isRolling={isRolling && !isSelected}
                 context={eDiceContext.HAND_DESKTOP}
               />
             </div>

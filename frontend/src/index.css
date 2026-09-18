@@ -17,6 +17,17 @@
   /* Font Families */
   --font-heading: 'Luckiest Guy', 'Arial Black', serif;
   --font-body: 'Inter', sans-serif;
+
+  /* Animation */
+  --animate-dice-roll: dice-roll 0.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  @keyframes dice-roll {
+    0% { transform: rotate(0deg) translateY(0) scale(1); }
+    25% { transform: rotate(90deg) translateY(-8px) scale(1.08); }
+    50% { transform: rotate(180deg) translateY(0) scale(1); }
+    75% { transform: rotate(270deg) translateY(-5px) scale(1.05); }
+    100% { transform: rotate(360deg) translateY(0) scale(1); }
+  }
 }
 
 @utility neo-brutal-border {

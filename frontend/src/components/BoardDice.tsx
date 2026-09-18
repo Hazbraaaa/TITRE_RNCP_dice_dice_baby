@@ -11,12 +11,14 @@ import { eDiceContext } from '../types/enums/eDiceContext';
 type BoardDiceProps = {
   value: number | string;
   locked?: boolean;
+  isRolling?: boolean;
   context?: DiceContext;
 };
 
 export const BoardDice = ({
   value,
   locked = false,
+  isRolling = false,
   context = eDiceContext.CARD_DESKTOP,
 }: BoardDiceProps) => {
   const isTextValue = typeof value === 'string';
@@ -29,7 +31,8 @@ export const BoardDice = ({
     <div
       className={`
         relative flex items-center justify-center transition-all duration-200 select-none
-        ${diceContainerStyles[context]}    
+        ${diceContainerStyles[context]} 
+        ${isRolling ? 'animate-dice-roll motion-reduce:animate-none' : ''}   
         ${
           locked
             ? 'bg-frost-white border-polar-blue shadow-none translate-y-0.5'
