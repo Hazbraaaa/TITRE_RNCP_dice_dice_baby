@@ -19,7 +19,6 @@ public class CardValidationService {
   @Autowired
   public CardValidationService(CombinationFactory combinationFactory) {
     this.combinationFactory = combinationFactory;
-    ;
   }
 
   // endregion

@@ -28,6 +28,7 @@ public class GameService {
   private final GameRepository gameRepository;
   private final GameCardRepository gameCardRepository;
   private final CardValidationService cardValidationService;
+  private final LineValidationService lineValidationService;
   private final SecureRandom secureRandom = new SecureRandom();
   private final GameMapper gameMapper;
   private final CookieUtils cookieUtils;
@@ -40,12 +41,14 @@ public class GameService {
       GameRepository gameRepository,
       GameCardRepository gameCardRepository,
       CardValidationService cardValidationService,
+      LineValidationService lineValidationService,
       GameMapper gameMapper,
       CookieUtils cookieUtils,
       JwtUtils jwtUtils) {
     this.gameRepository = gameRepository;
     this.gameCardRepository = gameCardRepository;
     this.cardValidationService = cardValidationService;
+    this.lineValidationService = lineValidationService;
     this.gameMapper = gameMapper;
     this.cookieUtils = cookieUtils;
     this.jwtUtils = jwtUtils;
@@ -154,7 +157,7 @@ public class GameService {
     currentPlayer.setRemainingChips(currentPlayer.getRemainingChips() - 1);
 
     // Update game if where is a winner and game is finished
-    updateGameStateAndWinner(game);
+    updateGameStateAndWinner(game, gameCard);
 
     // If game state is still in progress
     if (game.getState() == GameState.IN_PROGRESS) {
@@ -219,17 +222,18 @@ public class GameService {
     }
   }
 
-  private void updateGameStateAndWinner(GameEntity game) {
+  private void updateGameStateAndWinner(GameEntity game, GameCardEntity validatedCard) {
     // Get current player
     PlayerEntity currentPlayer = game.getCurrentPlayer();
 
     // Get conditions of victory
     boolean hasNoChipsLeft = currentPlayer.getRemainingChips() == Constant.GameData.NO_CHIPS_LEFT;
     boolean hasReachedTargetScore = currentPlayer.getScore() >= Constant.GameData.WINNING_POINTS;
-    // TODO ------- CREATE method for checking lines...
+    boolean hasMadeALine =
+        lineValidationService.validateLine(game.getBoard(), validatedCard, currentPlayer);
 
     // If one condition is check set winner and game as finished
-    if (hasNoChipsLeft || hasReachedTargetScore) {
+    if (hasNoChipsLeft || hasReachedTargetScore || hasMadeALine) {
       game.setState(GameState.FINISHED);
       game.setWinner(currentPlayer);
     }

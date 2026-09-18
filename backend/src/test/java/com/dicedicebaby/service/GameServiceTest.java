@@ -37,6 +37,8 @@ public class GameServiceTest {
 
   @Mock private CardValidationService cardValidationService;
 
+  @Mock private LineValidationService lineValidationService;
+
   @Mock private GameMapper gameMapper;
 
   @Mock private CookieUtils cookieUtils;

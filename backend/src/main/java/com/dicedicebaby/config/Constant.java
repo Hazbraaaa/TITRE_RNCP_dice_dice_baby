@@ -10,7 +10,7 @@ public class Constant {
 
   public static class GameData {
     public static final int INITIAL_POINTS = 0;
-    public static final int WINNING_POINTS = 5;
+    public static final int WINNING_POINTS = 20;
     public static final int INITIAL_CHIPS = 6;
     public static final int NO_CHIPS_LEFT = 0;
     public static final int MAX_DICE_VALUE = 6;
@@ -18,7 +18,8 @@ public class Constant {
     public static final int MAX_ROLLS_LEFT = 3;
     public static final int NO_ROLLS_LEFT = 0;
     public static final int FIRST_PLAYER_NUMBER = 1;
-    public static final int BOARD_CARD_COUNT = 16;
+    public static final int BOARD_SIZE = 4;
+    public static final int BOARD_CARD_COUNT = BOARD_SIZE * BOARD_SIZE;
 
     public record CardData(
         CardRequirement combination, CardColor color, int pointLvl1, int pointLvl2) {}
