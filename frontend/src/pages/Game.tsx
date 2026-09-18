@@ -15,6 +15,7 @@ export default function Game() {
     dices,
     keptDiceIds,
     selectedCardId,
+    isRolling,
     toggleDice,
     toggleSelectCard,
     handleRoll,
@@ -84,19 +85,22 @@ export default function Game() {
             <Hand
               hand={dices}
               selectedIds={keptDiceIds}
+              isRolling={isRolling}
               onToggleDice={toggleDice}
             />
 
             {/* Throw Button */}
             <Button
-              variant={game.rollsLeft <= 0 ? 'disabled' : 'primary'}
+              variant={
+                game.rollsLeft <= 0 || isRolling ? 'disabled' : 'primary'
+              }
               size="md"
               fullWidth
               className="flex flex-col items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
               onClick={handleRoll}
-              disabled={game.rollsLeft <= 0}
+              disabled={game.rollsLeft <= 0 || isRolling}
             >
-              <div>LANCER LES DÉS</div>
+              <div>{isRolling ? 'LANCEMENT...' : 'LANCER LES DÉS'}</div>
               <span className="text-sm font-normal mt-1 opacity-80">
                 ({game.rollsLeft} restants)
               </span>
@@ -105,13 +109,15 @@ export default function Game() {
             {/* End Turn Button */}
             <Button
               variant={
-                game.rollsLeft === 3 || selectedCardId === null
+                game.rollsLeft === 3 || selectedCardId === null || isRolling
                   ? 'disabled'
                   : 'secondary'
               }
               size="md"
               onClick={handleEndTurn}
-              disabled={game.rollsLeft === 3 || selectedCardId === null}
+              disabled={
+                game.rollsLeft === 3 || selectedCardId === null || isRolling
+              }
             >
               <div>VALIDER LE CHOIX</div>
             </Button>

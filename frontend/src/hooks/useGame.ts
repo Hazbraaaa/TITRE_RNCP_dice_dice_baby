@@ -33,6 +33,9 @@ export const useGame = () => {
   // Store the currently selected card ID in local state
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
+  // State to track if the dice are currently rolling, to prevent multiple rolls at once
+  const [isRolling, setIsRolling] = useState(false);
+
   // Extract relevant game data for the UI
   useEffect(() => {
     const initGame = async () => {
@@ -76,20 +79,29 @@ export const useGame = () => {
 
   // Handler for rolling the dice, which will call the backend and update the game state with the new data
   const handleRoll = async () => {
-    if (!game) return;
+    if (!game || isRolling) return;
 
     const keptDiceIds = game.diceSet.dices
       .filter((d) => d.isKept)
       .map((d) => d.id);
 
+    setIsRolling(true);
+
     try {
-      const updatedGame: Game = await rollDices({
-        gameId: game.id,
-        keptDiceIds,
-      });
+      const [updatedGame] = await Promise.all([
+        rollDices({
+          gameId: game.id,
+          keptDiceIds,
+        }),
+
+        new Promise((resolve) => setTimeout(resolve, 600)),
+      ]);
+
       setGame(updatedGame);
     } catch (error) {
       console.error('Erreur lors du lancer de dés:', error);
+    } finally {
+      setIsRolling(false);
     }
   };
 
@@ -168,6 +180,7 @@ export const useGame = () => {
     keptDiceIds:
       game?.diceSet.dices.filter((d) => d.isKept).map((d) => d.id) || [],
     selectedCardId,
+    isRolling,
     toggleDice,
     toggleSelectCard,
     handleRoll,
